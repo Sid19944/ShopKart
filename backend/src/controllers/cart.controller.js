@@ -91,7 +91,7 @@ const allCart = AsyncHandler(async (req, res, next) => {
   });
 });
 
-const updateProductQuentity = AsyncHandler(async (req, res, next) => {
+const updateCart = AsyncHandler(async (req, res, next) => {
   const cart_id = req.params.cart_id;
   const { product_id, quentity } = req.body;
   const cart = await Cart.findById(cart_id);
@@ -121,4 +121,6 @@ const updateProductQuentity = AsyncHandler(async (req, res, next) => {
   });
 });
 
-export { addToCart, updateProductQuentity, allCart };
+
+
+export { addToCart, updateCart, allCart };
