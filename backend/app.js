@@ -65,8 +65,6 @@ app.use("/admin",adminRouter)
 import sellerRouter from "./src/routes/seller.route.js"
 app.use("/seller", sellerRouter)
 
-
-
 import productRouter from "./src/routes/product.route.js"
 app.use("/products", productRouter)
 
