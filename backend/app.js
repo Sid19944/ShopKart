@@ -56,22 +56,23 @@ passport.use(
 );
 app.use(passport.initialize());
 
-import authRouter from "./src/routes/user.route.js"
-app.use("/auth",authRouter)
+import authRouter from "./src/routes/user.route.js";
+app.use("/auth", authRouter);
 
-import adminRouter from "./src/routes/admin.route.js"
-app.use("/admin",adminRouter)
+import adminRouter from "./src/routes/admin.route.js";
+app.use("/admin", adminRouter);
 
-import sellerRouter from "./src/routes/seller.route.js"
-app.use("/seller", sellerRouter)
+import sellerRouter from "./src/routes/seller.route.js";
+app.use("/seller", sellerRouter);
 
-import productRouter from "./src/routes/product.route.js"
-app.use("/products", productRouter)
+import productRouter from "./src/routes/product.route.js";
+app.use("/products", productRouter);
 
+import cartRouter from "./src/routes/cart.route.js";
+app.use("/cart", cartRouter);
 
-
-import addressRouter from "./src/routes/address.route.js"
-app.use("/address", addressRouter)
+import addressRouter from "./src/routes/address.route.js";
+app.use("/address", addressRouter);
 
 // middleware for error
 import { errorMiddleware } from "./src/utils/Error.Handler.js";

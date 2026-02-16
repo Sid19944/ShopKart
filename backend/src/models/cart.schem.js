@@ -1,10 +1,10 @@
 import mongoose, { Schema } from "mongoose";
-import { Product } from "./product.schema";
 
 const cartSchema = new Schema({
   user_id: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    unique : true,
     requierd: true,
   },
   items: [
