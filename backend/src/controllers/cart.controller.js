@@ -91,6 +91,19 @@ const allCart = AsyncHandler(async (req, res, next) => {
   });
 });
 
+const getCartForUser = AsyncHandler(async (req, res, next) => {
+    console.log(req.user)
+  const cart = await Cart.findOne({ user_id: req.user._id });
+  if (!cart) {
+    return next(new ErrorHandler("Cart's is created yet", 400));
+  }
+
+  return res.status(200).json({
+    success: true,
+    cart,
+  });
+});
+
 const updateCart = AsyncHandler(async (req, res, next) => {
   const cart_id = req.params.cart_id;
   const { product_id, quentity } = req.body;
@@ -121,6 +134,4 @@ const updateCart = AsyncHandler(async (req, res, next) => {
   });
 });
 
-
-
-export { addToCart, updateCart, allCart };
+export { addToCart, updateCart, allCart, getCartForUser };
