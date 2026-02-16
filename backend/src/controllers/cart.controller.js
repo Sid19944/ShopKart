@@ -56,25 +56,69 @@ const addToCart = AsyncHandler(async (req, res, next) => {
     haveCart.total_price += product.price * quentity;
     haveCart.save();
     return res.status(200).json({
-        success : true,
-        message : "New Product Added In Cart"
-    })
+      success: true,
+      message: "New Product Added In Cart",
+    });
   }
 
   // if Product is already in cart then update product quentity with new quentity
   productHaveInCart[0].quentity += quentity;
-  if(product.stock < productHaveInCart[0].quentity){
-    return next(new ErrorHandler("Max Quentity Reached",400))
+  if (product.stock < productHaveInCart[0].quentity) {
+    return next(new ErrorHandler("Max Quentity Reached", 400));
   }
 
-  haveCart.total_price += product.price * quentity
-  haveCart.save()
+  haveCart.total_price += product.price * quentity;
+  haveCart.save();
 
   return res.status(200).json({
-    success : true,
-    message : "Cart Updated",
-    haveCart
-  })
+    success: true,
+    message: "Cart Updated",
+    haveCart,
+  });
 });
 
-export { addToCart };
+const allCart = AsyncHandler(async (req, res, next) => {
+  const carts = await Cart.find();
+  if (!carts) {
+    return res.status(200).json({
+      success: true,
+      message: "No cart created yet.",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    carts,
+  });
+});
+
+const updateProductQuentity = AsyncHandler(async (req, res, next) => {
+  const cart_id = req.params.cart_id;
+  const { product_id, quentity } = req.body;
+  const cart = await Cart.findById(cart_id);
+  const findProduct = await Product.findById(product_id);
+  if (!findProduct) {
+    return next(new ErrorHandler("Invalid product", 400));
+  }
+
+  let product = cart.items.filter((item) => item.product_id == product_id);
+  product[0].quentity = quentity;
+
+  if (product[0].quentity == 0) {
+    cart.items = cart.items.filter((item) => item.product_id != product_id);
+  }
+
+  if (findProduct.stock < product[0].quentity) {
+    return next(
+      new ErrorHandler(`You can order max quentity ${findProduct.stock}`),
+    );
+  }
+  cart.save();
+
+  return res.status(200).json({
+    success: true,
+    message: "Cart Updated",
+    cart,
+  });
+});
+
+export { addToCart, updateProductQuentity, allCart };
