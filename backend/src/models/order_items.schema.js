@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "express";
+import mongoose, { Schema } from "mongoose";
 
 const shippingAddressSchema = new Schema(
   {

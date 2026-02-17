@@ -116,4 +116,26 @@ const getAllAddress = AsyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, address });
 });
 
-export { addAddress, updateAddress, deleteAddress, getSingleAddress , getAllAddress};
+const getAllAddressForCurrLoginUser = AsyncHandler(async (req, res, next) => {
+  const allAddress = await Address.find({ user_id: req.user._id });
+  if (!allAddress.length) {
+    return res.status(200).json({
+      success: true,
+      message: "User did't store any address yet",
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    allAddress,
+  });
+});
+
+export {
+  addAddress,
+  updateAddress,
+  deleteAddress,
+  getSingleAddress,
+  getAllAddress,
+  getAllAddressForCurrLoginUser,
+};
