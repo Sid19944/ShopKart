@@ -5,9 +5,10 @@ import { Order_Item } from "../models/order_items.schema.js";
 import { Product } from "../models/product.schema.js";
 
 const item_ordered = AsyncHandler(async (req, res, next) => {
-  const { products, quentity, shippingAddress_id } = req.body;
+  const { products, shippingAddress_id } = req.body;
 
-  if (!products || !quentity || !shippingAddress_id) {
+
+  if (!products || !shippingAddress_id) {
     return next(new ErrorHandler("Please provide all details", 400));
   }
   if (!Array.isArray(products)) {
@@ -26,12 +27,12 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
 
   let order_items = [];
   if (Array.isArray(products)) {
-    for (const product_id of products) {
-      const product = await Product.findById(product_id);
+    for (const fProduct of products) {
+      const product = await Product.findById(fProduct.product_id);
       if (!product) {
         return next(new ErrorHandler("Invalid Product ID", 400));
       }
-      if (product.stock < quentity) {
+      if (product.stock < fProduct.quentity) {
         return next(
           new ErrorHandler(
             `You can't order more then ${product.stock} quentity`,
@@ -47,7 +48,7 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
           url: product.image[0].url,
           public_id: product.image[0].public_id,
         },
-        quentity,
+        quentity : fProduct.quentity,
         price: product.price,
         shippingAddress: {
           fullName: shippedAddress.fullname,

@@ -27,6 +27,7 @@ const orderPlace = AsyncHandler(async (req, res, next) => {
     }
 
     order_items.push({
+      order_id: order_id,
       product_id: order.product_id,
       name: order.name,
       img: order.img,
@@ -70,4 +71,58 @@ const orderPlace = AsyncHandler(async (req, res, next) => {
   });
 });
 
-export { orderPlace };
+const getAllOrders = AsyncHandler(async (req, res, next) => {
+  const allOrders = await Orders.find();
+  if (!allOrders.length) {
+    return res.status(200).json({
+      success: true,
+      message: "Order not placed yet",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    allOrders,
+  });
+});
+
+const getOrdersForCussUser = AsyncHandler(async (req, res, next) => {
+  const orders = await Orders.find({ user_id: req.user._id });
+  if (!orders.length) {
+    return res.status(200).json({
+      success: true,
+      message: "Order not placed yet",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    orders,
+  });
+});
+
+const cancelOrder = AsyncHandler(async (req, res, next) => {
+  const order_id = req.params.order_id;
+  const order = await Orders.findByIdAndUpdate(
+    order_id,
+    {
+      $set: { order_status: "cancelled" },
+    },
+    { new: true },
+  );
+
+  if (!order) {
+    return next(new ErrorHandler("Invalid Order Detail", 400));
+  }
+  for (const item of order.order_items) {
+    await Order_Item.findByIdAndUpdate(item.order_id, {
+      $set: { order_status: "cancelled" },
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "Order Cancelled",
+    order,
+  });
+});
+
+export { orderPlace, cancelOrder, getAllOrders, getOrdersForCussUser };

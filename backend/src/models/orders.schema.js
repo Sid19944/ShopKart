@@ -20,6 +20,11 @@ const ordersSchema = new Schema({
   },
   order_items: [
     {
+      order_id: {
+        type: Schema.Types.ObjectId,
+        ref: "Order_Item",
+        required: true,
+      },
       product_id: {
         type: Schema.Types.ObjectId,
         ref: "Product",
