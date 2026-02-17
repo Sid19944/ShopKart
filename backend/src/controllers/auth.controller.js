@@ -73,10 +73,10 @@ const githubLogin = AsyncHandler(async (req, res, next) => {
 
   if (!userExist) {
     const user = await User.create({
-      auth_id : req.user._json.id,
-        name : req.user._json.name,
-        avatar : req.user._json.avatar_url,
-        provider : req.user.provider
+      auth_id: req.user._json.id,
+      name: req.user._json.name,
+      avatar: req.user._json.avatar_url,
+      provider: req.user.provider,
     });
 
     if (!user) {
@@ -130,4 +130,37 @@ const githubLogin = AsyncHandler(async (req, res, next) => {
     });
 });
 
-export { googleAuthLogin, githubLogin };
+const getCurrUser = AsyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    return next(new ErrorHandler("Invalid user ID", 400));
+  }
+  return res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+const logout = AsyncHandler(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.user._id, {
+    $unset: { refreshToken: 1 },
+  });
+
+  return res
+    .clearCookie("accessToken", {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    })
+    .clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    })
+    .json({
+      success: true,
+      message: "User Logged Out.",
+    });
+});
+
+export { googleAuthLogin, githubLogin , getCurrUser, logout};
