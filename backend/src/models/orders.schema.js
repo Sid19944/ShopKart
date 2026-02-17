@@ -13,42 +13,43 @@ const shippingAddressSchema = new Schema(
   { _id: false },
 );
 
-const order_itemSchema = new Schema({
-  buyer: {
+const ordersSchema = new Schema({
+  user_id: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true,
   },
-  product_id: {
-    type: Schema.Types.ObjectId,
-    ref: "Product",
-    required: true,
-  },
-  quentity: {
+  order_items: [
+    {
+      product_id: {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+        required: true,
+      },
+      quentity: {
+        type: Number,
+        min: 1,
+        required: true,
+      },
+      total_price: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
+  numberOfProduct: {
     type: Number,
+    required: true,
     min: 1,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  order_status: {
-    type: String,
-    enum: [
-      "pending",
-      "processing",
-      "shipped",
-      "out for delivery",
-      "delivered",
-      "cancelled",
-    ],
-    default: "pending",
   },
   shippingAddress: {
     type: shippingAddressSchema,
     required: true,
   },
+  paymentMethod: {
+    type: String,
+    enum: ["COD", "Prepaid"],
+    required: true,
+  },
 });
 
-export const Order_Item = mongoose.model("Order_Item", order_itemSchema);
+export const Orders = mongoose.model("Orders", ordersSchema);
