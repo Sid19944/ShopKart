@@ -38,6 +38,10 @@ const productSchema = new Schema(
       ref: "Seller",
       required: true,
     },
+    isApproved: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true },
 );
