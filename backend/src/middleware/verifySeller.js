@@ -1,7 +1,8 @@
+import { Seller } from "../models/seller.schema.js";
 import { AsyncHandler } from "../utils/Async.Handler.js";
 import ErrorHandler from "../utils/Error.Handler.js";
 
-export const verifySeller = AsyncHandler(async (req, resizeBy, next) => {
+export const verifySeller = AsyncHandler(async (req, res, next) => {
   if (req.user.role == "seller" || req.user.role == "admin") {
     next();
   } else {

@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const sellerSchema = new Schema(
   {
-    seller_Id: {
+    seller_id: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,

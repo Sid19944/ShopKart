@@ -9,8 +9,10 @@ import {
 } from "../controllers/products.controller.js";
 import { verifySeller } from "../middleware/verifySeller.js";
 import { verifyJwt } from "../middleware/verifyJWT.js";
-import { getSellerProduct } from "../controllers/seller.controller.js";
+import { getSellerProduct, wantSeller } from "../controllers/seller.controller.js";
 const router = Router();
+
+router.route("/want").post(verifyJwt,wantSeller)
 
 router.route("/get-all-products").get(verifyJwt, verifySeller, getSellerProduct);
 router.route("/add-product").post(verifyJwt, verifySeller, addNewProduct);
