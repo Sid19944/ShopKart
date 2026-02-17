@@ -30,7 +30,7 @@ const order_itemSchema = new Schema({
   },
   img: {
     url: { type: String, required: true },
-    publid_id: { type: String, required: true },
+    public_id: { type: String, required: true },
   },
   quentity: {
     type: Number,

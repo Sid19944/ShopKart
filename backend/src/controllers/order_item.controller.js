@@ -45,7 +45,7 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
         name: product.name,
         img: {
           url: product.image[0].url,
-          publid_id: product.image[0].public_id,
+          public_id: product.image[0].public_id,
         },
         quentity,
         price: product.price,
