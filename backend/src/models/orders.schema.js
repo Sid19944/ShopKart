@@ -42,6 +42,7 @@ const ordersSchema = new Schema({
         type: Number,
         required: true,
       },
+      totalPrice: { type: Number, required: true },
     },
   ],
   numberOfProduct: {
@@ -49,9 +50,22 @@ const ordersSchema = new Schema({
     required: true,
     min: 1,
   },
+  totalPrice: { type: Number, required: true },
   shippingAddress: {
     type: shippingAddressSchema,
     required: true,
+  },
+  order_status: {
+    type: String,
+    enum: [
+      "pending",
+      "processing",
+      "shipped",
+      "out for delivery",
+      "delivered",
+      "cancelled",
+    ],
+    default: "pending",
   },
   paymentMethod: {
     type: String,

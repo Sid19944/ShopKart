@@ -1,3 +1,4 @@
+import { Cart } from "../models/cart.schem.js";
 import { Order_Item } from "../models/order_items.schema.js";
 import { Orders } from "../models/orders.schema.js";
 import { AsyncHandler } from "../utils/Async.Handler.js";
@@ -17,6 +18,7 @@ const orderPlace = AsyncHandler(async (req, res, next) => {
 
   const order_items = [];
   let shippingAddress = "";
+  let totalPrice = null;
   for (const order_id of order_products) {
     const order = await Order_Item.findById(order_id);
 
@@ -30,16 +32,20 @@ const orderPlace = AsyncHandler(async (req, res, next) => {
       img: order.img,
       quentity: order.quentity,
       price: order.price,
+      totalPrice: order.price * order.quentity,
     });
     shippingAddress = order.shippingAddress;
   }
 
-  console.log(order_items)
+  for (const product of order_items) {
+    totalPrice += product.totalPrice;
+  }
 
   const order = await Orders.create({
     user_id: req.user._id,
     order_items,
     numberOfProduct: order_items.length,
+    totalPrice,
     shippingAddress,
     paymentMethod,
   });
@@ -49,6 +55,13 @@ const orderPlace = AsyncHandler(async (req, res, next) => {
       new ErrorHandler("Something went wrong while place order", 500),
     );
   }
+
+  await Cart.findOneAndUpdate(
+    {
+      user_id: req.user._id,
+    },
+    { $set: { items: [], total_price: 0 } },
+  );
 
   return res.status(200).json({
     success: true,
