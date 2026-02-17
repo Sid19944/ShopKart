@@ -2,6 +2,7 @@ import { AsyncHandler } from "../utils/Async.Handler.js";
 import ErrorHandler from "../utils/Error.Handler.js";
 import { User } from "../models/user.schema.js";
 import { Seller } from "../models/seller.schema.js";
+import { Product } from "../models/product.schema.js";
 
 const updateUserRole = AsyncHandler(async (req, res, next) => {
   const { userid } = req.params;
@@ -58,4 +59,43 @@ const blockSeller = AsyncHandler(async (req, res, next) => {
   });
 });
 
-export { updateUserRole, getAllUser, approveSeller, blockSeller };
+const blockProduct = AsyncHandler(async (req, res, next) => {
+  const product_id = req.params.product_id;
+  const product = await Product.findByIdAndUpdate(product_id, {
+    $set: {
+      isApproved: false,
+    },
+  });
+  if (!product) {
+    return next(new ErrorHandler("Invalid Product ID", 400));
+  }
+  return res.status(200).json({
+    success: true,
+    message: "Product Not Allow",
+  });
+});
+
+const approveProduct = AsyncHandler(async (req, res, next) => {
+  const product_id = req.params.product_id;
+  const product = await Product.findByIdAndUpdate(product_id, {
+    $set: {
+      isApproved: true,
+    },
+  });
+  if (!product) {
+    return next(new ErrorHandler("Invalid Product ID", 400));
+  }
+  return res.status(200).json({
+    success: true,
+    message: "Product now Allow",
+  });
+});
+
+export {
+  updateUserRole,
+  getAllUser,
+  approveSeller,
+  blockSeller,
+  blockProduct,
+  approveProduct,
+};
