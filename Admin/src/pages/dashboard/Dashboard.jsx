@@ -1,36 +1,57 @@
-import React from "react";
-import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
+import React, { useState } from "react";
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import GroupIcon from "@mui/icons-material/Group";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 function Dashboard() {
+  const [showPage, setShowPage] = useState("overview");
   return (
-    <div className="h-screen p-1">
+    <div className="h-screen p-1 font-serif">
       <nav
         id="sidenav"
-        className="border w-50 h-full shadow-[0px_0px_2px_2px] shadow-white rounded-r-lg"
+        className="w-60 h-full shadow-[0px_0px_2px_2px] shadow-white rounded-r-lg"
       >
         <div className="h-10 flex items-center justify-center gap-2 p-1 border-b">
           <ContactEmergencyIcon />
           <p className="font-semibold">Admin Panel</p>
         </div>
-        <div>
-          <p>MAIN MENU</p>
-          <div>
-            <GroupIcon />
-            <p>Users</p>
+        <div className="flex flex-col gap-2 p-1">
+          <p className="text-xs text-gray-300 mt-2 px-3">MAIN MENU</p>
+          <div
+            className={`flex gap-2 items-center p-2 rounded-lg cursor-pointer hover:outline hover:opacity-100  ${showPage == "overview" ? "bg-blue-600 border-b-2" : "opacity-70"}`}
+            onClick={()=>setShowPage("overview")}
+          >
+            <DashboardIcon />
+            <h1>Overview</h1>
           </div>
-          <div>
+          <div
+            className={`flex gap-2 items-center p-2 rounded-lg cursor-pointer hover:outline hover:opacity-100 ${showPage == "users" ? "bg-blue-600 border-b-2" : "opacity-70"} `}
+            onClick={()=>setShowPage("users")}
+          >
+            <GroupIcon />
+            <h1>Users</h1>
+          </div>
+          <div
+            className={`flex gap-2 items-center p-2 rounded-lg cursor-pointer hover:outline hover:opacity-100  ${showPage == "sellers" ? "bg-blue-600 border-b-2" : "opacity-70"} `}
+            onClick={()=>setShowPage("sellers")}
+          >
             <StorefrontIcon />
             Sellers
           </div>
-          <div>
+          <div
+            className={`flex gap-2 items-center p-2 rounded-lg cursor-pointer hover:outline hover:opacity-100  ${showPage == "products" ? "bg-blue-600 border-b-2" : "opacity-70"} `}
+            onClick={()=>setShowPage("products")}
+          >
             <InventoryIcon />
             Products
           </div>
-          <div>
+          <div
+            className={`flex gap-2 items-center p-2 rounded-lg cursor-pointer hover:outline hover:opacity-100  ${showPage == "orders" ? "bg-blue-600 border-b-2" : "opacity-70"} `}
+            onClick={()=>setShowPage("orders")}
+          >
             <ShoppingCartIcon />
             <p>Orders</p>
           </div>
