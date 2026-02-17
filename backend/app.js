@@ -77,6 +77,9 @@ app.use("/address", addressRouter);
 import orderItemRouter from "./src/routes/order_item.route.js";
 app.use("/order-item", orderItemRouter);
 
+import ordersRouter from "./src/routes/orders.route.js";
+app.use("/orders", ordersRouter);
+
 // middleware for error
 import { errorMiddleware } from "./src/utils/Error.Handler.js";
 app.use(errorMiddleware);

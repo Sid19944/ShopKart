@@ -42,6 +42,11 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
       const order = await Order_Item.create({
         buyer: req.user._id,
         product_id: product._id,
+        name: product.name,
+        img: {
+          url: product.image[0].url,
+          publid_id: product.image[0].public_id,
+        },
         quentity,
         price: product.price,
         shippingAddress: {
@@ -75,7 +80,5 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
     order_items,
   });
 });
-
-
 
 export { item_ordered };

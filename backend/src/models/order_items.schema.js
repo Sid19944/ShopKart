@@ -24,6 +24,14 @@ const order_itemSchema = new Schema({
     ref: "Product",
     required: true,
   },
+  name: {
+    type: String,
+    required: true,
+  },
+  img: {
+    url: { type: String, required: true },
+    publid_id: { type: String, required: true },
+  },
   quentity: {
     type: Number,
     min: 1,
