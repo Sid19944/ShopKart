@@ -27,6 +27,21 @@ const getAllSeller = AsyncHandler(async (req, res, next) => {
   });
 });
 
+const getAllProducts = AsyncHandler(async (req, res, next) => {
+  const products = await Product.find();
+  if (!products.length) {
+    return res.status(200).json({
+      success: true,
+      message: "No Products yet",
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    products,
+  });
+});
+
 const getSellerRequest = AsyncHandler(async (req, res, next) => {
   const sellers = await Seller.find();
   if (!sellers.length) {
@@ -110,33 +125,43 @@ const blockSeller = AsyncHandler(async (req, res, next) => {
 
 const blockProduct = AsyncHandler(async (req, res, next) => {
   const product_id = req.params.product_id;
-  const product = await Product.findByIdAndUpdate(product_id, {
-    $set: {
-      isApproved: false,
+  const product = await Product.findByIdAndUpdate(
+    product_id,
+    {
+      $set: {
+        isApproved: false,
+      },
     },
-  });
+    { new: true },
+  );
   if (!product) {
     return next(new ErrorHandler("Invalid Product ID", 400));
   }
   return res.status(200).json({
     success: true,
     message: "Product Not Allow",
+    product,
   });
 });
 
 const approveProduct = AsyncHandler(async (req, res, next) => {
   const product_id = req.params.product_id;
-  const product = await Product.findByIdAndUpdate(product_id, {
-    $set: {
-      isApproved: true,
+  const product = await Product.findByIdAndUpdate(
+    product_id,
+    {
+      $set: {
+        isApproved: true,
+      },
     },
-  });
+    { new: true },
+  );
   if (!product) {
     return next(new ErrorHandler("Invalid Product ID", 400));
   }
   return res.status(200).json({
     success: true,
     message: "Product now Allow",
+    product,
   });
 });
 
@@ -152,11 +177,14 @@ const orderDetails = AsyncHandler(async (req, res, next) => {
     numberOfProductDelivered: orderDelivered.length,
   });
 });
+
 export {
   getSellerRequest,
   getAllUser,
+  getAllSeller,
   approveSeller,
   blockSeller,
+  getAllProducts,
   blockProduct,
   approveProduct,
   orderDetails,

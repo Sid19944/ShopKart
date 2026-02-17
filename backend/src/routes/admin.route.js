@@ -5,6 +5,8 @@ import {
   approveSeller,
   blockProduct,
   blockSeller,
+  getAllProducts,
+  getAllSeller,
   getAllUser,
   getSellerRequest,
   orderDetails,
@@ -12,7 +14,8 @@ import {
 import { verifyAdmin } from "../middleware/verifyAdmin.js";
 const router = Router();
 
-router.route("/get-all").get(verifyJwt, verifyAdmin, getAllUser);
+router.route("/user/get-all").get(verifyJwt, verifyAdmin, getAllUser);
+router.route("/seller/get-all").get(verifyJwt, verifyAdmin, getAllSeller);
 
 // seller
 router.route("/seller/requests").get(verifyJwt, verifyAdmin, getSellerRequest);
@@ -24,6 +27,7 @@ router
   .put(verifyJwt, verifyAdmin, blockSeller);
 
 // product
+router.route("/product/get-all").get(verifyJwt, verifyAdmin, getAllProducts);
 router
   .route("/product/block/:product_id")
   .put(verifyJwt, verifyAdmin, blockProduct);
@@ -31,6 +35,7 @@ router
   .route("/product/approve/:product_id")
   .put(verifyJwt, verifyAdmin, approveProduct);
 
+// order Details
 router.route("/order-details").get(verifyJwt, verifyAdmin, orderDetails);
 
 export default router;
