@@ -25,12 +25,20 @@ const ordersSchema = new Schema({
         ref: "Product",
         required: true,
       },
+      name: {
+        type: String,
+        required: true,
+      },
+      img: {
+        type: String,
+        required: true,
+      },
       quentity: {
         type: Number,
         min: 1,
         required: true,
       },
-      total_price: {
+      price: {
         type: Number,
         required: true,
       },
