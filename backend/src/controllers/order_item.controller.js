@@ -31,8 +31,8 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
       if (!product) {
         return next(new ErrorHandler("Invalid Product ID", 400));
       }
-      if(!product.isApproved){
-        return next(new ErrorHandler("Product is not allow to order",400))
+      if (!product.isApproved) {
+        return next(new ErrorHandler("Product is not allow to order", 400));
       }
       if (product.stock == 0) {
         return res.status(200).json({
@@ -97,4 +97,28 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
   });
 });
 
-export { item_ordered };
+// seller
+const getAllOrderedProducts = AsyncHandler(async (req, res, next) => {
+  const products = [];
+  const allProduct = await Product.find({ seller: req.user._id });
+  for (const product of allProduct) {
+    products.push(product._id);
+  }
+
+  const orders = await Order_Item.find({
+    product_id: { $in: products },
+  });
+
+  return res.status(200).json({
+    success: true,
+    orders,
+  });
+});
+
+const updateOrderStatus = AsyncHandler(async (req, res, next) => {
+  const order_id = req.params.order_id;
+  const order = await Order_Item.findById(order_id);
+  console.log(order);
+});
+
+export { item_ordered, getAllOrderedProducts, updateOrderStatus };

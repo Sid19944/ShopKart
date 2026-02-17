@@ -134,7 +134,7 @@ const updateProduct = AsyncHandler(async (req, res, next) => {
     price: req?.body?.price,
     category: req?.body?.category,
     discount: req?.body?.discount,
-    stock : req?.body?.stock
+    stock : req?.body?.stock,
   };
 
   // check the current user is the seller of the product
