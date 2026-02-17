@@ -12,7 +12,6 @@ const addToCart = AsyncHandler(async (req, res, next) => {
   }
 
   const product = await Product.findById(product_id);
-  console.log(product);
   if (!product) {
     return next(new ErrorHandler("Invalid Product", 400));
   }

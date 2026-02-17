@@ -7,7 +7,6 @@ import { Product } from "../models/product.schema.js";
 const item_ordered = AsyncHandler(async (req, res, next) => {
   const { products, shippingAddress_id } = req.body;
 
-
   if (!products || !shippingAddress_id) {
     return next(new ErrorHandler("Please provide all details", 400));
   }
@@ -32,6 +31,15 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
       if (!product) {
         return next(new ErrorHandler("Invalid Product ID", 400));
       }
+      if(!product.isApproved){
+        return next(new ErrorHandler("Product is not allow to order",400))
+      }
+      if (product.stock == 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Product is Out of Stock",
+        });
+      }
       if (product.stock < fProduct.quentity) {
         return next(
           new ErrorHandler(
@@ -48,7 +56,7 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
           url: product.image[0].url,
           public_id: product.image[0].public_id,
         },
-        quentity : fProduct.quentity,
+        quentity: fProduct.quentity,
         price: product.price,
         shippingAddress: {
           fullName: shippedAddress.fullname,
@@ -72,6 +80,13 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
           new ErrorHandler("Something went wrong while ordering", 400),
         );
       }
+
+      const newStock = product.stock - fProduct.quentity;
+      await Product.findByIdAndUpdate(fProduct.product_id, {
+        $set: {
+          stock: newStock,
+        },
+      });
     }
   }
 

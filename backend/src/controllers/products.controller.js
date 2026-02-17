@@ -134,12 +134,13 @@ const updateProduct = AsyncHandler(async (req, res, next) => {
     price: req?.body?.price,
     category: req?.body?.category,
     discount: req?.body?.discount,
+    stock : req?.body?.stock
   };
 
   // check the current user is the seller of the product
   const checkSeller = await Product.findById(prod_id)
   if(checkSeller.seller != req.user._id && req.user.role != "admin"){
-    return next(new ErrorHandler("Unauthorized Access",400))
+    return next(new ErrorHandler("This is not your Product",400))
   }
 
   const product = await Product.findByIdAndUpdate(prod_id, newData, {
@@ -194,14 +195,15 @@ const getAllProducts = AsyncHandler(async (req, res, next) => {
   if (page < 1) {
     return next(new ErrorHandler("Provide valid page no.", 400));
   }
-  const products = await Product.find()
+  let products = await Product.find()
     .limit(10)
     .skip((page - 1) * 10);
 
   if(!products.length){
     return next(new ErrorHandler("Provide valid page no.", 400));
   }
-  
+
+  products = products.filter((product)=>product.isApproved == true)
   return res.status(200).json({
     success: true,
     products,
