@@ -13,6 +13,40 @@ const getAllUser = AsyncHandler(async (req, res, next) => {
   });
 });
 
+const approveUser = AsyncHandler(async(req,res,next)=>{
+  const user_id = req.params.user_id;
+  const user = await User.findByIdAndUpdate(user_id, {
+    $set: {
+      isApproved: true,
+    },
+  });
+
+  if (!user) {
+    return next(new ErrorHandler("Try Again", 500));
+  }
+  return res.status(200).json({
+    success: true,
+    message: "User Approved",
+  });
+})
+
+const blockUser = AsyncHandler(async(req,res,next)=>{
+  const user_id = req.params.user_id;
+  const user = await User.findByIdAndUpdate(user_id, {
+    $set: {
+      isApproved: false,
+    },
+  });
+
+  if (!user) {
+    return next(new ErrorHandler("Try Again", 500));
+  }
+  return res.status(200).json({
+    success: true,
+    message: "User Blocked",
+  });
+})
+
 const getAllSeller = AsyncHandler(async (req, res, next) => {
   const sellers = await Seller.find();
   if (!sellers.length) {
@@ -181,6 +215,8 @@ const orderDetails = AsyncHandler(async (req, res, next) => {
 export {
   getSellerRequest,
   getAllUser,
+  approveUser,
+  blockUser,
   getAllSeller,
   approveSeller,
   blockSeller,

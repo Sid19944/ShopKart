@@ -3,8 +3,10 @@ import { verifyJwt } from "../middleware/verifyJWT.js";
 import {
   approveProduct,
   approveSeller,
+  approveUser,
   blockProduct,
   blockSeller,
+  blockUser,
   getAllProducts,
   getAllSeller,
   getAllUser,
@@ -16,6 +18,10 @@ const router = Router();
 
 router.route("/user/get-all").get(verifyJwt, verifyAdmin, getAllUser);
 router.route("/seller/get-all").get(verifyJwt, verifyAdmin, getAllSeller);
+
+//user
+router.route("/user/approve/:user_id").put(verifyJwt,verifyAdmin, approveUser)
+router.route("/user/block/:user_id").put(verifyJwt, verifyAdmin, blockUser)
 
 // seller
 router.route("/seller/requests").get(verifyJwt, verifyAdmin, getSellerRequest);
