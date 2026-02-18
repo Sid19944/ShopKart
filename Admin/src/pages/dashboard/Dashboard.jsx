@@ -19,7 +19,7 @@ function Dashboard() {
         id="sidenav"
         className="w-60 h-full shadow-[0px_0px_2px_2px] shadow-white rounded-r-lg"
       >
-        <div className="h-15 flex items-center justify-center gap-2 p-1 border-b">
+        <div className="h-13 flex items-center justify-center gap-2 p-1 border-b">
           <ContactEmergencyIcon />
           <p className="font-semibold">Admin Panel</p>
         </div>
@@ -79,7 +79,7 @@ function Dashboard() {
           />
         </nav>
 
-        <div id="data" className="overflow-y-auto">
+        <div id="data" className="overflow-y-auto p-3">
           {(() => {
             switch (showPage) {
               case "overview":
@@ -92,8 +92,8 @@ function Dashboard() {
                 return "products";
               case "orders":
                 return "orders";
-              default :
-              return "Invalid Page"
+              default:
+                return "INVALID SELECTION";
             }
           })()}
         </div>

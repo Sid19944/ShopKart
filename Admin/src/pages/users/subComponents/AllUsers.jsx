@@ -1,17 +1,39 @@
 import React from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+
 import { useSelector } from "react-redux";
 
 function AllUsers() {
   const { users } = useSelector((state) => state.users);
   return (
     <>
-      {users.map((user,idx) => (
-        <li key={idx} className="flex justify-around border-gray-700 border-b p-2">
-          <span className="text-xl w-[25%]">{user.name}</span>
-          <span className="text-xl w-[25%]">{user.role}</span>
-          <span className="text-xl w-[25%]">
-            {user.isApproved ? "Approved" : "Block"}
+      {users.map((user, idx) => (
+        <li
+          key={idx}
+          className="flex justify-around border-gray-700 border-b p-2 gap-2"
+        >
+          <span className="text-xl w-[25%] border-r">{user.name}</span>
+          <span className="text-xl w-[25%] border-r">{user.role}</span>
+          <span className="text-xl w-[25%] border-r">
+            {user.isApproved ? (
+              <div className="flex items-center gap-1">
+                <CheckCircleIcon
+                  className="text-green-500"
+                  style={{ height: "15px" }}
+                />{" "}
+                <span>Approved</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1">
+                <CancelIcon
+                  className="text-red-500"
+                  style={{ height: "15px" }}
+                />{" "}
+                <span>Block</span>
+              </div>
+            )}
           </span>
           <span className="text-xl flex gap-2 w-[25%] justify-center">
             <button

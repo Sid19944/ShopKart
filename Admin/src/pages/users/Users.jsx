@@ -7,12 +7,30 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUser } from "../../store/slice/users.slice";
 import AllUsers from "./subComponents/AllUsers";
+import BlockUsers from "./subComponents/BlockUsers";
 
 function Users() {
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.users);
-
   const [showData, setShowData] = useState("allUser");
+
+  const today = new Date().setHours(0, 0, 0, 0);
+  const sevenDayBefore =
+    new Date().setHours(0, 0, 0, 0) - 7 * 24 * 60 * 60 * 1000;
+  const thirtyDayBefore =
+    new Date().setHours(0, 0, 0, 0) - 30 * 24 * 60 * 60 * 1000;
+
+  const allDates = [];
+  users.map((user) => {
+    allDates.push(new Date(user.createdAt).setHours(0, 0, 0, 0));
+  });
+
+  let lastSevenDaysRegisters = allDates.filter(
+    (date) => date >= sevenDayBefore,
+  );
+  let lastThirtyDaysRegisters = allDates.filter(
+    (date) => date >= thirtyDayBefore,
+  );
 
   useEffect(() => {
     dispatch(getAllUser());
@@ -37,9 +55,9 @@ function Users() {
               <GroupIcon />
             </span>
           </label>
-          <h1 className="text-3xl flex items-center gap-3">
+          <h1 className="text-3xl flex flex-col gap-3">
             <CountUp end={users.length} duration={2} />
-            <span className="text-green-500">
+            <span className="text-green-500 text-sm flex items-baseline gap-2">
               <QueryStatsIcon />
             </span>
           </h1>
@@ -51,10 +69,11 @@ function Users() {
               <GroupIcon />
             </span>
           </label>
-          <h1 className="text-3xl flex items-center gap-3">
-            <CountUp end={users.length} duration={2} />
-            <span className="text-green-500">
-              <QueryStatsIcon />
+          <h1 className="text-3xl flex flex-col gap-3">
+            <CountUp end={lastThirtyDaysRegisters.length} duration={2} />
+            <span className="text-green-500 text-sm flex items-baseline gap-2">
+              <QueryStatsIcon /> +
+              {(lastSevenDaysRegisters.length * 100) / allDates.length}%
             </span>
           </h1>
         </div>
@@ -66,10 +85,11 @@ function Users() {
               <GroupIcon />
             </span>
           </label>
-          <h1 className="text-3xl flex items-center gap-3">
+          <h1 className="text-3xl flex flex-col gap-3">
             <CountUp end={users.length} duration={2} />
-            <span className="text-green-500">
-              <QueryStatsIcon />
+            <span className="text-green-500 text-sm flex items-baseline gap-2">
+              <QueryStatsIcon /> +
+              {(lastSevenDaysRegisters.length * 100) / allDates.length}%
             </span>
           </h1>
         </div>
@@ -81,14 +101,14 @@ function Users() {
       >
         <nav className="flex gap-3 p-2 justify-end bg-gray-900 rounded-t-lg">
           <span
-            className="p-2 rounded-lg bg-blue-300 text-blue-700 font-semibold outline cursor-pointer"
+            className={`p-2 rounded-lg font-semibold text-blue-700 outline cursor-pointer ${showData == "allUser" ? "bg-blue-300" : "blur-[0.4px]"}`}
             onClick={() => setShowData("allUser")}
           >
             All Users
           </span>
           <span
-            className="p-2 rounded-lg bg-blue-300 text-blue-700 font-semibold outline cursor-pointer"
-            onClick={() => setShowData("block")}
+            className={`p-2 rounded-lg text-blue-700 font-semibold outline cursor-pointer ${showData == "blockUser" ? "bg-blue-300" : "blur-[0.4px]"}`}
+            onClick={() => setShowData("blockUser")}
           >
             Block Users
           </span>
@@ -108,8 +128,17 @@ function Users() {
           </span>
         </div>
 
-        <div className="my-2 flex flex-col overflow-y-auto">
-          <AllUsers />
+        <div className="my-2 flex flex-col overflow-auto">
+          {(() => {
+            switch (showData) {
+              case "allUser":
+                return <AllUsers />;
+              case "blockUser":
+                return <BlockUsers />;
+              default:
+                return "INVALID SELECTION";
+            }
+          })()}
         </div>
       </div>
     </div>
