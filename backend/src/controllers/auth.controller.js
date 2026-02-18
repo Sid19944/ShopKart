@@ -41,9 +41,7 @@ const googleAuthLogin = AsyncHandler(async (req, res, next) => {
         secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
-      .json({
-        message: "User register successfully",
-      });
+      .redirect(process.env.FRONTEND_URL);
   }
 
   const { accessToken, refreshToken } = await genAccAndRefToken(userExist);
@@ -63,9 +61,7 @@ const googleAuthLogin = AsyncHandler(async (req, res, next) => {
       secure: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
-    .json({
-      message: `${userExist.role} Login successfully`,
-    });
+    .redirect(process.env.FRONTEND_URL);
 });
 
 const githubLogin = AsyncHandler(async (req, res, next) => {
@@ -163,4 +159,4 @@ const logout = AsyncHandler(async (req, res, next) => {
     });
 });
 
-export { googleAuthLogin, githubLogin , getCurrUser, logout};
+export { googleAuthLogin, githubLogin, getCurrUser, logout };

@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", process.env.FRONTEND_URL],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
@@ -56,7 +56,7 @@ passport.use(
 );
 app.use(passport.initialize());
 
-import authRouter from "./src/routes/user.route.js";
+import authRouter from "./src/routes/auth.route.js";
 app.use("/auth", authRouter);
 
 import adminRouter from "./src/routes/admin.route.js";
