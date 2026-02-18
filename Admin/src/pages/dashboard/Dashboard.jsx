@@ -6,19 +6,12 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { adminUrl } from "../../Api.jsx";
+import { useSelector } from "react-redux";
 
 function Dashboard() {
   const [showPage, setShowPage] = useState("overview");
-  const users = [];
+  const {user,error,message} = useSelector(state=>state.user)
 
-  useEffect(() => {
-    adminUrl
-      .get("/user/get-all")
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
   return (
     <div className="h-screen p-1 font-serif flex gap-2">
       <nav
@@ -75,11 +68,16 @@ function Dashboard() {
           className="border-b p-1 flex items-center gap-2 justify-end"
         >
           <h1 className="flex flex-col items-end text-sm">
-            Siddharth Sarkar{" "}
+            {user.name}
             <span className="text-[10px] text-gray-400">Plateform Admin</span>
           </h1>
-          <img src="logo.png" alt="avatar" className="h-10 rounded-full" />
+          <img src={user.avatar} alt="avatar" className="h-10 rounded-full outline" />
         </nav>
+
+        <div id="data">
+          
+        </div>
+
       </div>
     </div>
   );
