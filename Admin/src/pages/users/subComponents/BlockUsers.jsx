@@ -18,7 +18,11 @@ function BlockUsers() {
             className="flex justify-around border-gray-700 border-b p-2 gap-2"
           >
             <span className="text-xl w-[25%] border-r">{user.name}</span>
-            <span className="text-xl w-[20%] border-r">{user.role}</span>
+            <span
+              className={`text-xl w-[20%] border-r ${user.role == "admin" && "text-blue-600"} ${user.role == "seller" && "text-yellow-400"}`}
+            >
+              {user.role}
+            </span>
             <span className="text-xl w-[20%] border-r">
               {user.isApproved ? (
                 <div className="flex items-center gap-1">
@@ -41,11 +45,13 @@ function BlockUsers() {
             <span className="text-xl flex gap-2 w-[35%] justify-center">
               <button
                 className={`outline px-3 rounded-lg cursor-pointer ${user.isApproved ? "bg-blue-600" : "text-blue-600"}`}
+                onClick={() => handleUserApprove(user._id)}
               >
                 Approved
               </button>
               <button
                 className={`outline px-3 rounded-lg cursor-pointer ${!user.isApproved ? "bg-red-600" : "text-red-600"}`}
+                onClick={() => handleUserBlock(user._id)}
               >
                 Block
               </button>

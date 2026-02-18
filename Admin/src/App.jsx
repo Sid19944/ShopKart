@@ -4,15 +4,19 @@ import { Routes, Route } from "react-router-dom";
 import Auth from "./pages/auth/Auth.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./store/slice/user.slice.js";
+import toast from "react-hot-toast"
 import { getAllUser } from "./store/slice/users.slice.js";
 
 function App() {
   const dispatch = useDispatch();
-  const {isAuthenticated} = useSelector((state) => state.user);
+  const {isAuthenticated,error} = useSelector((state) => state.user);
 
   useEffect(() => {
+    if(error){
+      toast.error(error)
+    }
     dispatch(getUser());
-  }, [dispatch, isAuthenticated]);
+  }, [dispatch, isAuthenticated,error]);
 
 
   return (

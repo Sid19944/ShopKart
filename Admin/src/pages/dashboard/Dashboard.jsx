@@ -5,6 +5,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import LogoutIcon from '@mui/icons-material/Logout';
 import { adminUrl } from "../../Api.jsx";
 import { useSelector } from "react-redux";
 import Users from "../users/Users.jsx";
@@ -59,6 +60,12 @@ function Dashboard() {
           >
             <ShoppingCartIcon />
             <p>Orders</p>
+          </div>
+          <div
+            className={`flex gap-2 items-center p-2 rounded-lg cursor-pointer hover:outline hover:opacity-100 opacity-70`}
+          >
+            <LogoutIcon />
+            <p>Logout</p>
           </div>
         </div>
       </nav>

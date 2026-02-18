@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import CountUp from "react-countup";
 import GroupIcon from "@mui/icons-material/Group";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
@@ -36,6 +37,12 @@ function Users() {
 
   useEffect(() => {
     dispatch(getAllUser());
+    if (error) {
+      toast.error(error);
+    }
+    if (message) {
+      toast.success(message);
+    }
   }, [error, message]);
 
   return (

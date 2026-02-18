@@ -14,6 +14,8 @@ const usersSlice = createSlice({
     // Get all users
     getUsersRequest(state, action) {
       state.loading = true;
+      state.error = null;
+      state.message = null
     },
     getUsersSuccess(state, action) {
       state.loading = false;
@@ -27,6 +29,8 @@ const usersSlice = createSlice({
     // Update User Status
     updateStatusRequest(state, action) {
       state.loading = true;
+      state.error = null;
+      state.message = null
     },
     updateStatusSuccess(state, action) {
       state.loading = false;
@@ -35,6 +39,11 @@ const usersSlice = createSlice({
     updateStatusFailer(state, action) {
       state.loading = false;
       state.error = action.payload;
+    },
+
+    // filter single User
+    setSingleUser(state,action){
+        state.user = action.payload
     },
 
     // Clear
@@ -95,6 +104,10 @@ export const blockUser = (user_id) => async (dispatch) => {
     );
   }
 };
+
+export const setSingleUser = (user)=>(dispatch)=>{
+    dispatch(usersSlice.actions.setSingleUser(user))
+}
 
 export const clearAllError = () => async (dispatch) => {
   dispatch(usersSlice.actions.clearAllError());
