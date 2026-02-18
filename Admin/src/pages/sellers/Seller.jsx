@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import CountUp from "react-countup";
+
 import GroupIcon from "@mui/icons-material/Group";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUser } from "../../store/slice/users.slice";
-import AllUsers from "./subComponents/AllUsers";
-import BlockUsers from "./subComponents/BlockUsers";
+import { getSellers } from "../../store/slice/seller.sclic";
+import AllSeller from "./subComponents/AllSeller";
 
-function Users() {
+function Seller() {
   const dispatch = useDispatch();
-  const { users, loading, error, message } = useSelector(
-    (state) => state.users,
-  );
+  const { sellers } = useSelector((state) => state.sellers);
+  const [showData, setShowData] = useState("allSeller");
 
-  const blockUser = users.filter((user) => user.isApproved == false);
-  const [showData, setShowData] = useState("allUser");
+  const blockSellers = sellers.filter((seller) => seller.isApproved != true);
 
   const today = new Date().setHours(0, 0, 0, 0);
   const sevenDayBefore =
@@ -26,8 +21,8 @@ function Users() {
     new Date().setHours(0, 0, 0, 0) - 30 * 24 * 60 * 60 * 1000;
 
   const allDates = [];
-  users.map((user) => {
-    allDates.push(new Date(user.createdAt).setHours(0, 0, 0, 0));
+  sellers.map((seller) => {
+    allDates.push(new Date(seller.createdAt).setHours(0, 0, 0, 0));
   });
 
   let lastSevenDaysRegisters = allDates.filter(
@@ -38,21 +33,14 @@ function Users() {
   );
 
   useEffect(() => {
-    dispatch(getAllUser());
-    if (error) {
-      toast.error(error);
-    }
-    if (message) {
-      toast.success(message);
-    }
-  }, [error, message]);
-
+    dispatch(getSellers());
+  }, []);
   return (
     <div className="p-1 font-mono h-full flex flex-col">
       <div id="page info">
-        <h1 className="text-3xl tracking-[2px]">USER MANAGEMENT</h1>
+        <h1 className="text-3xl tracking-[2px]">SELLER MANAGEMENT</h1>
         <p className="text-xs text-gray-400">
-          Oversee, Verify, and manage users across the ShopCart
+          Oversee, Verify, and manage sellers across the ShopCart
         </p>
       </div>
       <div id="top" className="grid grid-cols-3 gap-4 my-3">
@@ -61,13 +49,13 @@ function Users() {
             htmlFor=""
             className="flex gap-5 text-gray-400 items-center tracking-[1px]"
           >
-            TOTAL REGISTERED USER
+            TOTAL REGISTERED SELLER
             <span className="text-blue-600">
               <GroupIcon />
             </span>
           </label>
           <h1 className="text-3xl flex flex-col gap-3">
-            <CountUp end={users.length} duration={2} />
+            <CountUp end={sellers.length} duration={2} />
             <span className="text-green-500 text-sm flex items-baseline gap-2">
               <QueryStatsIcon />
             </span>
@@ -106,66 +94,56 @@ function Users() {
         </div>
       </div>
 
-      <div
-        id="user_manage"
-        className="border p-1 rounded-lg flex flex-col overflow-y-auto"
-      >
+      <div id="viewing" className="border">
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg">
           <span
-              className={`p-2 px-4 rounded-lg font-semibold text-blue-700 outline cursor-pointer`}
-            >
-              {showData == "allUser" ? users.length : blockUser.length}
-            </span>
+            className={`p-2 px-4 rounded-lg font-semibold text-blue-700 outline cursor-pointer`}
+          >
+            {showData == "allSeller" ? sellers.length : blockSellers.length}
+          </span>
           <div className="flex gap-2">
             <span
-              className={`p-2 rounded-lg font-semibold text-blue-700 outline cursor-pointer ${showData == "allUser" ? "bg-blue-300" : "blur-[0.4px]"}`}
-              onClick={() => setShowData("allUser")}
+              className={`p-2 rounded-lg font-semibold text-blue-700 outline cursor-pointer  ${showData == "allSeller" ? "bg-blue-300" : "blur-[0.4px]"}`}
+              onClick={() => setShowData("allSeller")}
             >
-              All Users
+              All Sellers
             </span>
             <span
-              className={`p-2 rounded-lg text-blue-700 font-semibold outline cursor-pointer ${showData == "blockUser" ? "bg-blue-300" : "blur-[0.4px]"}`}
-              onClick={() => setShowData("blockUser")}
+              className={`p-2 rounded-lg text-blue-700 font-semibold outline cursor-pointer  ${showData == "blockSeller" ? "bg-blue-300" : "blur-[0.4px]"}`}
+              onClick={() => setShowData("blockSeller")}
             >
-              {blockUser.length > 0 && (
+              {blockSellers.length > 0 && (
                 <span className="absolute -top-2 -left-2 border rounded-full bg-red-700 text-white flex items-center justify-center text-sm min-w-6 min-h-6">
-                  {blockUser.length}
+                  {blockSellers.length}
                 </span>
               )}
-              Block Users
+              Block Sellers
             </span>
           </div>
         </nav>
         <div className="flex justify-around py-2 px-2 border-b border-gray-400 ">
-          <span className="w-[25%] font-semibold text-xl tracking-[2px]">
-            NAME
-          </span>
-          <span className="w-[20%] font-semibold text-xl tracking-[2px]">
-            CATEGORY
+          <span className="w-[40%] font-semibold text-xl tracking-[2px]">
+            STORE NAME
           </span>
           <span className="w-[20%] font-semibold text-xl tracking-[2px]">
             STAUS
           </span>
-          <span className="w-[35%] text-center font-semibold text-xl tracking-[2px]">
+          <span className="w-[40%] text-center font-semibold text-xl tracking-[2px]">
             ACTIONS
           </span>
         </div>
 
-        <div className="my-2 flex flex-col overflow-auto">
-          {(() => {
-            switch (showData) {
-              case "allUser":
-                return <AllUsers />;
-              case "blockUser":
-                return <BlockUsers />;
-              default:
-                return "INVALID SELECTION";
-            }
-          })()}
-        </div>
+        {(() => {
+          switch (showData) {
+            case "allSeller":
+              return <AllSeller />;
+            case "blockSeller":
+              return "Block Seller";
+          }
+        })()}
       </div>
     </div>
   );
 }
 
-export default Users;
+export default Seller;

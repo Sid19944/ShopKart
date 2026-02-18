@@ -44,6 +44,8 @@ const userSlice = createSlice({
     // clear Error And Message
     clearAll(state, action) {
       state.error = null;
+    },
+    clearMessag(state, action) {
       state.message = null;
     },
   },

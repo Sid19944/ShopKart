@@ -5,10 +5,11 @@ import GroupIcon from "@mui/icons-material/Group";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import { adminUrl } from "../../Api.jsx";
 import { useSelector } from "react-redux";
 import Users from "../users/Users.jsx";
+import Seller from "../sellers/Seller.jsx";
 
 function Dashboard() {
   const { user, error, message } = useSelector((state) => state.user);
@@ -94,7 +95,7 @@ function Dashboard() {
               case "users":
                 return <Users />;
               case "sellers":
-                return "sellers";
+                return <Seller />;
               case "products":
                 return "products";
               case "orders":
