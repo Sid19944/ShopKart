@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 createRoot(document.getElementById("root")).render(
-  <div className="min-h-screen min-w-screen bg-black text-white">
+  <div className="min-h-screen min-w-screen bg-black text-white overflow-hidden font-serif">
     <Toaster
       position="bottom-left"
       reverseOrder={false}

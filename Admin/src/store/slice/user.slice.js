@@ -49,16 +49,19 @@ const userSlice = createSlice({
   },
 });
 
-export const getUser = ()=>async(dispatch)=>{
-  dispatch(userSlice.actions.getUserRequest())
+export const getUser = () => async (dispatch) => {
+  dispatch(userSlice.actions.getUserRequest());
   try {
-    const {data} = await authUrl.get("/get-curr-user")
-    dispatch(userSlice.actions.getUserSuccess(data.user))
-    dispatch(userSlice.actions.clearAll())
+    const { data } = await authUrl.get("/get-curr-user");
+    dispatch(userSlice.actions.getUserSuccess(data.user));
+    dispatch(userSlice.actions.clearAll());
   } catch (error) {
-    dispatch(userSlice.actions.getUserFailed(error.response.data.message))
+    dispatch(
+      userSlice.actions.getUserFailed(
+        error.response.data.message || error.message,
+      ),
+    );
   }
-
-}
+};
 
 export default userSlice.reducer;

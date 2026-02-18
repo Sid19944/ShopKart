@@ -7,10 +7,11 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { adminUrl } from "../../Api.jsx";
 import { useSelector } from "react-redux";
+import Users from "../users/Users.jsx";
 
 function Dashboard() {
+  const { user, error, message } = useSelector((state) => state.user);
   const [showPage, setShowPage] = useState("overview");
-  const {user,error,message} = useSelector(state=>state.user)
 
   return (
     <div className="h-screen p-1 font-serif flex gap-2">
@@ -62,7 +63,7 @@ function Dashboard() {
         </div>
       </nav>
 
-      <div id="viewing" className="w-full p-1">
+      <div id="viewing" className="w-full p-1 flex flex-col">
         <nav
           id="top-nav"
           className="border-b p-1 flex items-center gap-2 justify-end"
@@ -71,13 +72,31 @@ function Dashboard() {
             {user.name}
             <span className="text-[10px] text-gray-400">Plateform Admin</span>
           </h1>
-          <img src={user.avatar} alt="avatar" className="h-10 rounded-full outline" />
+          <img
+            src={user.avatar}
+            alt="avatar"
+            className="h-10 rounded-full outline"
+          />
         </nav>
 
-        <div id="data">
-          
+        <div id="data" className="overflow-y-auto">
+          {(() => {
+            switch (showPage) {
+              case "overview":
+                return "overview";
+              case "users":
+                return <Users />;
+              case "sellers":
+                return "sellers";
+              case "products":
+                return "products";
+              case "orders":
+                return "orders";
+              default :
+              return "Invalid Page"
+            }
+          })()}
         </div>
-
       </div>
     </div>
   );
