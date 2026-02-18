@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
+import toast from "react-hot-toast";
 
 import GroupIcon from "@mui/icons-material/Group";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
@@ -9,7 +10,9 @@ import AllSeller from "./subComponents/AllSeller";
 
 function Seller() {
   const dispatch = useDispatch();
-  const { sellers } = useSelector((state) => state.sellers);
+  const { sellers, sellerError, sellerMessage } = useSelector(
+    (state) => state.sellers,
+  );
   const [showData, setShowData] = useState("allSeller");
 
   const blockSellers = sellers.filter((seller) => seller.isApproved != true);
@@ -33,8 +36,14 @@ function Seller() {
   );
 
   useEffect(() => {
+    if (sellerError) {
+      toast.error(sellerError);
+    }
+    if (sellerMessage) {
+      toast.success(sellerMessage);
+    }
     dispatch(getSellers());
-  }, []);
+  }, [sellerError, sellerMessage]);
   return (
     <div className="p-1 font-mono h-full flex flex-col">
       <div id="page info">
@@ -94,7 +103,7 @@ function Seller() {
         </div>
       </div>
 
-      <div id="viewing" className="border">
+      <div id="viewing" className="border rounded-lg p-1">
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg">
           <span
             className={`p-2 px-4 rounded-lg font-semibold text-blue-700 outline cursor-pointer`}

@@ -32,10 +32,12 @@ function ViewUser({ remove }) {
           </div>
         </div>
       </div>
-      <div className="flex w-full gap-2">
-        <label>EMAIL ID :</label>
-        <h1>{user.email}</h1>
-      </div>
+      {user.email && (
+        <div className="flex w-full gap-2">
+          <label>EMAIL ID :</label>
+          <h1>{user.email}</h1>
+        </div>
+      )}
     </div>
   );
 }

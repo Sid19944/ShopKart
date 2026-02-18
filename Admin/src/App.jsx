@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./store/slice/user.slice.js";
 import toast from "react-hot-toast"
 import { getAllUser } from "./store/slice/users.slice.js";
+import { getSellers } from "./store/slice/seller.sclic.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,6 +19,10 @@ function App() {
     dispatch(getUser());
   }, [dispatch, isAuthenticated,error]);
 
+  useEffect(()=>{
+    dispatch(getAllUser())
+    dispatch(getSellers())
+  },[])
 
   return (
     <>
