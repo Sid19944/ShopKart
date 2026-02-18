@@ -11,7 +11,9 @@ import BlockUsers from "./subComponents/BlockUsers";
 
 function Users() {
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.users);
+  const { users, loading, error, message } = useSelector(
+    (state) => state.users,
+  );
   const [showData, setShowData] = useState("allUser");
 
   const today = new Date().setHours(0, 0, 0, 0);
@@ -34,7 +36,7 @@ function Users() {
 
   useEffect(() => {
     dispatch(getAllUser());
-  }, []);
+  }, [error, message]);
 
   return (
     <div className="p-1 font-mono h-full flex flex-col">
@@ -117,13 +119,13 @@ function Users() {
           <span className="w-[25%] font-semibold text-xl tracking-[2px]">
             NAME
           </span>
-          <span className="w-[25%] font-semibold text-xl tracking-[2px]">
+          <span className="w-[20%] font-semibold text-xl tracking-[2px]">
             CATEGORY
           </span>
-          <span className="w-[25%] font-semibold text-xl tracking-[2px]">
+          <span className="w-[20%] font-semibold text-xl tracking-[2px]">
             STAUS
           </span>
-          <span className="w-[25%] text-center font-semibold text-xl tracking-[2px]">
+          <span className="w-[35%] text-center font-semibold text-xl tracking-[2px]">
             ACTIONS
           </span>
         </div>

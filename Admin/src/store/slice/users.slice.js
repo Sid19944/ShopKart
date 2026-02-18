@@ -24,8 +24,24 @@ const usersSlice = createSlice({
       state.error = action.payload;
     },
 
-    clearAll(state, action) {
+    // Update User Status
+    updateStatusRequest(state, action) {
+      state.loading = true;
+    },
+    updateStatusSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    updateStatusFailer(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // Clear
+    clearAllError(state, action) {
       state.error = null;
+    },
+    clearMessag(state, action) {
       state.message = null;
     },
   },
@@ -37,10 +53,54 @@ export const getAllUser = () => async (dispatch) => {
   try {
     const { data } = await adminUrl("/user/get-all");
     dispatch(usersSlice.actions.getUsersSuccess(data.users));
-    dispatch(usersSlice.actions.clearAll());
+    dispatch(usersSlice.actions.clearAllError());
   } catch (error) {
-    dispatch(usersSlice.actions.getUsersFailed(error.response.data.message || error.message));
+    dispatch(usersSlice.actions.clearMessag());
+    dispatch(
+      usersSlice.actions.getUsersFailed(
+        error.response.data.message || error.message,
+      ),
+    );
   }
+};
+
+export const approveUser = (user_id) => async (dispatch) => {
+  dispatch(usersSlice.actions.updateStatusRequest());
+  try {
+    const { data } = await adminUrl.put(`/user/approve/${user_id}`);
+    dispatch(usersSlice.actions.updateStatusSuccess(data.message));
+    dispatch(usersSlice.actions.clearAllError());
+  } catch (error) {
+    dispatch(usersSlice.actions.clearMessag());
+    dispatch(
+      usersSlice.actions.updateStatusFailer(
+        error.response.data.message || error.message,
+      ),
+    );
+  }
+};
+
+export const blockUser = (user_id) => async (dispatch) => {
+  dispatch(usersSlice.actions.updateStatusRequest());
+  try {
+    const { data } = await adminUrl.put(`/user/block/${user_id}`);
+    dispatch(usersSlice.actions.updateStatusSuccess(data.message));
+    dispatch(usersSlice.actions.clearAllError());
+  } catch (error) {
+    dispatch(usersSlice.actions.clearMessag());
+    dispatch(
+      usersSlice.actions.updateStatusFailer(
+        error.response.data.message || error.message,
+      ),
+    );
+  }
+};
+
+export const clearAllError = () => async (dispatch) => {
+  dispatch(usersSlice.actions.clearAllError());
+};
+export const clearMessag = () => (dispatch) => {
+  dispatch(usersSlice.actions.clearMessag());
 };
 
 export default usersSlice.reducer;
