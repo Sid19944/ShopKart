@@ -1,13 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  approveUser,
+  blockUser,
+  setSingleUser,
+} from "../../../store/slice/users.slice";
+import ViewUser from "./ViewUser";
 
 function BlockUsers() {
   const { users } = useSelector((state) => state.users);
   const blockUser = users.filter((user) => user.isApproved == false);
+
+  const dispatch = useDispatch();
+  const [showUser, setShowUser] = useState(false);
+
+  const handleUserApprove = (user_id) => {
+    dispatch(approveUser(user_id));
+  };
+
+  const handleUserBlock = (user_id) => {
+    dispatch(blockUser(user_id));
+  };
+
+  const handleViewUser = (user_id) => {
+    setShowUser(!showUser);
+    const user = users.filter((user) => user._id == user_id);
+    dispatch(setSingleUser(user[0]));
+  };
 
   return (
     <>
@@ -15,7 +39,7 @@ function BlockUsers() {
         blockUser.map((user, idx) => (
           <li
             key={idx}
-            className="flex justify-around border-gray-700 border-b p-2 gap-2"
+            className={`flex justify-around border-gray-700 border-b p-2 gap-2 ${showUser && "blur-[2px]"}`}
           >
             <span className="text-xl w-[25%] border-r">{user.name}</span>
             <span
@@ -55,7 +79,10 @@ function BlockUsers() {
               >
                 Block
               </button>
-              <button className="text-green-500 cursor-pointer">
+              <button
+                className="text-green-500 cursor-pointer border px-2 rounded-lg flex items-center"
+                onClick={() => handleViewUser(user._id)}
+              >
                 <RemoveRedEyeIcon />
               </button>
             </span>
@@ -65,6 +92,11 @@ function BlockUsers() {
         <h1 className="text-3xl text-center text-blue-600 font-extrabold tracking-[2px] ">
           No User Blocked yet.
         </h1>
+      )}
+      {showUser && (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <ViewUser remove={() => setShowUser(!showUser)} />
+        </div>
       )}
     </>
   );

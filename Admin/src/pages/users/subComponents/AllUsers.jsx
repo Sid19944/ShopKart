@@ -23,7 +23,6 @@ function AllUsers() {
   const handleViewUser = (user_id) => {
     setShowUser(!showUser);
     const user = users.filter((user)=>user._id == user_id)
-    console.log(user)
     dispatch(setSingleUser(user[0]))
   };
   return (
