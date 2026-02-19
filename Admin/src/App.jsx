@@ -21,7 +21,7 @@ function App() {
 
   useEffect(()=>{
     dispatch(getAllUser())
-    dispatch(getSellers())
+    // dispatch(getSellers())
   },[])
 
   return (

@@ -10,6 +10,7 @@ import { adminUrl } from "../../Api.jsx";
 import { useSelector } from "react-redux";
 import Users from "../users/Users.jsx";
 import Seller from "../sellers/Seller.jsx";
+import Products from "../products/Products.jsx";
 
 function Dashboard() {
   const { user, error, message } = useSelector((state) => state.user);
@@ -97,7 +98,7 @@ function Dashboard() {
               case "sellers":
                 return <Seller />;
               case "products":
-                return "products";
+                return <Products/>;
               case "orders":
                 return "orders";
               default:

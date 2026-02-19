@@ -50,7 +50,7 @@ function Seller() {
       <div id="page info">
         <h1 className="text-3xl tracking-[2px]">SELLER MANAGEMENT</h1>
         <p className="text-xs text-gray-400">
-          Oversee, Verify, and manage sellers across the ShopCart
+          Oversee, Verify, and Manage sellers across the ShopCart
         </p>
       </div>
       <div id="top" className="grid grid-cols-3 gap-4 my-3">
