@@ -7,6 +7,7 @@ import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import { useDispatch, useSelector } from "react-redux";
 import { getSellers } from "../../store/slice/seller.sclic";
 import AllSeller from "./subComponents/AllSeller";
+import BlockSeller from "./subComponents/BlockSeller";
 
 function Seller() {
   const dispatch = useDispatch();
@@ -147,7 +148,7 @@ function Seller() {
             case "allSeller":
               return <AllSeller />;
             case "blockSeller":
-              return "Block Seller";
+              return <BlockSeller/>;
           }
         })()}
       </div>
