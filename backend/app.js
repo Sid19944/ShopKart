@@ -80,6 +80,9 @@ app.use("/order-item", orderItemRouter);
 import ordersRouter from "./src/routes/orders.route.js";
 app.use("/orders", ordersRouter);
 
+import reviewRouter from "./src/routes/review.route.js"
+app.use("/review", reviewRouter)
+
 // middleware for error
 import { errorMiddleware } from "./src/utils/Error.Handler.js";
 app.use(errorMiddleware);

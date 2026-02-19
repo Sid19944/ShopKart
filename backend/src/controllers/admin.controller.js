@@ -13,7 +13,20 @@ const getAllUser = AsyncHandler(async (req, res, next) => {
   });
 });
 
-const approveUser = AsyncHandler(async(req,res,next)=>{
+// const getSingleUser = AsyncHandler(async (req, res, next) => {
+//   const user_id = req.params.user_id;
+//   const user = await User.findById(user_id);
+//   if (!user) {
+//     return next(new ErrorHandler("Invalid User ID", 400));
+//   }
+
+//   return res.status(200).json({
+//     success: true,
+//     user,
+//   });
+// });
+
+const approveUser = AsyncHandler(async (req, res, next) => {
   const user_id = req.params.user_id;
   const user = await User.findByIdAndUpdate(user_id, {
     $set: {
@@ -28,15 +41,32 @@ const approveUser = AsyncHandler(async(req,res,next)=>{
     success: true,
     message: "User Approved",
   });
-})
+});
 
-const blockUser = AsyncHandler(async(req,res,next)=>{
+const blockUser = AsyncHandler(async (req, res, next) => {
   const user_id = req.params.user_id;
   const user = await User.findByIdAndUpdate(user_id, {
     $set: {
       isApproved: false,
     },
   });
+
+  if (user.role == "admin") {
+    const user = await User.findByIdAndUpdate(user_id, {
+      $set: {
+        isApproved: true,
+      },
+    });
+    return next(new ErrorHandler("You can't block admin", 500));
+  }
+  await Seller.findOneAndUpdate(
+    { seller_id: user_id },
+    {
+      $set: {
+        isApproved: false,
+      },
+    },
+  );
 
   if (!user) {
     return next(new ErrorHandler("Try Again", 500));
@@ -45,7 +75,7 @@ const blockUser = AsyncHandler(async(req,res,next)=>{
     success: true,
     message: "User Blocked",
   });
-})
+});
 
 const getAllSeller = AsyncHandler(async (req, res, next) => {
   const sellers = await Seller.find();
@@ -153,12 +183,14 @@ const blockSeller = AsyncHandler(async (req, res, next) => {
   }
   return res.status(200).json({
     success: true,
-    message: "Seller Bock to Sell",
+    message: "Seller Block to Sell",
   });
 });
 
 const blockProduct = AsyncHandler(async (req, res, next) => {
   const product_id = req.params.product_id;
+  console.log(product_id)
+  console.time("S")
   const product = await Product.findByIdAndUpdate(
     product_id,
     {
@@ -168,6 +200,7 @@ const blockProduct = AsyncHandler(async (req, res, next) => {
     },
     { new: true },
   );
+  console.timeEnd("S")
   if (!product) {
     return next(new ErrorHandler("Invalid Product ID", 400));
   }
@@ -215,6 +248,7 @@ const orderDetails = AsyncHandler(async (req, res, next) => {
 export {
   getSellerRequest,
   getAllUser,
+  // getSingleUser,
   approveUser,
   blockUser,
   getAllSeller,

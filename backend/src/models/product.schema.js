@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { Review } from "./review.schema.js";
 
 const productSchema = new Schema(
   {
@@ -38,6 +39,12 @@ const productSchema = new Schema(
       ref: "Seller",
       required: true,
     },
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
     isApproved: {
       type: Boolean,
       default: true,
@@ -45,5 +52,10 @@ const productSchema = new Schema(
   },
   { timestamps: true },
 );
+
+productSchema.post("findOneAndDelete", async (product) => {
+  await Review.deleteMany({ product_id: product._id });
+  console.log("all review deleted for thsis product");
+});
 
 export const Product = mongoose.model("Product", productSchema);

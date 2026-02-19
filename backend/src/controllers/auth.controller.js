@@ -99,9 +99,7 @@ const githubLogin = AsyncHandler(async (req, res, next) => {
         secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
-      .json({
-        message: "User register successfully",
-      });
+      .redirect(process.env.FRONTEND_URL);
   }
 
   const { accessToken, refreshToken } = await genAccAndRefToken(userExist);
@@ -121,9 +119,7 @@ const githubLogin = AsyncHandler(async (req, res, next) => {
       secure: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
-    .json({
-      message: "User Login successfully",
-    });
+    .redirect(process.env.FRONTEND_URL);
 });
 
 const getCurrUser = AsyncHandler(async (req, res, next) => {

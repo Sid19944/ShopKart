@@ -11,17 +11,20 @@ import {
   getAllSeller,
   getAllUser,
   getSellerRequest,
+  // getSingleUser,
   orderDetails,
 } from "../controllers/admin.controller.js";
 import { verifyAdmin } from "../middleware/verifyAdmin.js";
+import { deleteProduct } from "../controllers/products.controller.js";
 const router = Router();
 
 router.route("/user/get-all").get(verifyJwt, verifyAdmin, getAllUser);
 router.route("/seller/get-all").get(verifyJwt, verifyAdmin, getAllSeller);
 
 //user
-router.route("/user/approve/:user_id").put(verifyJwt,verifyAdmin, approveUser)
-router.route("/user/block/:user_id").put(verifyJwt, verifyAdmin, blockUser)
+// router.route("/user/get-one").get(verifyJwt,verifyAdmin,getSingleUser)
+router.route("/user/approve/:user_id").put(verifyJwt, verifyAdmin, approveUser);
+router.route("/user/block/:user_id").put(verifyJwt, verifyAdmin, blockUser);
 
 // seller
 router.route("/seller/requests").get(verifyJwt, verifyAdmin, getSellerRequest);
@@ -40,6 +43,9 @@ router
 router
   .route("/product/approve/:product_id")
   .put(verifyJwt, verifyAdmin, approveProduct);
+router
+  .route("/product/delete/:product_id")
+  .delete(verifyJwt, verifyAdmin, deleteProduct);
 
 // order Details
 router.route("/order-details").get(verifyJwt, verifyAdmin, orderDetails);

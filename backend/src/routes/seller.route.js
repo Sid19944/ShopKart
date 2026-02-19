@@ -6,6 +6,7 @@ import {
   deleteProductImage,
   getSingleProduct,
   getProductsByCategory,
+  deleteProduct,
 } from "../controllers/products.controller.js";
 import { verifySeller } from "../middleware/verifySeller.js";
 import { verifyJwt } from "../middleware/verifyJWT.js";
@@ -30,6 +31,7 @@ router
 
 router.route("/get/product/:prodid").get(verifyJwt,verifySeller, getSingleProduct)
 router.route("/get/product-category/:category").get(verifyJwt, verifySeller,getProductsByCategory)
+router.route("/delete/:product_id").delete(verifyJwt,verifySeller, deleteProduct)
 
 
 // order

@@ -1,4 +1,5 @@
 import { Product } from "../models/product.schema.js";
+import { Seller } from "../models/seller.schema.js";
 import { AsyncHandler } from "../utils/Async.Handler.js";
 import ErrorHandler from "../utils/Error.Handler.js";
 import { v2 as cloudinary } from "cloudinary";
@@ -6,7 +7,12 @@ import httpStatus from "http-status-codes";
 
 const addNewProduct = AsyncHandler(async (req, res, next) => {
   const { name, description, price, stock, category } = req.body;
-  const seller = req.user._id;
+  const user_id = req.user._id;
+
+  const seller = await Seller.find({ seller_id: user_id });
+  if (!seller) {
+    return next(new ErrorHandler("Invalid Seller", 400));
+  }
 
   if (!name || !description || !price || !stock || !category) {
     return next(new ErrorHandler("Please provide all details", 400));
@@ -45,7 +51,7 @@ const addNewProduct = AsyncHandler(async (req, res, next) => {
     price,
     stock,
     category,
-    seller,
+    seller: seller._id,
   });
 
   if (!product) {
@@ -91,9 +97,9 @@ const addMoreProductImage = AsyncHandler(async (req, res, next) => {
   }
 
   // check the current user is the seller of the product
-  const checkSeller = await Product.findById(prod_id)
-  if(checkSeller.seller != req.user._id && req.user.role != "admin"){
-    return next(new ErrorHandler("Unauthorized Access",400))
+  const checkSeller = await Product.findById(prod_id);
+  if (checkSeller.seller != req.user._id && req.user.role != "admin") {
+    return next(new ErrorHandler("Unauthorized Access", 400));
   }
 
   const product = await Product.findByIdAndUpdate(
@@ -134,13 +140,13 @@ const updateProduct = AsyncHandler(async (req, res, next) => {
     price: req?.body?.price,
     category: req?.body?.category,
     discount: req?.body?.discount,
-    stock : req?.body?.stock,
+    stock: req?.body?.stock,
   };
 
   // check the current user is the seller of the product
-  const checkSeller = await Product.findById(prod_id)
-  if(checkSeller.seller != req.user._id && req.user.role != "admin"){
-    return next(new ErrorHandler("This is not your Product",400))
+  const checkSeller = await Product.findById(prod_id);
+  if (checkSeller.seller != req.user._id && req.user.role != "admin") {
+    return next(new ErrorHandler("This is not your Product", 400));
   }
 
   const product = await Product.findByIdAndUpdate(prod_id, newData, {
@@ -166,9 +172,9 @@ const deleteProductImage = AsyncHandler(async (req, res, next) => {
   const image = findProduct.image.filter((img) => img._id == img_id);
 
   // check the current user is the seller of the product
-  const checkSeller = await Product.findById(prod_id)
-  if(checkSeller.seller != req.user._id && req.user.role != "admin"){
-    return next(new ErrorHandler("Unauthorized Access",400))
+  const checkSeller = await Product.findById(prod_id);
+  if (checkSeller.seller != req.user._id && req.user.role != "admin") {
+    return next(new ErrorHandler("Unauthorized Access", 400));
   }
 
   const product = await Product.findByIdAndUpdate(
@@ -190,20 +196,33 @@ const deleteProductImage = AsyncHandler(async (req, res, next) => {
     .json({ success: true, message: "image deleted", product });
 });
 
+const deleteProduct = AsyncHandler(async (req, res, next) => {
+  const product_id = req.params.product_id;
+  const product = await Product.findByIdAndDelete(product_id);
+  if (!product) {
+    return next(new ErrorHandler("Invalid Product ID", 400));
+  }
+  return res.status(200).json({
+    success: true,
+    message: "Product Deleted",
+  });
+});
+
 const getAllProducts = AsyncHandler(async (req, res, next) => {
   const page = req.params.pageno;
   if (page < 1) {
     return next(new ErrorHandler("Provide valid page no.", 400));
   }
   let products = await Product.find()
+    .populate("reviews")
     .limit(10)
     .skip((page - 1) * 10);
 
-  if(!products.length){
+  if (!products.length) {
     return next(new ErrorHandler("Provide valid page no.", 400));
   }
 
-  products = products.filter((product)=>product.isApproved == true)
+  products = products.filter((product) => product.isApproved == true);
   return res.status(200).json({
     success: true,
     products,
@@ -212,7 +231,7 @@ const getAllProducts = AsyncHandler(async (req, res, next) => {
 
 const getSingleProduct = AsyncHandler(async (req, res, next) => {
   const prod_id = req.params.prodid;
-  const product = await Product.findById(prod_id);
+  const product = await Product.findById(prod_id).populate("reviews");
   if (!product) {
     return next(new ErrorHandler("Product is not available", 400));
   }
@@ -224,7 +243,7 @@ const getSingleProduct = AsyncHandler(async (req, res, next) => {
 
 const getProductsByCategory = AsyncHandler(async (req, res, next) => {
   const category = req.params.category;
-  const products = await Product.find({ category });
+  const products = await Product.find({ category }).populate("reviews");
   if (!products.length) {
     return res.status(200).json({
       success: true,
@@ -243,6 +262,7 @@ export {
   addNewProduct,
   addMoreProductImage,
   updateProduct,
+  deleteProduct,
   deleteProductImage,
   getSingleProduct,
   getProductsByCategory,
