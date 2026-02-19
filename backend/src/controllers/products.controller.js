@@ -9,7 +9,7 @@ const addNewProduct = AsyncHandler(async (req, res, next) => {
   const { name, description, price, stock, category } = req.body;
   const user_id = req.user._id;
 
-  const seller = await Seller.find({ seller_id: user_id });
+  const seller = await Seller.findOne({ seller_id: user_id });
   if (!seller) {
     return next(new ErrorHandler("Invalid Seller", 400));
   }
@@ -51,7 +51,7 @@ const addNewProduct = AsyncHandler(async (req, res, next) => {
     price,
     stock,
     category,
-    seller: seller[0]._id,
+    seller: seller._id,
   });
 
   if (!product) {
@@ -59,6 +59,16 @@ const addNewProduct = AsyncHandler(async (req, res, next) => {
       await cloudinary.uploader.destroy(img.public_id);
     }
   }
+
+  const a = await Seller.findOneAndUpdate(
+    { seller_id: req.user._id },
+    {
+      $push: {
+        products: product._id,
+      },
+    },
+    { new: true },
+  );
 
   return res.status(200).json({
     success: true,
@@ -198,10 +208,16 @@ const deleteProductImage = AsyncHandler(async (req, res, next) => {
 
 const deleteProduct = AsyncHandler(async (req, res, next) => {
   const product_id = req.params.product_id;
-  const product = await Product.findByIdAndDelete(product_id);
+
+  const product = await Product.findById(product_id);
   if (!product) {
     return next(new ErrorHandler("Invalid Product ID", 400));
   }
+  product.image.map((img) => {
+    cloudinary.uploader.destroy(img.public_id);
+  });
+
+  await Product.deleteOne()
   return res.status(200).json({
     success: true,
     message: "Product Deleted",

@@ -21,6 +21,10 @@ const addNewReview = AsyncHandler(async (req, res, next) => {
   if (!rating) {
     return next(new ErrorHandler("Please provide rating", 400));
   }
+  const alreadyHaveReview = await Review.find({user_id})
+  if(alreadyHaveReview[0]?.product_id == product_id){
+    return next(new ErrorHandler("You already give review on this product",400))
+  }
 
   const review = await Review.create({
     user_id: user_id,

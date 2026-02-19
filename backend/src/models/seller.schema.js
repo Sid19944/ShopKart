@@ -16,6 +16,12 @@ const sellerSchema = new Schema(
       ref: "Adddress",
       required: true,
     },
+    products: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
     isApproved: {
       type: Boolean,
       default: false,

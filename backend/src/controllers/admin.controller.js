@@ -92,7 +92,7 @@ const getAllSeller = AsyncHandler(async (req, res, next) => {
 });
 
 const getAllProducts = AsyncHandler(async (req, res, next) => {
-  const products = await Product.find().populate("reviews");
+  const products = await Product.find().populate("reviews").populate("seller")
   if (!products.length) {
     return res.status(200).json({
       success: true,
@@ -189,8 +189,8 @@ const blockSeller = AsyncHandler(async (req, res, next) => {
 
 const blockProduct = AsyncHandler(async (req, res, next) => {
   const product_id = req.params.product_id;
-  console.log(product_id)
-  console.time("S")
+  console.log(product_id);
+  console.time("S");
   const product = await Product.findByIdAndUpdate(
     product_id,
     {
@@ -200,7 +200,7 @@ const blockProduct = AsyncHandler(async (req, res, next) => {
     },
     { new: true },
   );
-  console.timeEnd("S")
+  console.timeEnd("S");
   if (!product) {
     return next(new ErrorHandler("Invalid Product ID", 400));
   }
