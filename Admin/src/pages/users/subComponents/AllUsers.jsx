@@ -4,26 +4,35 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 
 import { useDispatch, useSelector } from "react-redux";
-import { approveUser, blockUser, setSingleUser } from "../../../store/slice/users.slice";
+import {
+  approveUser,
+  blockUser,
+  setSingleUser,
+} from "../../../store/slice/users.slice";
 import ViewUser from "./ViewUser";
 
 function AllUsers() {
-  const { users } = useSelector((state) => state.users);
+  const { users, loading } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const [showUser, setShowUser] = useState(false);
+  const [showLoad, setShowLoad] = useState(null);
 
-  const handleUserApprove = (user_id) => {
-    dispatch(approveUser(user_id));
+  const handleUserApprove = async (user_id) => {
+    setShowLoad(user_id);
+    await dispatch(approveUser(user_id));
+    setShowLoad(null);
   };
 
-  const handleUserBlock = (user_id) => {
-    dispatch(blockUser(user_id));
+  const handleUserBlock = async(user_id) => {
+    setShowLoad(user_id);
+    await dispatch(blockUser(user_id));
+    setShowLoad(null);
   };
 
   const handleViewUser = (user_id) => {
     setShowUser(!showUser);
-    const user = users.filter((user)=>user._id == user_id)
-    dispatch(setSingleUser(user[0]))
+    const user = users.filter((user) => user._id == user_id);
+    dispatch(setSingleUser(user[0]));
   };
   return (
     <>
@@ -58,18 +67,23 @@ function AllUsers() {
             )}
           </span>
           <span className="text-xl flex gap-2 w-[35%] justify-center">
-            <button
-              className={`outline px-3 rounded-lg cursor-pointer ${user.isApproved ? "bg-blue-600" : "text-blue-600"}`}
-              onClick={() => handleUserApprove(user._id)}
-            >
-              Approved
-            </button>
-            <button
-              className={`outline px-3 rounded-lg cursor-pointer ${!user.isApproved ? "bg-red-600" : "text-red-600"}`}
-              onClick={() => handleUserBlock(user._id)}
-            >
-              Block
-            </button>
+            {!user.isApproved ? (
+              <button
+                disabled={loading}
+                className={`outline px-3 rounded-lg  text-blue-600 active:bg-blue-600 active:text-white ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                onClick={() => handleUserApprove(user._id)}
+              >
+                {showLoad == user._id ? <div className="flex w-20 justify-center"><span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span></div> : "Approved"}
+              </button>
+            ) : (
+              <button
+                className={`outline px-3 rounded-lg  active:bg-red-600 text-red-600 active:text-white ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                onClick={() => handleUserBlock(user._id)}
+              >
+               {showLoad == user._id ? <div className="flex w-20 justify-center"><span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span></div> : "Block"}
+              </button>
+            )}
+
             <button
               className="text-green-500 cursor-pointer border px-2 rounded-lg flex items-center"
               onClick={() => handleViewUser(user._id)}
@@ -82,9 +96,10 @@ function AllUsers() {
 
       {showUser && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <ViewUser remove={()=>setShowUser(!showUser)}/>
+          <ViewUser remove={() => setShowUser(!showUser)} />
         </div>
       )}
+      
     </>
   );
 }

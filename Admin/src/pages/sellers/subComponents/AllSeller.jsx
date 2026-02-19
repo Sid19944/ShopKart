@@ -6,26 +6,34 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { useDispatch, useSelector } from "react-redux";
 
 import ViewSellerInfo from "./ViewSellerInfo";
-import { approveSeller, blockSeller, setSingleSeller } from "../../../store/slice/seller.sclic";
-
+import {
+  approveSeller,
+  blockSeller,
+  setSingleSeller,
+} from "../../../store/slice/seller.sclic";
 
 function AllSeller() {
-  const { sellers } = useSelector((state) => state.sellers);
+  const { sellers, loading } = useSelector((state) => state.sellers);
   const dispatch = useDispatch();
   const [showSeller, setShowSeller] = useState(false);
+const [showLoad, setShowLoad] = useState(null);
 
-  const handleSellerApprove = (seller_id) => {
-    dispatch(approveSeller(seller_id));
+  const handleSellerApprove = async(seller_id) => {
+    setShowLoad(seller_id);
+    await dispatch(approveSeller(seller_id));
+    setShowLoad(null);
   };
 
-  const handleSellerBlock = (seller_id) => {
-    dispatch(blockSeller(seller_id));
+  const handleSellerBlock = async(seller_id) => {
+    setShowLoad(seller_id);
+    await dispatch(blockSeller(seller_id));
+    setShowLoad(null);
   };
 
   const handleViewSeller = (seller_id) => {
     setShowSeller(!showSeller);
-    const seller = sellers.filter((seller)=>seller._id == seller_id)
-    dispatch(setSingleSeller(seller[0]))
+    const seller = sellers.filter((seller) => seller._id == seller_id);
+    dispatch(setSingleSeller(seller[0]));
   };
   return (
     <>
@@ -55,18 +63,24 @@ function AllSeller() {
             )}
           </span>
           <span className="text-xl flex gap-2 w-[40%] justify-center">
-            <button
-              className={`outline px-3 rounded-lg cursor-pointer active:bg-blue-600 ${seller.isApproved ? "bg-blue-400" : "text-blue-600"}`}
-              onClick={() => handleSellerApprove(seller._id)}
-            >
-              Approved
-            </button>
-            <button
-              className={`outline px-3 rounded-lg cursor-pointer ${!seller.isApproved ? "bg-red-600" : "text-red-600"}`}
-              onClick={() => handleSellerBlock(seller._id)}
-            >
-              Block
-            </button>
+            {!seller.isApproved ? (
+              <button
+                disabled={loading}
+                className={`outline px-3 rounded-lg  text-blue-600 active:bg-blue-600 active:text-white ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                onClick={() => handleSellerApprove(seller._id)}
+              >
+                {showLoad == seller._id ? <div className="flex w-20 justify-center"><span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span></div> : "Approved"}
+              </button>
+            ) : (
+              <button
+                disabled={loading}
+                className={`outline px-3 rounded-lg  active:bg-red-600 text-red-600 active:text-white ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                onClick={() => handleSellerBlock(seller._id)}
+              >
+                {showLoad == seller._id ? <div className="flex w-20 justify-center"><span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span></div> : "Block"}
+              </button>
+            )}
+
             <button
               className="text-green-500 cursor-pointer border px-2 rounded-lg flex items-center"
               onClick={() => handleViewSeller(seller._id)}
@@ -79,7 +93,7 @@ function AllSeller() {
 
       {showSeller && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <ViewSellerInfo remove={()=>setShowSeller(!showSeller)}/>
+          <ViewSellerInfo remove={() => setShowSeller(!showSeller)} />
         </div>
       )}
     </>

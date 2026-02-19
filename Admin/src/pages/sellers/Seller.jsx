@@ -104,7 +104,10 @@ function Seller() {
         </div>
       </div>
 
-      <div id="viewing" className="border rounded-lg p-1">
+      <div
+        id="viewing"
+        className="border rounded-lg p-1 flex flex-col overflow-y-auto"
+      >
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg">
           <span
             className={`p-2 px-4 rounded-lg font-semibold text-blue-700 outline cursor-pointer`}
@@ -143,14 +146,16 @@ function Seller() {
           </span>
         </div>
 
-        {(() => {
-          switch (showData) {
-            case "allSeller":
-              return <AllSeller />;
-            case "blockSeller":
-              return <BlockSeller/>;
-          }
-        })()}
+        <div className="flex flex-col overflow-auto">
+          {(() => {
+            switch (showData) {
+              case "allSeller":
+                return <AllSeller />;
+              case "blockSeller":
+                return <BlockSeller />;
+            }
+          })()}
+        </div>
       </div>
     </div>
   );

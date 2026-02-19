@@ -27,11 +27,6 @@ const usersSlice = createSlice({
     },
 
     // Update User Status
-    updateStatusRequest(state, action) {
-      state.loading = true;
-      state.error = null;
-      state.message = null
-    },
     updateStatusSuccess(state, action) {
       state.loading = false;
       state.message = action.payload;
@@ -74,7 +69,6 @@ export const getAllUser = () => async (dispatch) => {
 };
 
 export const approveUser = (user_id) => async (dispatch) => {
-  dispatch(usersSlice.actions.updateStatusRequest());
   try {
     const { data } = await adminUrl.put(`/user/approve/${user_id}`);
     dispatch(usersSlice.actions.updateStatusSuccess(data.message));
@@ -90,7 +84,6 @@ export const approveUser = (user_id) => async (dispatch) => {
 };
 
 export const blockUser = (user_id) => async (dispatch) => {
-  dispatch(usersSlice.actions.updateStatusRequest());
   try {
     const { data } = await adminUrl.put(`/user/block/${user_id}`);
     dispatch(usersSlice.actions.updateStatusSuccess(data.message));

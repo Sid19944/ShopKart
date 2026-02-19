@@ -112,10 +112,10 @@ function Users() {
       >
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg">
           <span
-              className={`p-2 px-4 rounded-lg font-semibold text-blue-700 outline cursor-pointer`}
-            >
-              {showData == "allUser" ? users.length : blockUser.length}
-            </span>
+            className={`p-2 px-4 rounded-lg font-semibold text-blue-700 outline cursor-pointer`}
+          >
+            {showData == "allUser" ? users.length : blockUser.length}
+          </span>
           <div className="flex gap-2">
             <span
               className={`p-2 rounded-lg font-semibold text-blue-700 outline cursor-pointer ${showData == "allUser" ? "bg-blue-300" : "blur-[0.4px]"}`}
