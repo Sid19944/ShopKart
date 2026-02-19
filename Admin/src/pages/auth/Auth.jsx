@@ -12,7 +12,7 @@ function Auth() {
 
   const handleGithubLogin = async (e) => {
     e.preventDefault();
-    window.location.href = `${url}/auth/google`;
+    window.location.href = `${url}/auth/github`;
     await authUrl.get("/github");
   };
 
