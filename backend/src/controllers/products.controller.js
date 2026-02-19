@@ -51,7 +51,7 @@ const addNewProduct = AsyncHandler(async (req, res, next) => {
     price,
     stock,
     category,
-    seller: seller._id,
+    seller: seller[0]._id,
   });
 
   if (!product) {
@@ -214,7 +214,12 @@ const getAllProducts = AsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Provide valid page no.", 400));
   }
   let products = await Product.find()
-    .populate("reviews")
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "user_id",
+      },
+    })
     .limit(10)
     .skip((page - 1) * 10);
 

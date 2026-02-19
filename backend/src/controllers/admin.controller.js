@@ -92,7 +92,7 @@ const getAllSeller = AsyncHandler(async (req, res, next) => {
 });
 
 const getAllProducts = AsyncHandler(async (req, res, next) => {
-  const products = await Product.find();
+  const products = await Product.find().populate("reviews");
   if (!products.length) {
     return res.status(200).json({
       success: true,
