@@ -15,6 +15,8 @@ import {
 } from "../../store/slice/products.slice";
 import ViewProductInfo from "./subComponect/ViewProductInfo";
 
+import { motion } from "motion/react";
+
 function Products() {
   const dispatch = useDispatch();
   const { products, loading, error, message } = useSelector(
@@ -215,7 +217,11 @@ function Products() {
 
         <div className="flex flex-col overflow-auto">
           {products.map((product, idx) => (
-            <li
+            <motion.li
+              initial={{ x: -400, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              viewport={{ once: false }}
               key={idx}
               className={`flex justify-around border-gray-700 border-b p-1 gap-2 text-md items-center ${showproduct && "blur-[2px]"}`}
             >
@@ -295,7 +301,7 @@ function Products() {
                   <RemoveRedEyeIcon />
                 </button>
               </span>
-            </li>
+            </motion.li>
           ))}
 
           {showproduct && (

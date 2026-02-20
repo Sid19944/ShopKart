@@ -11,20 +11,21 @@ import {
   blockSeller,
   setSingleSeller,
 } from "../../../store/slice/seller.sclic";
+import { motion } from "motion/react";
 
 function AllSeller() {
   const { sellers, loading } = useSelector((state) => state.sellers);
   const dispatch = useDispatch();
   const [showSeller, setShowSeller] = useState(false);
-const [showLoad, setShowLoad] = useState(null);
+  const [showLoad, setShowLoad] = useState(null);
 
-  const handleSellerApprove = async(seller_id) => {
+  const handleSellerApprove = async (seller_id) => {
     setShowLoad(seller_id);
     await dispatch(approveSeller(seller_id));
     setShowLoad(null);
   };
 
-  const handleSellerBlock = async(seller_id) => {
+  const handleSellerBlock = async (seller_id) => {
     setShowLoad(seller_id);
     await dispatch(blockSeller(seller_id));
     setShowLoad(null);
@@ -38,7 +39,11 @@ const [showLoad, setShowLoad] = useState(null);
   return (
     <>
       {sellers.map((seller, idx) => (
-        <li
+        <motion.li
+          initial={{ x: -400, opacity: 0 }}
+          whileInView={{x:0, opacity : 1}}
+          transition={{duration: 0.6, ease : "easeOut"}}
+          viewport={{once : false}}
           key={idx}
           className={`flex justify-around border-gray-700 border-b p-2 gap-2 ${showSeller && "blur-[2px]"}`}
         >
@@ -69,7 +74,13 @@ const [showLoad, setShowLoad] = useState(null);
                 className={`outline px-3 rounded-lg  text-blue-600 active:bg-blue-600 active:text-white ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
                 onClick={() => handleSellerApprove(seller._id)}
               >
-                {showLoad == seller._id ? <div className="flex w-20 justify-center"><span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span></div> : "Approved"}
+                {showLoad == seller._id ? (
+                  <div className="flex w-20 justify-center">
+                    <span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span>
+                  </div>
+                ) : (
+                  "Approved"
+                )}
               </button>
             ) : (
               <button
@@ -77,7 +88,13 @@ const [showLoad, setShowLoad] = useState(null);
                 className={`outline px-3 rounded-lg  active:bg-red-600 text-red-600 active:text-white ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
                 onClick={() => handleSellerBlock(seller._id)}
               >
-                {showLoad == seller._id ? <div className="flex w-20 justify-center"><span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span></div> : "Block"}
+                {showLoad == seller._id ? (
+                  <div className="flex w-20 justify-center">
+                    <span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span>
+                  </div>
+                ) : (
+                  "Block"
+                )}
               </button>
             )}
 
@@ -88,7 +105,7 @@ const [showLoad, setShowLoad] = useState(null);
               <RemoveRedEyeIcon />
             </button>
           </span>
-        </li>
+        </motion.li>
       ))}
 
       {showSeller && (

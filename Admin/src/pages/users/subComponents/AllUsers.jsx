@@ -11,6 +11,8 @@ import {
 } from "../../../store/slice/users.slice";
 import ViewUser from "./ViewUser";
 
+import {motion} from "motion/react"
+
 function AllUsers() {
   const { users, loading } = useSelector((state) => state.users);
   const dispatch = useDispatch();
@@ -23,7 +25,7 @@ function AllUsers() {
     setShowLoad(null);
   };
 
-  const handleUserBlock = async(user_id) => {
+  const handleUserBlock = async (user_id) => {
     setShowLoad(user_id);
     await dispatch(blockUser(user_id));
     setShowLoad(null);
@@ -37,7 +39,11 @@ function AllUsers() {
   return (
     <>
       {users.map((user, idx) => (
-        <li
+        <motion.li
+          initial={{ x: -400, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          viewport={{ once: false }}
           key={idx}
           className={`flex justify-around border-gray-700 border-b p-2 gap-2 ${showUser && "blur-[2px]"}`}
         >
@@ -73,14 +79,26 @@ function AllUsers() {
                 className={`outline px-3 rounded-lg  text-blue-600 active:bg-blue-600 active:text-white ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
                 onClick={() => handleUserApprove(user._id)}
               >
-                {showLoad == user._id ? <div className="flex w-20 justify-center"><span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span></div> : "Approved"}
+                {showLoad == user._id ? (
+                  <div className="flex w-20 justify-center">
+                    <span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span>
+                  </div>
+                ) : (
+                  "Approved"
+                )}
               </button>
             ) : (
               <button
                 className={`outline px-3 rounded-lg  active:bg-red-600 text-red-600 active:text-white ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
                 onClick={() => handleUserBlock(user._id)}
               >
-               {showLoad == user._id ? <div className="flex w-20 justify-center"><span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span></div> : "Block"}
+                {showLoad == user._id ? (
+                  <div className="flex w-20 justify-center">
+                    <span className="border-2 h-5 w-5 flex border-t-black rounded-full animate-spin"></span>
+                  </div>
+                ) : (
+                  "Block"
+                )}
               </button>
             )}
 
@@ -91,7 +109,7 @@ function AllUsers() {
               <RemoveRedEyeIcon />
             </button>
           </span>
-        </li>
+        </motion.li>
       ))}
 
       {showUser && (
@@ -99,7 +117,6 @@ function AllUsers() {
           <ViewUser remove={() => setShowUser(!showUser)} />
         </div>
       )}
-      
     </>
   );
 }

@@ -124,7 +124,7 @@ function Users() {
               All Users
             </span>
             <span
-              className={`p-2 rounded-lg text-blue-700 font-semibold outline cursor-pointer ${showData == "blockUser" ? "bg-blue-300" : "blur-[0.4px]"}`}
+              className={`relative p-2 rounded-lg text-blue-700 font-semibold outline cursor-pointer ${showData == "blockUser" ? "bg-blue-300" : "blur-[0.4px]"}`}
               onClick={() => setShowData("blockUser")}
             >
               {blockUser.length > 0 && (
