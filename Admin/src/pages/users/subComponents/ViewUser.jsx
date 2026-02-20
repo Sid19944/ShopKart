@@ -6,9 +6,12 @@ function ViewUser({ remove }) {
   const { user } = useSelector((state) => state.users);
   return (
     <div className="border bg-gray-900 p-2 rounded-lg flex flex-col gap-2 min-w-100">
-      <div className="flex justify-between text-lg tracking-[2px]">
-        <span className="tracking-[2px] text-blue-700"> USER DETAILS</span>
-        <CloseIcon onClick={() => remove()} className="cursor-pointer" />
+      <div className="flex text-lg tracking-[2px] flex-col">
+        <div className="flex justify-between">
+          <span className="tracking-[2px] text-blue-700"> USER DETAILS</span>
+          <CloseIcon onClick={() => remove()} className="cursor-pointer" />
+        </div>
+        <span className="text-xs text-gray-500">ID : {user._id}</span>
       </div>
 
       <div className="border rounded-lg flex">

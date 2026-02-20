@@ -34,6 +34,19 @@ function Order() {
     dispatch(setOrderItem(orderItem[0]));
   };
 
+  // filter by search
+//   if (searchByName.trim()) {
+//     showUsers = showUsers.filter((user) =>
+//       user.name
+//         .trim()
+//         .toLowerCase()
+//         .includes(searchByName.trim().toLowerCase()),
+//     );
+//   }
+//   if (searchByID.trim()) {
+//     showUsers = showUsers.filter((user) => user._id == searchByID);
+//   }
+
   const sevenDayBefore =
     new Date().setHours(0, 0, 0, 0) - 7 * 24 * 60 * 60 * 1000;
   const thirtyDayBefore =
@@ -117,14 +130,31 @@ function Order() {
         id="order_items"
         className="border p-1 rounded-lg flex flex-col overflow-y-auto"
       >
-        <div id="search" className="w-full rounded-lg p-2 my-1 flex gap-2">
-          <input
-            type="text"
-            className="p-1 border w-full rounded-lg bg-gray-500"
-            placeholder="Search Order"
-            // defaultValue={search}
-            // onChange={(e) => setSearch(e.target.value)}
-          />
+        <div id="search tabs" className="flex">
+          <div
+            id="searchByName"
+            className="w-full rounded-lg p-2 my-1 flex gap-2"
+          >
+            <input
+              type="text"
+              className="p-1 border w-full rounded-lg bg-gray-500"
+              placeholder="Search Seller By Store Name"
+              //   defaultValue={searchByName}
+              //   onChange={(e) => setSearchByName(e.target.value)}
+            />
+          </div>
+          <div
+            id="searchByID"
+            className="w-full rounded-lg p-2 my-1 flex gap-2"
+          >
+            <input
+              type="text"
+              className="p-1 border w-full rounded-lg bg-gray-500"
+              placeholder="Search Seller By ID"
+              //   defaultValue={searchByID}
+              //   onChange={(e) => setSearchByID(e.target.value)}
+            />
+          </div>
         </div>
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg">
           <span

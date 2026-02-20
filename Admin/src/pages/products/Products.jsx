@@ -26,7 +26,8 @@ function Products() {
   const [category, setCategory] = useState("allCategory");
   const [status, setStatus] = useState("allStockLevels");
   const [visibility, setVisibility] = useState("active&draft");
-  const [search, setSearch] = useState("");
+  const [searchByName, setSearchByName] = useState("");
+  const [searchByID, setSearchByID] = useState("");
 
   let showProducts = products;
   // filter by category
@@ -60,9 +61,20 @@ function Products() {
   }
 
   // filter product by search
-  showProducts = showProducts.filter((product) =>
-    product.name.trim().toLowerCase().includes(search.trim().toLowerCase()),
-  );
+  if (searchByName.trim()) {
+    showProducts = showProducts.filter((product) =>
+      product.name
+        .trim()
+        .toLowerCase()
+        .includes(searchByName.trim().toLowerCase()),
+    );
+  }
+  if (searchByID.trim()) {
+    showProducts = showProducts.filter((product) =>
+      product._id == searchByID
+    );
+  }
+  
 
   const sevenDayBefore =
     new Date().setHours(0, 0, 0, 0) - 7 * 24 * 60 * 60 * 1000;
@@ -175,22 +187,38 @@ function Products() {
         id="viewing"
         className="border rounded-lg p-1 flex flex-col overflow-y-auto"
       >
-        <div id="search" className="w-full rounded-lg p-2 my-1 flex gap-2">
-          <input
-            type="text"
-            className="p-1 border w-full rounded-lg bg-gray-500"
-            placeholder="Search Product"
-            defaultValue={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <div id="search tabs" className="flex">
+          <div
+            id="searchByName"
+            className="w-full rounded-lg p-2 my-1 flex gap-2"
+          >
+            <input
+              type="text"
+              className="p-1 border w-full rounded-lg bg-gray-500"
+              placeholder="Search Product By Name"
+              defaultValue={searchByName}
+              onChange={(e) => setSearchByName(e.target.value)}
+            />
+          </div>
+          <div
+            id="searchByID"
+            className="w-full rounded-lg p-2 my-1 flex gap-2"
+          >
+            <input
+              type="text"
+              className="p-1 border w-full rounded-lg bg-gray-500"
+              placeholder="Search Product By Product ID"
+              defaultValue={searchByID}
+              onChange={(e) => setSearchByID(e.target.value)}
+            />
+          </div>
         </div>
 
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg sticky-top top-0 items-center">
           <span
             className={`p-2 px-4 rounded-lg font-semibold text-yellow-500 outline cursor-pointer`}
           >
-            <CountUp end={showProducts.length} duration={2}/>
-            
+            <CountUp end={showProducts.length} duration={2} />
           </span>
           <div id="filter" className="flex gap-2 text-sm">
             <div className="border p-1 px-2 rounded-lg bg-gray-700">

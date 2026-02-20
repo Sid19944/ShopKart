@@ -8,11 +8,15 @@ function ViewOrder({ remove }) {
   const { order_item } = useSelector((state) => state.orderItems);
   return (
     <motion.div className="border bg-gray-900 p-2 rounded-lg flex flex-col gap-2 min-w-100">
-      <div className="flex justify-between text-lg tracking-[2px]">
-        <span className="tracking-[2px] text-blue-700">
-          order_item'S DETAILS
-        </span>
-        <CloseIcon onClick={() => remove()} className="cursor-pointer" />
+      <div className="flex flex-col text-lg tracking-[2px]">
+        <div className="flex  justify-between ">
+          <span className="tracking-[2px] text-blue-700">
+            order_item'S DETAILS
+          </span>
+          <CloseIcon onClick={() => remove()} className="cursor-pointer" />
+        </div>
+
+        <span className="text-xs text-gray-500">ID : {order_item._id}</span>
       </div>
 
       <div id="order_item" className="border rounded-lg flex">
@@ -56,7 +60,7 @@ function ViewOrder({ remove }) {
 
           <div className="flex flex-col">
             <div className="flex gap-2">
-              <span>{order_item.shippingAddress.postOffice},</span>  
+              <span>{order_item.shippingAddress.postOffice},</span>
               <span>{order_item.shippingAddress.district},</span>
             </div>
             <div className="flex gap-2">

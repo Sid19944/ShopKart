@@ -16,11 +16,23 @@ function Users() {
 
   const blockUser = users.filter((user) => user.isApproved == false);
   const [showData, setShowData] = useState("allUser");
-  const [search, setSearch] = useState("");
+  const [searchByName, setSearchByName] = useState("");
+  const [searchByID, setSearchByID] = useState("");
+
   let showUsers = users;
-  showUsers = showUsers.filter((user) =>
-    user.name.trim().toLowerCase().includes(search.trim().toLowerCase()),
-  );
+
+  // filter by search
+  if (searchByName.trim()) {
+    showUsers = showUsers.filter((user) =>
+      user.name
+        .trim()
+        .toLowerCase()
+        .includes(searchByName.trim().toLowerCase()),
+    );
+  }
+  if (searchByID.trim()) {
+    showUsers = showUsers.filter((user) => user._id == searchByID);
+  }
 
   const sevenDayBefore =
     new Date().setHours(0, 0, 0, 0) - 7 * 24 * 60 * 60 * 1000;
@@ -112,20 +124,40 @@ function Users() {
         id="user_manage"
         className="border p-1 rounded-lg flex flex-col overflow-y-auto"
       >
-        <div id="search" className="w-full rounded-lg p-2 my-1 flex gap-2">
-          <input
-            type="text"
-            className="p-1 border w-full rounded-lg bg-gray-500"
-            placeholder="Search User"
-            defaultValue={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <div id="search tabs" className="flex">
+          <div
+            id="searchByName"
+            className="w-full rounded-lg p-2 my-1 flex gap-2"
+          >
+            <input
+              type="text"
+              className="p-1 border w-full rounded-lg bg-gray-500"
+              placeholder="Search Seller By Store Name"
+              defaultValue={searchByName}
+              onChange={(e) => setSearchByName(e.target.value)}
+            />
+          </div>
+          <div
+            id="searchByID"
+            className="w-full rounded-lg p-2 my-1 flex gap-2"
+          >
+            <input
+              type="text"
+              className="p-1 border w-full rounded-lg bg-gray-500"
+              placeholder="Search Seller By ID"
+              defaultValue={searchByID}
+              onChange={(e) => setSearchByID(e.target.value)}
+            />
+          </div>
         </div>
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg">
           <span
             className={`p-2 px-4 rounded-lg font-semibold text-yellow-500 outline cursor-pointer`}
           >
-            <CountUp end={showData == "allUser" ?  showUsers.length : blockUser.length} duration={2} />
+            <CountUp
+              end={showData == "allUser" ? showUsers.length : blockUser.length}
+              duration={2}
+            />
           </span>
           <div className="flex gap-2">
             <span
