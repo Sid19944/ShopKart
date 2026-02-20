@@ -13,9 +13,9 @@ import {
 import Viewseller from "./ViewSellerInfo";
 import { motion } from "motion/react";
 
-function BlockSeller() {
+function BlockSeller({sellers}) {
   const dispatch = useDispatch();
-  const { sellers, loading } = useSelector((state) => state.sellers);
+  const { loading } = useSelector((state) => state.sellers);
   const blockSellers = sellers.filter((seller) => seller.isApproved == false);
   const [showLoad, setShowLoad] = useState(null);
   const [showSeller, setShowSeller] = useState(false);

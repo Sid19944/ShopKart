@@ -12,14 +12,16 @@ import BlockUsers from "./subComponents/BlockUsers";
 
 function Users() {
   const dispatch = useDispatch();
-  const { users, loading, error, message } = useSelector(
-    (state) => state.users,
-  );
+  let { users, loading, error, message } = useSelector((state) => state.users);
 
   const blockUser = users.filter((user) => user.isApproved == false);
   const [showData, setShowData] = useState("allUser");
+  const [search, setSearch] = useState("");
+  let showUsers = users;
+  showUsers = showUsers.filter((user) =>
+    user.name.trim().toLowerCase().includes(search.trim().toLowerCase()),
+  );
 
-  const today = new Date().setHours(0, 0, 0, 0);
   const sevenDayBefore =
     new Date().setHours(0, 0, 0, 0) - 7 * 24 * 60 * 60 * 1000;
   const thirtyDayBefore =
@@ -61,12 +63,12 @@ function Users() {
             htmlFor=""
             className="flex gap-5 text-gray-400 items-center tracking-[1px]"
           >
-            TOTAL REGISTERED USER
+            TOTAL USER
             <span className="text-blue-600">
               <GroupIcon />
             </span>
           </label>
-          <h1 className="text-3xl flex flex-col gap-3">
+          <h1 className="text-3xl flex flex-wrap gap-3">
             <CountUp end={users.length} duration={2} />
             <span className="text-green-500 text-sm flex items-baseline gap-2">
               <QueryStatsIcon />
@@ -80,7 +82,7 @@ function Users() {
               <GroupIcon />
             </span>
           </label>
-          <h1 className="text-3xl flex flex-col gap-3">
+          <h1 className="text-3xl flex flex-wrap gap-3">
             <CountUp end={lastSevenDaysRegisters.length} duration={2} />
             <span className="text-green-500 text-sm flex items-baseline gap-2">
               <QueryStatsIcon /> +
@@ -96,7 +98,7 @@ function Users() {
               <GroupIcon />
             </span>
           </label>
-          <h1 className="text-3xl flex flex-col gap-3">
+          <h1 className="text-3xl flex flex-wrap gap-3">
             <CountUp end={lastThirtyDaysRegisters.length} duration={2} />
             <span className="text-green-500 text-sm flex items-baseline gap-2">
               <QueryStatsIcon /> +
@@ -110,11 +112,20 @@ function Users() {
         id="user_manage"
         className="border p-1 rounded-lg flex flex-col overflow-y-auto"
       >
+        <div id="search" className="w-full rounded-lg p-2 my-1 flex gap-2">
+          <input
+            type="text"
+            className="p-1 border w-full rounded-lg bg-gray-500"
+            placeholder="Search User"
+            defaultValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg">
           <span
-            className={`p-2 px-4 rounded-lg font-semibold text-blue-700 outline cursor-pointer`}
+            className={`p-2 px-4 rounded-lg font-semibold text-yellow-500 outline cursor-pointer`}
           >
-            {showData == "allUser" ? users.length : blockUser.length}
+            <CountUp end={showData == "allUser" ?  showUsers.length : blockUser.length} duration={2} />
           </span>
           <div className="flex gap-2">
             <span
@@ -155,9 +166,9 @@ function Users() {
           {(() => {
             switch (showData) {
               case "allUser":
-                return <AllUsers />;
+                return <AllUsers users={showUsers} />;
               case "blockUser":
-                return <BlockUsers />;
+                return <BlockUsers users={showUsers} />;
               default:
                 return "INVALID SELECTION";
             }

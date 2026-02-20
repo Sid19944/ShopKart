@@ -80,10 +80,7 @@ const blockUser = AsyncHandler(async (req, res, next) => {
 const getAllSeller = AsyncHandler(async (req, res, next) => {
   const sellers = await Seller.find();
   if (!sellers.length) {
-    return res.status(200).json({
-      success: true,
-      message: "No Sellers",
-    });
+    return next(new ErrorHandler("No Seller"));
   }
   return res.status(200).json({
     success: true,
@@ -92,12 +89,9 @@ const getAllSeller = AsyncHandler(async (req, res, next) => {
 });
 
 const getAllProducts = AsyncHandler(async (req, res, next) => {
-  const products = await Product.find().populate("reviews").populate("seller")
+  const products = await Product.find().populate("reviews").populate("seller");
   if (!products.length) {
-    return res.status(200).json({
-      success: true,
-      message: "No Products yet",
-    });
+    return next(new ErrorHandler("No Product's"));
   }
 
   return res.status(200).json({
@@ -109,19 +103,11 @@ const getAllProducts = AsyncHandler(async (req, res, next) => {
 const getSellerRequest = AsyncHandler(async (req, res, next) => {
   const sellers = await Seller.find();
   if (!sellers.length) {
-    return res.status(200).json({
-      success: true,
-      message: "No Sellers",
-    });
+    return next(new ErrorHandler("No Seller"));
   }
 
   const requests = sellers.filter((seller) => seller.isApproved == false);
-  if (!requests.length) {
-    return res.status(200).json({
-      success: true,
-      message: "No Sellers Requests",
-    });
-  }
+
   return res.status(200).json({
     success: true,
     requests,
@@ -232,16 +218,15 @@ const approveProduct = AsyncHandler(async (req, res, next) => {
   });
 });
 
-const orderDetails = AsyncHandler(async (req, res, next) => {
-  const orders = await Order_Item.find();
-  const orderDelivered = orders.filter(
-    (item) => item.order_status == "delivered",
-  );
+const allOrder_items = AsyncHandler(async (req, res, next) => {
+  const order_items = await Order_Item.find().populate("buyer");
+  if (!order_items.length) {
+    return next(new ErrorHandler("No Product ourder yet"));
+  }
 
   return res.status(200).json({
     success: true,
-    numberOfProductOrdered: orders.length,
-    numberOfProductDelivered: orderDelivered.length,
+    order_items,
   });
 });
 
@@ -257,5 +242,5 @@ export {
   getAllProducts,
   blockProduct,
   approveProduct,
-  orderDetails,
+  allOrder_items,
 };

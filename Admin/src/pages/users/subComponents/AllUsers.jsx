@@ -13,8 +13,8 @@ import ViewUser from "./ViewUser";
 
 import {motion} from "motion/react"
 
-function AllUsers() {
-  const { users, loading } = useSelector((state) => state.users);
+function AllUsers({users}) {
+  const { loading } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const [showUser, setShowUser] = useState(false);
   const [showLoad, setShowLoad] = useState(null);

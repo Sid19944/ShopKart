@@ -12,7 +12,7 @@ import {
   getAllUser,
   getSellerRequest,
   // getSingleUser,
-  orderDetails,
+  allOrder_items,
 } from "../controllers/admin.controller.js";
 import { verifyAdmin } from "../middleware/verifyAdmin.js";
 import { deleteProduct } from "../controllers/products.controller.js";
@@ -48,6 +48,6 @@ router
   .delete(verifyJwt, verifyAdmin, deleteProduct);
 
 // order Details
-router.route("/order-details").get(verifyJwt, verifyAdmin, orderDetails);
+router.route("/order-item/get-all").get(verifyJwt, verifyAdmin, allOrder_items);
 
 export default router;

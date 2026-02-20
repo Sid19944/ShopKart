@@ -14,8 +14,8 @@ import ViewUser from "./ViewUser";
 
 import {motion} from "motion/react"
 
-function BlockUsers() {
-  const { users , loading} = useSelector((state) => state.users);
+function BlockUsers({users}) {
+  const { loading} = useSelector((state) => state.users);
   const blockUser = users.filter((user) => user.isApproved == false);
 
   const dispatch = useDispatch();

@@ -16,9 +16,17 @@ function Seller() {
   );
   const [showData, setShowData] = useState("allSeller");
 
-  const blockSellers = sellers.filter((seller) => seller.isApproved != true);
+  const blockSellers = sellers.filter(
+    (seller) => seller.isApproved != true,
+  );
+  const [search, setSearch] = useState("");
+  let showSellers = sellers;
+  showSellers = showSellers.filter((seller) =>
+    seller.storeName.trim().toLowerCase().includes(search.trim().toLowerCase()),
+  );
 
-  const today = new Date().setHours(0, 0, 0, 0);
+  
+
   const sevenDayBefore =
     new Date().setHours(0, 0, 0, 0) - 7 * 24 * 60 * 60 * 1000;
   const thirtyDayBefore =
@@ -59,14 +67,14 @@ function Seller() {
             htmlFor=""
             className="flex gap-5 text-gray-400 items-center tracking-[1px]"
           >
-            TOTAL REGISTERED SELLER
+            TOTAL SELLER
             <span className="text-blue-600">
               <GroupIcon />
             </span>
           </label>
-          <h1 className="text-3xl flex flex-col gap-3">
+          <h1 className="text-3xl flex gap-3">
             <CountUp end={sellers.length} duration={2} />
-            <span className="text-green-500 text-sm flex items-baseline gap-2">
+            <span className="text-green-500 text-sm flex flex-wrap items-baseline gap-2">
               <QueryStatsIcon />
             </span>
           </h1>
@@ -78,9 +86,9 @@ function Seller() {
               <GroupIcon />
             </span>
           </label>
-          <h1 className="text-3xl flex flex-col gap-3">
+          <h1 className="text-3xl flex gap-3">
             <CountUp end={lastSevenDaysRegisters.length} duration={2} />
-            <span className="text-green-500 text-sm flex items-baseline gap-2">
+            <span className="text-green-500 text-sm flex flex-wrap items-baseline gap-2">
               <QueryStatsIcon /> +
               {(lastSevenDaysRegisters.length * 100) / allDates.length}%
             </span>
@@ -94,9 +102,9 @@ function Seller() {
               <GroupIcon />
             </span>
           </label>
-          <h1 className="text-3xl flex flex-col gap-3">
+          <h1 className="text-3xl flex gap-3">
             <CountUp end={lastThirtyDaysRegisters.length} duration={2} />
-            <span className="text-green-500 text-sm flex items-baseline gap-2">
+            <span className="text-green-500 text-sm flex flex-wrap items-baseline gap-2">
               <QueryStatsIcon /> +
               {(lastThirtyDaysRegisters.length * 100) / allDates.length}%
             </span>
@@ -108,11 +116,20 @@ function Seller() {
         id="viewing"
         className="border rounded-lg p-1 flex flex-col overflow-y-auto"
       >
+        <div id="search" className="w-full rounded-lg p-2 my-1 flex gap-2">
+          <input
+            type="text"
+            className="p-1 border w-full rounded-lg bg-gray-500"
+            placeholder="Search Store"
+            defaultValue={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg">
           <span
-            className={`p-2 px-4 rounded-lg font-semibold text-blue-700 outline cursor-pointer`}
+            className={`p-2 px-4 rounded-lg font-semibold text-yellow-500 outline cursor-pointer`}
           >
-            {showData == "allSeller" ? sellers.length : blockSellers.length}
+            <CountUp end={showData=="allSeller"? showSellers.length : blockSellers.length} duration={2} />
           </span>
           <div className="flex gap-2">
             <span
@@ -150,9 +167,9 @@ function Seller() {
           {(() => {
             switch (showData) {
               case "allSeller":
-                return <AllSeller />;
+                return <AllSeller sellers={showSellers} />;
               case "blockSeller":
-                return <BlockSeller />;
+                return <BlockSeller sellers={showSellers} />;
             }
           })()}
         </div>

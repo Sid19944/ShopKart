@@ -13,8 +13,8 @@ import {
 } from "../../../store/slice/seller.sclic";
 import { motion } from "motion/react";
 
-function AllSeller() {
-  const { sellers, loading } = useSelector((state) => state.sellers);
+function AllSeller({sellers}) {
+  const {  loading } = useSelector((state) => state.sellers);
   const dispatch = useDispatch();
   const [showSeller, setShowSeller] = useState(false);
   const [showLoad, setShowLoad] = useState(null);

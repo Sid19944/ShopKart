@@ -34,39 +34,17 @@ function ViewSellerInfo({ remove }) {
               {user[0].role}
             </h1>
           </div>
-          <div className="flex w-full gap-2 border-b border-gray-500">
-          <label>Rating :</label>
-          <h1>4</h1>
-        </div>
-        </div>
-      </div>
-      {user[0].email && (
-        <div className="flex w-full gap-2 border-b border-gray-500">
-          <label>EMAIL ID :</label>
-          <h1>{user[0].email}</h1>
-        </div>
-      )}
-      <div id="store" className="border rounded-lg flex p-1 flex-col">
-        
-        <div className="flex w-full gap-2 border-b border-gray-500">
+           <div className="flex w-full gap-2 border-b border-gray-500">
           <label>Total Products :</label>
-          <h1>100</h1>
+          <h1>{seller.products.length}</h1>
         </div>
-        <div className="flex w-full gap-2 border-b border-gray-500">
-          <label>Total Sales :</label>
-          <h1>100</h1>
-        </div>
-        <div className="flex w-full gap-2 border-b border-gray-500">
-          <label>Pending Orders :</label>
-          <h1>100</h1>
-        </div>
-        <div className="flex w-full gap-2 border-b border-gray-500">
-          <label>Delivered Orders :</label>
-          <h1>100</h1>
         </div>
       </div>
+      
 
-      <button className="outline rounded-lg bg-blue-400 font-semibold tracking-[2px] cursor-pointer active:bg-blue-600">GET FULL DETAIL</button>
+      <button className="outline rounded-lg bg-blue-400 font-semibold tracking-[2px] cursor-pointer active:bg-blue-600">
+        GET FULL DETAIL
+      </button>
     </div>
   );
 }

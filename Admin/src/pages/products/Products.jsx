@@ -59,8 +59,9 @@ function Products() {
     );
   }
 
+  // filter product by search
   showProducts = showProducts.filter((product) =>
-    product.name.toLowerCase().includes(search.trim().toLowerCase()),
+    product.name.trim().toLowerCase().includes(search.trim().toLowerCase()),
   );
 
   const sevenDayBefore =
@@ -186,11 +187,12 @@ function Products() {
 
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg sticky-top top-0 items-center">
           <span
-            className={`p-2 px-4 rounded-lg font-semibold text-blue-700 outline cursor-pointer`}
+            className={`p-2 px-4 rounded-lg font-semibold text-yellow-500 outline cursor-pointer`}
           >
-            {showProducts.length}
+            <CountUp end={showProducts.length} duration={2}/>
+            
           </span>
-          <div className="flex gap-2 text-sm">
+          <div id="filter" className="flex gap-2 text-sm">
             <div className="border p-1 px-2 rounded-lg bg-gray-700">
               <span>CATEGORY : </span>
               <select
