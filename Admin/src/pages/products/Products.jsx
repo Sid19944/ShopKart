@@ -26,6 +26,7 @@ function Products() {
   const [category, setCategory] = useState("allCategory");
   const [status, setStatus] = useState("allStockLevels");
   const [visibility, setVisibility] = useState("active&draft");
+  const [search, setSearch] = useState("");
 
   let showProducts = products;
   // filter by category
@@ -57,6 +58,10 @@ function Products() {
       (product) => product.isApproved == false,
     );
   }
+
+  showProducts = showProducts.filter((product) =>
+    product.name.toLowerCase().includes(search.trim().toLowerCase()),
+  );
 
   const sevenDayBefore =
     new Date().setHours(0, 0, 0, 0) - 7 * 24 * 60 * 60 * 1000;
@@ -169,15 +174,14 @@ function Products() {
         id="viewing"
         className="border rounded-lg p-1 flex flex-col overflow-y-auto"
       >
-        <div className="w-full rounded-lg p-2 my-1 flex gap-2">
+        <div id="search" className="w-full rounded-lg p-2 my-1 flex gap-2">
           <input
             type="text"
             className="p-1 border w-full rounded-lg bg-gray-500"
             placeholder="Search Product"
+            defaultValue={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
-          <button className="border rounded-lg px-3 bg-blue-400 active:bg-blue-600 cursor-pointer">
-            Search
-          </button>
         </div>
 
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg sticky-top top-0 items-center">
@@ -345,9 +349,14 @@ function Products() {
           ))}
 
           {showproduct && (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            >
               <ViewProductInfo remove={() => setShowproduct(!showproduct)} />
-            </div>
+            </motion.div>
           )}
         </div>
       </div>

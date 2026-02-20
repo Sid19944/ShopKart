@@ -2,14 +2,17 @@ import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSelector } from "react-redux";
 
-import Rating from '@mui/material/Rating';
+import Rating from "@mui/material/Rating";
+import { motion } from "motion/react";
 
 function ViewProductInfo({ remove }) {
   const { product } = useSelector((state) => state.products);
   let totalRating = 0;
   product?.reviews?.map((rev) => (totalRating += rev.rating));
   return (
-    <div className="border bg-gray-900 p-2 rounded-lg flex flex-col gap-2 min-w-100">
+    <motion.div
+      className="border bg-gray-900 p-2 rounded-lg flex flex-col gap-2 min-w-100"
+    >
       <div className="flex justify-between text-lg tracking-[2px]">
         <span> PRODUCT'S DETAILS</span>
         <CloseIcon onClick={() => remove()} className="cursor-pointer" />
@@ -33,7 +36,6 @@ function ViewProductInfo({ remove }) {
           <div className="flex flex-wrap w-full gap-2 border-b border-gray-500">
             <label>PRICE :</label>
             <h1>{product.price}</h1>
-            
           </div>
           <div className="flex flex-wrap w-full gap-2 border-b border-gray-500">
             <label>AVL STOCK :</label>
@@ -45,14 +47,15 @@ function ViewProductInfo({ remove }) {
       <div id="store" className="border rounded-lg flex p-1 flex-col">
         <div className="flex flex-wrap w-full gap-2 border-b border-gray-500">
           <label>AVG RATING :</label>
-          <Rating value={totalRating / product?.reviews?.length}/>({product?.reviews?.length})
+          <Rating value={totalRating / product?.reviews?.length} />(
+          {product?.reviews?.length})
         </div>
         <div className="flex w-full flex-wrap gap-2 border-b border-gray-500">
           <label>DESCRIPTION :</label>
           <h1>{product.description}</h1>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
