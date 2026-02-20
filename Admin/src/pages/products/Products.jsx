@@ -271,7 +271,7 @@ function Products() {
               key={idx}
               className={`flex justify-around border-gray-700 border-b p-1 gap-2 text-md items-center ${showproduct && "blur-[2px]"}`}
             >
-              <div className="w-[30%] flex gap-2">
+              <div className="w-[30%] flex gap-2 items-center">
                 <img src={product.image[0].url} className="h-13" />
                 {product.name}
               </div>

@@ -14,7 +14,7 @@ function ViewProductInfo({ remove }) {
       className="border bg-gray-900 p-2 rounded-lg flex flex-col gap-2 min-w-100"
     >
       <div className="flex justify-between text-lg tracking-[2px]">
-        <span> PRODUCT'S DETAILS</span>
+        <span className="tracking-[2px] text-blue-700"> PRODUCT'S DETAILS</span>
         <CloseIcon onClick={() => remove()} className="cursor-pointer" />
       </div>
 

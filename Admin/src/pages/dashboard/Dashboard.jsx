@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import Users from "../users/Users.jsx";
 import Seller from "../sellers/Seller.jsx";
 import Products from "../products/Products.jsx";
+import Order from "../orders/Order.jsx";
 
 function Dashboard() {
   const { user, error, message } = useSelector((state) => state.user);
@@ -100,7 +101,7 @@ function Dashboard() {
               case "products":
                 return <Products/>;
               case "orders":
-                return "orders";
+                return <Order/>;
               default:
                 return "INVALID SELECTION";
             }
