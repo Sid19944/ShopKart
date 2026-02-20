@@ -23,9 +23,41 @@ function Products() {
     (state) => state.products,
   );
 
-  const [showData, setShowData] = useState("allCategory");
+  const [category, setCategory] = useState("allCategory");
+  const [status, setStatus] = useState("allStockLevels");
+  const [visibility, setVisibility] = useState("active&draft");
 
-  const today = new Date().setHours(0, 0, 0, 0);
+  let showProducts = products;
+  // filter by category
+  if (category != "allCategory") {
+    showProducts = showProducts.filter(
+      (product) => product.category == category,
+    );
+  }
+
+  // filter by stock
+  if (status == "inStock") {
+    showProducts = showProducts.filter((product) => product.stock > 5);
+  }
+  if (status == "lowStock") {
+    showProducts = showProducts.filter(
+      (product) => product.stock > 0 && product.stock <= 5,
+    );
+  }
+  if (status == "outOFStock") {
+    showProducts = showProducts.filter((product) => product.stock == 0);
+  }
+
+  // filter by Approved
+  if (visibility == "active") {
+    showProducts = showProducts.filter((product) => product.isApproved == true);
+  }
+  if (visibility == "draft") {
+    showProducts = showProducts.filter(
+      (product) => product.isApproved == false,
+    );
+  }
+
   const sevenDayBefore =
     new Date().setHours(0, 0, 0, 0) - 7 * 24 * 60 * 60 * 1000;
   const thirtyDayBefore =
@@ -85,7 +117,7 @@ function Products() {
         </p>
       </div>
 
-      <div id="top" className="grid grid-cols-3 gap-4 my-3 h-25">
+      <div id="top" className="grid grid-cols-3 gap-4 my-3 h-20">
         <div className="border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px]">
           <label className="flex gap-5 text-gray-400 items-center tracking-[1px]">
             TOTAL PRODUCTS
@@ -147,11 +179,12 @@ function Products() {
             Search
           </button>
         </div>
-        <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg sticky-top top-0">
+
+        <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg sticky-top top-0 items-center">
           <span
             className={`p-2 px-4 rounded-lg font-semibold text-blue-700 outline cursor-pointer`}
           >
-            {/* {showData == "allSeller" ? sellers.length : blockSellers.length} */}
+            {showProducts.length}
           </span>
           <div className="flex gap-2 text-sm">
             <div className="border p-1 px-2 rounded-lg bg-gray-700">
@@ -160,6 +193,8 @@ function Products() {
                 name="category"
                 id="category"
                 className="bg-gray-700 rounded-lg px-2 outline-none cursor-pointer"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
               >
                 <option value="allCategory">All Category</option>
                 <option value="fashon">Fashon</option>
@@ -173,6 +208,8 @@ function Products() {
                 name="stock"
                 id="stock"
                 className="bg-gray-700 rounded-lg px-2 outline-none cursor-pointer"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
               >
                 <option value="allStockLevels">All Stock Levels</option>
                 <option value="inStock">In Stock</option>
@@ -183,9 +220,11 @@ function Products() {
             <div className="border p-1 px-2 rounded-lg bg-gray-700">
               <span>VISIBALITY : </span>
               <select
-                name="visivality"
-                id="visivality"
+                name="visibility"
+                id="visibility"
                 className="bg-gray-700 rounded-lg px-2 outline-none cursor-pointer"
+                value={visibility}
+                onChange={(e) => setVisibility(e.target.value)}
               >
                 <option value="active&draft">Active & Draft</option>
                 <option value="active">Active</option>
@@ -194,6 +233,7 @@ function Products() {
             </div>
           </div>
         </nav>
+
         <div className="flex justify-around py-2 px-2 border-b border-gray-400">
           <span className="w-[30%] font-semibold text-xl tracking-[2px]">
             PRODUCT
@@ -208,7 +248,7 @@ function Products() {
             STOCK
           </span>
           <span className="w-[15%] text-center font-semibold text-xl tracking-[2px]">
-            VISIVALITY
+            VISIBILITY
           </span>
           <span className="w-[30%] text-center font-semibold text-xl tracking-[2px]">
             ACTIONS
@@ -216,7 +256,7 @@ function Products() {
         </div>
 
         <div className="flex flex-col overflow-auto">
-          {products.map((product, idx) => (
+          {showProducts.map((product, idx) => (
             <motion.li
               initial={{ x: -400, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
