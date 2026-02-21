@@ -13,6 +13,7 @@ import {
   getSellerRequest,
   // getSingleUser,
   allOrder_items,
+  getReportByMonth,
 } from "../controllers/admin.controller.js";
 import { verifyAdmin } from "../middleware/verifyAdmin.js";
 import { deleteProduct } from "../controllers/products.controller.js";
@@ -49,5 +50,8 @@ router
 
 // order Details
 router.route("/order-item/get-all").get(verifyJwt, verifyAdmin, allOrder_items);
+
+// report
+router.route("/monthly-report").get(verifyJwt, verifyAdmin, getReportByMonth);
 
 export default router;

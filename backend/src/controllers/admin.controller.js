@@ -230,6 +230,111 @@ const allOrder_items = AsyncHandler(async (req, res, next) => {
   });
 });
 
+const getReportByMonth = AsyncHandler(async (req, res, next) => {
+  const year = new Date().getFullYear();
+
+  const revenueReport = await Order_Item.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+          $lte: new Date(`${year}-12-31T23:59:59.999Z`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$createdAt" }, // separates by month
+        totalPrice: {
+          $sum: { $multiply: ["$itemPrice", "$quentity"] },
+        },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]);
+
+  const userReport = await User.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+          $lte: new Date(`${year}-12-31T23:59:59.999Z`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$createdAt" },
+        totalUser: {
+          $sum: 1,
+        },
+      },
+    },
+  ]);
+
+  const sellerReport = await Seller.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+          $lte: new Date(`${year}-12-31T23:59:59.999Z`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$createdAt" },
+        totalSeller: { $sum: 1 },
+      },
+    },
+  ]);
+
+  const saleReport = await Order_Item.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+          $lte: new Date(`${year}-12-31T23:59:59.999Z`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$createdAt" },
+        totalQtySale: { $sum: "$quentity" },
+      },
+    },
+  ]);
+
+  const productReport = await Product.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+          $lte: new Date(`${year}-12-31T23:59:59.999Z`),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $month: "$createdAt" },
+        totalProduct: { $sum: 1 },
+      },
+    },
+  ]);
+
+  return res.status(200).json({
+    success: true,
+    revenueReport,
+    userReport,
+    sellerReport,
+    saleReport,
+    productReport,
+  });
+});
+
 export {
   getSellerRequest,
   getAllUser,
@@ -243,4 +348,5 @@ export {
   blockProduct,
   approveProduct,
   allOrder_items,
+  getReportByMonth,
 };
