@@ -56,9 +56,9 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
           url: product.image[0].url,
           public_id: product.image[0].public_id,
         },
-        category : product.category,
+        category: product.category,
         quentity: fProduct.quentity,
-        price: product.price,
+        itemPrice: product.price,
         shippingAddress: {
           fullName: shippedAddress.fullname,
           addressLine: shippedAddress.addressLine,
