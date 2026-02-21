@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Dashboard from "./pages/dashboard/Dashboard.jsx";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Auth from "./pages/auth/Auth.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "./store/slice/user.slice.js";
+import { getUser, logout } from "./store/slice/user.slice.js";
 import toast from "react-hot-toast";
 import { getAllUser } from "./store/slice/users.slice.js";
 import { getSellers } from "./store/slice/seller.sclic.js";
@@ -12,21 +12,18 @@ import { getAllProducts } from "./store/slice/products.slice.js";
 
 function App() {
   const dispatch = useDispatch();
-  const { isAuthenticated, error } = useSelector((state) => state.user);
+  const { user, isAuthenticated, message } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
     dispatch(getUser());
-  }, [dispatch, isAuthenticated, error]);
+    if (Object.keys(user).length && user.role != "admin") {
+      toast.error("You are not admin", { position: "top-center" });
+      navigate("/login");
 
-  useEffect(() => {
-    dispatch(getAllUser());
-    dispatch(getSellers());
-    dispatch(getAllOrderItems());
-    dispatch(getAllProducts());
-  }, []);
+      dispatch(logout());
+    }
+  }, [isAuthenticated]);
 
   return (
     <>

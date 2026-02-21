@@ -36,7 +36,6 @@ function LineChart() {
     labels.push(getMonthName(item._id));
   });
 
-  console.log(labels)
 
   const data = {
     labels,

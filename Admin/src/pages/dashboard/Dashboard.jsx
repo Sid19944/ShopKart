@@ -7,16 +7,40 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { adminUrl } from "../../Api.jsx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Users from "../users/Users.jsx";
 import Seller from "../sellers/Seller.jsx";
 import Products from "../products/Products.jsx";
 import Order from "../orders/Order.jsx";
 import Overview from "../overview/Overview.jsx";
 
+import { getAllUser } from "../../store/slice/users.slice.js";
+import { getSellers } from "../../store/slice/seller.sclic.js";
+import { getAllOrderItems } from "../../store/slice/ordersItems.slice.js";
+import { getAllProducts } from "../../store/slice/products.slice.js";
+import { logout } from "../../store/slice/user.slice.js";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 function Dashboard() {
-  const { user, error, message } = useSelector((state) => state.user);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
   const [showPage, setShowPage] = useState("overview");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate("/login");
+    dispatch(logout());
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(getAllUser());
+      dispatch(getSellers());
+      dispatch(getAllOrderItems());
+      dispatch(getAllProducts());
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="h-screen p-1 font-serif flex gap-2">
@@ -67,6 +91,7 @@ function Dashboard() {
           </div>
           <div
             className={`flex gap-2 items-center p-2 rounded-lg cursor-pointer hover:outline hover:opacity-100 opacity-70`}
+            onClick={handleLogout}
           >
             <LogoutIcon />
             <p>Logout</p>
@@ -94,15 +119,15 @@ function Dashboard() {
           {(() => {
             switch (showPage) {
               case "overview":
-                return <Overview/>;
+                return <Overview />;
               case "users":
                 return <Users />;
               case "sellers":
                 return <Seller />;
               case "products":
-                return <Products/>;
+                return <Products />;
               case "orders":
-                return <Order/>;
+                return <Order />;
               default:
                 return "INVALID SELECTION";
             }

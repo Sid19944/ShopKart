@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authUrl } from "../../Api";
+import { adminUrl, authUrl } from "../../Api";
 
 const userSlice = createSlice({
   name: "user",
@@ -61,6 +61,22 @@ export const getUser = () => async (dispatch) => {
     dispatch(
       userSlice.actions.getUserFailed(
         error.response.data.message || error.message,
+      ),
+    );
+    dispatch(userSlice.actions.clearMessag())
+  }
+};
+
+export const logout = () => async (dispatch) => {
+  dispatch(userSlice.actions.logoutRequest());
+  try {
+    const { data } = await authUrl.post("/logout");
+    dispatch(userSlice.actions.logoutSuccess(data.message));
+    dispatch(userSlice.clearAll);
+  } catch (error) {
+    dispatch(
+      userSlice.actions.logoutFailed(
+        error?.response?.data?.message || error.message,
       ),
     );
   }
