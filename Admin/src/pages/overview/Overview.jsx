@@ -14,6 +14,8 @@ import { getMonthlyReport } from "../../store/slice/monthlyReport.slice";
 import LineChart from "../chart/SalesChart";
 import RevenueChart from "../chart/RevenueChart";
 import UserChart from "../chart/UserChart";
+import ProductChart from "../chart/ProductChart";
+import SellerChart from "../chart/SellerChart"
 
 function Overview() {
   const dispatch = useDispatch();
@@ -227,12 +229,20 @@ function Overview() {
             <RevenueChart />
           </div>
           <div className="flex-1 flex flex-col gap-2">
-            <div className="border border-gray-700 p-2 rounded-lg flex-1 h-fit relative">
+            <div className="border border-gray-700 p-2 rounded-lg flex-1 h-fit ">
               <LineChart />
             </div>
-            <div className="border border-gray-700 p-2 rounded-lg flex-1 h-fit relative">
+            <div className="border border-gray-700 p-2 rounded-lg flex-1 h-fit">
               <UserChart />
             </div>
+          </div>
+        </div>
+        <div className="flex gap-2 p-1">
+          <div className="w-1/2 h-fit border border-gray-700 rounded-lg p-1">
+            <ProductChart />
+          </div>
+          <div className="w-1/2 h-fit border border-gray-700 rounded-lg p-1">
+            <SellerChart />
           </div>
         </div>
       </div>
