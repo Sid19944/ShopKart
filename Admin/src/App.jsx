@@ -7,6 +7,8 @@ import { getUser } from "./store/slice/user.slice.js";
 import toast from "react-hot-toast";
 import { getAllUser } from "./store/slice/users.slice.js";
 import { getSellers } from "./store/slice/seller.sclic.js";
+import { getAllOrderItems } from "./store/slice/ordersItems.slice.js";
+import { getAllProducts } from "./store/slice/products.slice.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,6 +23,9 @@ function App() {
 
   useEffect(() => {
     dispatch(getAllUser());
+    dispatch(getSellers());
+    dispatch(getAllOrderItems());
+    dispatch(getAllProducts());
   }, []);
 
   return (

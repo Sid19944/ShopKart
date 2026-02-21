@@ -12,6 +12,7 @@ import Users from "../users/Users.jsx";
 import Seller from "../sellers/Seller.jsx";
 import Products from "../products/Products.jsx";
 import Order from "../orders/Order.jsx";
+import Overview from "../overview/Overview.jsx";
 
 function Dashboard() {
   const { user, error, message } = useSelector((state) => state.user);
@@ -93,7 +94,7 @@ function Dashboard() {
           {(() => {
             switch (showPage) {
               case "overview":
-                return "overview";
+                return <Overview/>;
               case "users":
                 return <Users />;
               case "sellers":

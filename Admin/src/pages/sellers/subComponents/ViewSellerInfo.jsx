@@ -44,10 +44,10 @@ function ViewSellerInfo({ remove }) {
           </div>
         </div>
       </div>
-
+{/* 
       <button className="outline rounded-lg bg-blue-400 font-semibold tracking-[2px] cursor-pointer active:bg-blue-600">
         GET FULL DETAIL
-      </button>
+      </button> */}
     </div>
   );
 }
