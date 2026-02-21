@@ -22,7 +22,8 @@ function Order() {
   let showOrderItems = order_items;
 
   const [status, setStatus] = useState("allOrder");
-  const [showLoad, setShowLoad] = useState("");
+  const [searchByName, setSearchByName] = useState("");
+  const [searchByID, setSearchByID] = useState("");
 
   const [showOrderItem, setShowOrderItem] = useState(false);
 
@@ -34,18 +35,27 @@ function Order() {
     dispatch(setOrderItem(orderItem[0]));
   };
 
+  // filter by category
+  if (status != "allOrder") {
+    showOrderItems = showOrderItems.filter(
+      (orderItem) => orderItem.category == "status",
+    );
+  }
+
   // filter by search
-//   if (searchByName.trim()) {
-//     showUsers = showUsers.filter((user) =>
-//       user.name
-//         .trim()
-//         .toLowerCase()
-//         .includes(searchByName.trim().toLowerCase()),
-//     );
-//   }
-//   if (searchByID.trim()) {
-//     showUsers = showUsers.filter((user) => user._id == searchByID);
-//   }
+  if (searchByName.trim()) {
+    showOrderItems = showOrderItems.filter((orderItem) =>
+      orderItem.name
+        .trim()
+        .toLowerCase()
+        .includes(searchByName.trim().toLowerCase()),
+    );
+  }
+  if (searchByID.trim()) {
+    showOrderItems = showOrderItems.filter(
+      (orderItem) => orderItem._id == searchByID,
+    );
+  }
 
   const sevenDayBefore =
     new Date().setHours(0, 0, 0, 0) - 7 * 24 * 60 * 60 * 1000;
@@ -126,6 +136,7 @@ function Order() {
           </h1>
         </div>
       </div>
+
       <div
         id="order_items"
         className="border p-1 rounded-lg flex flex-col overflow-y-auto"
@@ -138,9 +149,9 @@ function Order() {
             <input
               type="text"
               className="p-1 border w-full rounded-lg bg-gray-500"
-              placeholder="Search Seller By Store Name"
-              //   defaultValue={searchByName}
-              //   onChange={(e) => setSearchByName(e.target.value)}
+              placeholder="Search Order by Product Name"
+              defaultValue={searchByName}
+              onChange={(e) => setSearchByName(e.target.value)}
             />
           </div>
           <div
@@ -150,17 +161,18 @@ function Order() {
             <input
               type="text"
               className="p-1 border w-full rounded-lg bg-gray-500"
-              placeholder="Search Seller By ID"
-              //   defaultValue={searchByID}
-              //   onChange={(e) => setSearchByID(e.target.value)}
+              placeholder="Search Order By ID"
+              defaultValue={searchByID}
+              onChange={(e) => setSearchByID(e.target.value)}
             />
           </div>
         </div>
+
         <nav className="flex gap-3 p-2 justify-between bg-gray-900 rounded-t-lg">
           <span
             className={`p-2 px-4 rounded-lg font-semibold text-yellow-500 outline cursor-pointer`}
           >
-            {/* <CountUp end={showData == "allUser" ?  showUsers.length : blockUser.length} duration={2} /> */}
+            <CountUp end={showOrderItems.length} duration={2} />
           </span>
           <div className="bg-gray-500 px-3 p-1 rounded-lg outline">
             <label htmlFor="status">STATUS :</label>
