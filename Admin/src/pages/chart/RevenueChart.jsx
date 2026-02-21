@@ -25,9 +25,7 @@ ChartJS.register(
 );
 
 function AreaChart() {
-  const { revenue, users, sallers, sales, products } = useSelector(
-    (state) => state.monthlyReport,
-  );
+  const { revenue } = useSelector((state) => state.monthlyReport);
 
   const labels = [];
 

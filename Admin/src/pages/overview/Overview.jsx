@@ -9,9 +9,11 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 
 import CountUp from "react-countup";
 import { useDispatch, useSelector } from "react-redux";
-import AreaChart from "../chart/AreaChart";
 import { useEffect } from "react";
 import { getMonthlyReport } from "../../store/slice/monthlyReport.slice";
+import LineChart from "../chart/SalesChart";
+import RevenueChart from "../chart/RevenueChart";
+import UserChart from "../chart/UserChart";
 
 function Overview() {
   const dispatch = useDispatch();
@@ -216,9 +218,23 @@ function Overview() {
         </div>
       </div>
 
-      <div className="h-200 w-200 flex flex-col justify-center border p-2 rounded-lg">
-        <AreaChart />
-        <span className="text-center">YEAR : {new Date().getFullYear()}</span>
+      <div className="flex flex-col gap-1 border p-1 rounded-lg overflow-auto">
+        <span className=" w-full inline-block text-center sticky top-0">
+          YEAR : {new Date().getFullYear()}
+        </span>
+        <div className="flex gap-2">
+          <div className="w-200 flex flex-col justify-center border border-gray-700 p-2 rounded-lg">
+            <RevenueChart />
+          </div>
+          <div className="flex-1 flex flex-col gap-2">
+            <div className="border border-gray-700 p-2 rounded-lg flex-1 h-fit relative">
+              <LineChart />
+            </div>
+            <div className="border border-gray-700 p-2 rounded-lg flex-1 h-fit relative">
+              <UserChart />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
