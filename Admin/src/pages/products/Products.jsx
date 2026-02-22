@@ -125,7 +125,7 @@ function Products() {
   }, [error, message]);
 
   return (
-    <div className="p-1 font-mono h-full flex flex-col overflow-auto">
+    <div className="p-1 font-mono h-full flex flex-col md:overflow-auto">
       <div id="top" className="grid grid-cols-3 gap-4 my-3">
         <div className="border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px]">
           <label className="flex gap-5 text-gray-400 items-center tracking-[1px]">
@@ -176,7 +176,7 @@ function Products() {
 
       <div
         id="viewing"
-        className="border rounded-lg p-1 flex flex-col "
+        className="border rounded-lg p-1 flex flex-col md:overflow-auto"
       >
         <div id="search tabs" className="flex sticky top-0 bg-black">
           <div
@@ -280,7 +280,7 @@ function Products() {
           </span>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col md:overflow-auto">
           {showProducts.map((product, idx) => (
             <motion.li
               initial={{ x: -400, opacity: 0 }}

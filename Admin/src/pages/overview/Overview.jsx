@@ -71,7 +71,7 @@ function Overview() {
   }, []);
 
   return (
-    <div className="p-1 font-mono h-full flex flex-col overflow-auto">
+    <div className="p-1 font-mono h-full flex flex-col ">
       <div className=" bg-black">
         <div id="top" className="grid grid-cols-5 gap-4 my-3">
           <div className="border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px]">
@@ -214,7 +214,7 @@ function Overview() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-1 border p-1 rounded-lg">
+      <div id="view" className="flex flex-col gap-1 border p-1 rounded-lg ">
         <span className=" w-full inline-block text-center sticky top-0">
           YEAR : {new Date().getFullYear()}
         </span>

@@ -62,7 +62,7 @@ function Users() {
   }, [error, message]);
 
   return (
-    <div className="p-1 font-mono h-full flex flex-col overflow-auto">
+    <div className="p-1 font-mono h-full flex flex-col md:overflow-auto">
 
       <div id="top" className="grid grid-cols-3 gap-4 my-3">
         <div className="border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px]">
@@ -117,7 +117,7 @@ function Users() {
 
       <div
         id="user_manage"
-        className="border p-1 rounded-lg flex flex-col "
+        className="border p-1 rounded-lg flex flex-col md:overflow-auto"
       >
         <div id="search tabs" className="flex sticky top-0 bg-black">
           <div
@@ -189,7 +189,7 @@ function Users() {
           </span>
         </div>
 
-        <div className="my-2 flex flex-col ">
+        <div className="my-2 flex flex-col md:overflow-auto">
           {(() => {
             switch (showData) {
               case "allUser":
