@@ -65,13 +65,8 @@ function Seller() {
     dispatch(getSellers());
   }, [sellerError, sellerMessage]);
   return (
-    <div className="p-1 font-mono h-full flex flex-col">
-      <div id="page info">
-        <h1 className="text-3xl tracking-[2px]">SELLER MANAGEMENT</h1>
-        <p className="text-xs text-gray-400">
-          Oversee, Verify, and Manage sellers across the ShopCart
-        </p>
-      </div>
+    <div className="p-1 font-mono h-full flex flex-col overflow-y-auto">
+
       <div id="top" className="grid grid-cols-3 gap-4 my-3">
         <div className="border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px]">
           <label
@@ -125,9 +120,9 @@ function Seller() {
 
       <div
         id="viewing"
-        className="border rounded-lg p-1 flex flex-col overflow-y-auto"
+        className="border rounded-lg p-1 flex flex-col "
       >
-        <div id="search tabs" className="flex">
+        <div id="search tabs" className="flex sticky top-0 bg-black">
           <div
             id="searchByName"
             className="w-full rounded-lg p-2 my-1 flex gap-2"
@@ -192,7 +187,7 @@ function Seller() {
           </span>
         </div>
 
-        <div className="flex flex-col overflow-auto">
+        <div className="flex flex-col ">
           {(() => {
             switch (showData) {
               case "allSeller":

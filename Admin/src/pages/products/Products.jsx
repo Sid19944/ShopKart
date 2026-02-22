@@ -125,17 +125,8 @@ function Products() {
   }, [error, message]);
 
   return (
-    <div className="p-1 font-mono h-full flex flex-col">
-      <div id="page info">
-        <h1 className="text-3xl tracking-[2px]">
-          PRODUCT INVENTORY MANAGEMENT
-        </h1>
-        <p className="text-xs text-gray-400">
-          Oversee, Verify, and Manage products across the ShopCart
-        </p>
-      </div>
-
-      <div id="top" className="grid grid-cols-3 gap-4 my-3 h-20">
+    <div className="p-1 font-mono h-full flex flex-col overflow-auto">
+      <div id="top" className="grid grid-cols-3 gap-4 my-3">
         <div className="border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px]">
           <label className="flex gap-5 text-gray-400 items-center tracking-[1px]">
             TOTAL PRODUCTS
@@ -150,7 +141,7 @@ function Products() {
             </span>
           </h1>
         </div>
-        <div className="border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px]">
+       <div className="border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px]">
           <label className="flex gap-5 text-gray-400 items-center tracking-[1px]">
             LAST 7 DAYS{" "}
             <span className="text-blue-600">
@@ -185,9 +176,9 @@ function Products() {
 
       <div
         id="viewing"
-        className="border rounded-lg p-1 flex flex-col overflow-y-auto"
+        className="border rounded-lg p-1 flex flex-col "
       >
-        <div id="search tabs" className="flex">
+        <div id="search tabs" className="flex sticky top-0 bg-black">
           <div
             id="searchByName"
             className="w-full rounded-lg p-2 my-1 flex gap-2"
@@ -289,7 +280,7 @@ function Products() {
           </span>
         </div>
 
-        <div className="flex flex-col overflow-auto">
+        <div className="flex flex-col">
           {showProducts.map((product, idx) => (
             <motion.li
               initial={{ x: -400, opacity: 0 }}

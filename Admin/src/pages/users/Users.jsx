@@ -62,13 +62,8 @@ function Users() {
   }, [error, message]);
 
   return (
-    <div className="p-1 font-mono h-full flex flex-col">
-      <div id="page info">
-        <h1 className="text-3xl tracking-[2px]">USER MANAGEMENT</h1>
-        <p className="text-xs text-gray-400">
-          Oversee, Verify, and Manage users across the ShopCart
-        </p>
-      </div>
+    <div className="p-1 font-mono h-full flex flex-col overflow-auto">
+
       <div id="top" className="grid grid-cols-3 gap-4 my-3">
         <div className="border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px]">
           <label
@@ -122,9 +117,9 @@ function Users() {
 
       <div
         id="user_manage"
-        className="border p-1 rounded-lg flex flex-col overflow-y-auto"
+        className="border p-1 rounded-lg flex flex-col "
       >
-        <div id="search tabs" className="flex">
+        <div id="search tabs" className="flex sticky top-0 bg-black">
           <div
             id="searchByName"
             className="w-full rounded-lg p-2 my-1 flex gap-2"
@@ -194,7 +189,7 @@ function Users() {
           </span>
         </div>
 
-        <div className="my-2 flex flex-col overflow-auto">
+        <div className="my-2 flex flex-col ">
           {(() => {
             switch (showData) {
               case "allUser":

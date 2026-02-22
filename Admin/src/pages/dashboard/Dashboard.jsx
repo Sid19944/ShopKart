@@ -43,10 +43,10 @@ function Dashboard() {
   }, [isAuthenticated]);
 
   return (
-    <div className="h-screen p-1 font-serif flex gap-2">
+    <div className="h-screen p-1 font-serif flex overflow-auto">
       <nav
         id="sidenav"
-        className="w-60 h-full shadow-[0px_0px_2px_2px] shadow-white rounded-r-lg"
+        className="h-full shadow-[0px_0px_2px_2px] shadow-white rounded-r-lg w-[20%] md:w-[15%]"
       >
         <div className="h-13 flex items-center justify-center gap-2 p-1 border-b">
           <ContactEmergencyIcon />
@@ -99,20 +99,66 @@ function Dashboard() {
         </div>
       </nav>
 
-      <div id="viewing" className="w-full p-1 flex flex-col">
+      <div id="viewing" className="w-[85%] p-1 flex flex-col">
         <nav
           id="top-nav"
-          className="border-b p-1 flex items-center gap-2 justify-end"
+          className="border-b p-1 flex items-center gap-2 justify-between"
         >
-          <h1 className="flex flex-col items-end text-sm">
-            {user.name}
-            <span className="text-[10px] text-gray-400">Plateform Admin</span>
-          </h1>
-          <img
-            src={user.avatar}
-            alt="avatar"
-            className="h-10 rounded-full outline"
-          />
+          <div id="page info">
+            {showPage == "overview" && (
+              <>
+                <h1 className="text-2xl tracking-[2px]">PLATEFORM OVERVIEW</h1>
+                <p className="text-xs text-gray-400">
+                  Performance metrics for ShopCark ecosystem
+                </p>{" "}
+              </>
+            )}
+            {showPage == "users" && (
+              <>
+                <h1 className="text-2xl tracking-[2px]">USER MANAGEMENT</h1>
+                <p className="text-xs text-gray-400">
+                  Oversee, Verify, and Manage users across the ShopCart
+                </p>
+              </>
+            )}
+            {showPage == "sellers" && (
+              <>
+                <h1 className="text-2xl tracking-[2px]">SELLER MANAGEMENT</h1>
+                <p className="text-xs text-gray-400">
+                  Oversee, Verify, and Manage sellers across the ShopCart
+                </p>
+              </>
+            )}
+            {showPage == "products" && (
+              <>
+                <h1 className="text-2xl tracking-[2px]">
+                  PRODUCT INVENTORY MANAGEMENT
+                </h1>
+                <p className="text-xs text-gray-400">
+                  Oversee, Verify, and Manage products across the ShopCart
+                </p>
+              </>
+            )}
+            {showPage == "orders" && (
+              <>
+                <h1 className="text-2xl tracking-[2px]">ORDER'S MANAGEMENT</h1>
+                <p className="text-xs text-gray-400">
+                  Oversee orders across the ShopCart
+                </p>
+              </>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <h1 className="flex flex-col items-end text-sm">
+              {user.name}
+              <span className="text-[10px] text-gray-400">Plateform Admin</span>
+            </h1>
+            <img
+              src={user.avatar}
+              alt="avatar"
+              className="h-10 rounded-full outline"
+            />
+          </div>
         </nav>
 
         <div id="data" className="overflow-y-auto p-3">

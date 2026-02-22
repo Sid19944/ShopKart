@@ -79,13 +79,7 @@ function Order() {
   }, [error, message]);
 
   return (
-    <div className="p-1 font-mono h-full flex flex-col">
-      <div id="page info">
-        <h1 className="text-3xl tracking-[2px]">ORDER'S MANAGEMENT</h1>
-        <p className="text-xs text-gray-400">
-          Oversee orders across the ShopCart
-        </p>
-      </div>
+    <div className="p-1 font-mono h-full flex flex-col overflow-auto">
       <div id="top" className="grid grid-cols-3 gap-4 my-3">
         <div className="border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px]">
           <label
@@ -139,9 +133,9 @@ function Order() {
 
       <div
         id="order_items"
-        className="border p-1 rounded-lg flex flex-col overflow-y-auto"
+        className="border p-1 rounded-lg flex flex-col"
       >
-        <div id="search tabs" className="flex">
+        <div id="search tabs" className="flex sticky top-0 bg-black">
           <div
             id="searchByName"
             className="w-full rounded-lg p-2 my-1 flex gap-2"
@@ -214,7 +208,7 @@ function Order() {
           </span>
         </div>
 
-        <div className="my-2 flex flex-col overflow-auto">
+        <div className="my-2 flex flex-col">
           {showOrderItems.map((orderItem, idx) => (
             <motion.li
               initial={{ x: -400, opacity: 0 }}

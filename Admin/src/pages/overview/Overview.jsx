@@ -15,7 +15,7 @@ import LineChart from "../chart/SalesChart";
 import RevenueChart from "../chart/RevenueChart";
 import UserChart from "../chart/UserChart";
 import ProductChart from "../chart/ProductChart";
-import SellerChart from "../chart/SellerChart"
+import SellerChart from "../chart/SellerChart";
 
 function Overview() {
   const dispatch = useDispatch();
@@ -71,14 +71,8 @@ function Overview() {
   }, []);
 
   return (
-    <div className="p-1 font-mono h-full flex flex-col">
-      <div className="sticky top-0 z-10 bg-black">
-        <div id="page info">
-          <h1 className="text-3xl tracking-[2px]">PLATEFORM OVERVIEW</h1>
-          <p className="text-xs text-gray-400">
-            Performance metrics for ShopCark ecosystem
-          </p>
-        </div>
+    <div className="p-1 font-mono h-full flex flex-col overflow-auto">
+      <div className=" bg-black">
         <div id="top" className="grid grid-cols-5 gap-4 my-3">
           <div className="border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px]">
             <div className="flex justify-between">
@@ -220,7 +214,7 @@ function Overview() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-1 border p-1 rounded-lg overflow-auto">
+      <div className="flex flex-col gap-1 border p-1 rounded-lg">
         <span className=" w-full inline-block text-center sticky top-0">
           YEAR : {new Date().getFullYear()}
         </span>
