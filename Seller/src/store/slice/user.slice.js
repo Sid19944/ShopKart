@@ -9,6 +9,7 @@ const userSlice = createSlice({
     user: {},
     error: null,
     message: null,
+    mode: false,
   },
   reducers: {
     // Get user
@@ -48,6 +49,11 @@ const userSlice = createSlice({
     clearMessag(state, action) {
       state.message = null;
     },
+
+    //
+    setMode(state, action) {
+      state.mode = action.payload;
+    },
   },
 });
 
@@ -63,7 +69,7 @@ export const getUser = () => async (dispatch) => {
         error.response.data.message || error.message,
       ),
     );
-    dispatch(userSlice.actions.clearMessag())
+    dispatch(userSlice.actions.clearMessag());
   }
 };
 
@@ -80,6 +86,10 @@ export const logout = () => async (dispatch) => {
       ),
     );
   }
+};
+
+export const setMode = (mode) => (dispatch) => {
+  dispatch(userSlice.actions.setMode(mode));
 };
 
 export default userSlice.reducer;

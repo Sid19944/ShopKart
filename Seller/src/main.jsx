@@ -7,20 +7,20 @@ import { Toaster } from "react-hot-toast";
 import store from "./store/store.js";
 
 createRoot(document.getElementById("root")).render(
-  <div className="bg-black min-h-screen min-w-screen text-white overflow-hidden">
-    <Toaster
-      position="bottom-left"
-      reverseOrder={false}
-      toastOptions={{
-        duration: 3000,
-      }}
-    />
-    <Provider store={store}>
+  <Provider store={store}>
+    <div className={`bg-black min-h-screen min-w-screen text-white overflow-hidden`}>
+      <Toaster
+        position="bottom-left"
+        reverseOrder={false}
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
       <BrowserRouter>
         <Routes>
           <Route path="/*" element={<App />} />
         </Routes>
       </BrowserRouter>
-    </Provider>
-  </div>,
+    </div>
+  </Provider>,
 );
