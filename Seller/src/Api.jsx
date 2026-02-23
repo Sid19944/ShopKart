@@ -6,9 +6,9 @@ const authUrl = axios.create({
   withCredentials: true,
 });
 
-const adminUrl = axios.create({
-  baseURL: `${url}/admin`,
+const sellerUrl = axios.create({
+  baseURL: `${url}/seller`,
   withCredentials: true,
 });
 
-export {url, adminUrl, authUrl };
+export {url, sellerUrl, authUrl };

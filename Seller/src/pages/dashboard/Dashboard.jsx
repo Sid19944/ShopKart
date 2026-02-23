@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useDebugValue, useEffect, useState } from "react";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -7,13 +7,21 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import BedtimeIcon from "@mui/icons-material/Bedtime";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Products from "../Products/Products";
+import { setMode } from "../../store/slice/user.slice";
 
 function Dashboard() {
+  const dispatch = useDispatch();
   const { mode } = useSelector((state) => state.user);
   const [showData, setShowData] = useState("dashboard");
+
+  const handleMode = () => {
+    dispatch(setMode(!mode));
+  };
 
   return (
     <div
@@ -48,15 +56,40 @@ function Dashboard() {
           </div>
         </div>
         <div
-          className={`${showData == "account" && "border-b-blue-600 font-bold border-b-2 blur-none"} hover:text-yellow-500 cursor-pointer flex items-center gap-1`}
-          onClick={() => setShowData("account")}
+          className={`${showData == "account" && "font-bold blur-none"} cursor-pointer flex items-center gap-1`}
         >
-          <span>Siddharth</span>
-          <img
-            src="logo.png"
-            alt="avatar"
-            className="h-full rounded-full border"
-          />
+          <button
+            className={`w-14 h-7 rounded-full flex items-center ${mode ? "bg-gray-500" : "bg-blue-500"} `}
+            onClick={handleMode}
+          >
+            <span
+              className={`w-5 h-5 rounded-full transform transition ${mode ? "translate-x-1" : "translate-x-7.5"} bg-black flex items-center justify-center`}
+              style={{ transition: "0.7s" }}
+            >
+              {mode ? (
+                <LightModeIcon
+                  style={{ height: "15px", animationDuration: "3s" }}
+                  className="text-yellow-600 animate-spin"
+                />
+              ) : (
+                <BedtimeIcon
+                  style={{ height: "15px" }}
+                  className="text-white"
+                />
+              )}
+            </span>
+          </button>
+          <div
+            onClick={() => setShowData("account")}
+            className="hover:text-yellow-500  cursor-pointer flex items-center gap-1 h-full "
+          >
+            <span>Siddharth</span>
+            <img
+              src="logo.png"
+              alt="avatar"
+              className="h-full rounded-full border"
+            />
+          </div>
         </div>
       </nav>
 
@@ -70,8 +103,34 @@ function Dashboard() {
           </span>
           <span className="font-bold">Seller Hub</span>
         </div>
+        {showData == "dashboard" && (
+          <div>
+            <button
+              className={`w-14 h-7 rounded-full flex items-center ${mode ? "bg-blue-500" : "bg-gray-500"} `}
+              onClick={handleMode}
+            >
+              <span
+                className={`w-5 h-5 rounded-full transform transition ${mode ? "translate-x-1" : "translate-x-7.5"} bg-black flex items-center justify-center`}
+                style={{ transition: "0.7s" }}
+              >
+                {mode ? (
+                  <LightModeIcon
+                    style={{ height: "15px", animationDuration: "3s" }}
+                    className="text-yellow-600 animate-spin"
+                  />
+                ) : (
+                  <BedtimeIcon
+                    style={{ height: "15px" }}
+                    className="text-white"
+                  />
+                )}
+              </span>
+            </button>
+          </div>
+        )}
       </nav>
-      <div className="h-[86%] sm:h-[93%] p-1">
+
+      <div className="h-[86%] sm:h-[93%]">
         {(() => {
           switch (showData) {
             case "dashboard":

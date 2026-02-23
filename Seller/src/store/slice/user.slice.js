@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { adminUrl, authUrl } from "../../Api";
 
 const userSlice = createSlice({
   name: "user",
@@ -7,6 +6,7 @@ const userSlice = createSlice({
     loading: false,
     isAuthenticated: false,
     user: {},
+    seller: {},
     error: null,
     message: null,
     mode: false,
@@ -24,6 +24,16 @@ const userSlice = createSlice({
     getUserFailed(state, action) {
       state.loading = false;
       state.isAuthenticated = false;
+      state.error = action.payload;
+    },
+
+    // get seller
+    getSellerSuccess(state, action) {
+      state.loading = false;
+      state.seller = action.payload;
+    },
+    getSellerFailed(state, action) {
+      state.loading = false;
       state.error = action.payload;
     },
 
