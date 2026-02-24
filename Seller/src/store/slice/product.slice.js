@@ -30,6 +30,16 @@ const productSlice = createSlice({
       state.error = action.payload;
     },
 
+    //
+    getProductSuccess(state, action) {
+      state.loading = false;
+      state.product = action.payload.product;
+    },
+    getProductFailed(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     // clear err and message
     clearError(state, action) {
       state.error = null;
@@ -50,6 +60,38 @@ export const getProducts = (pgNo) => async (dispatch) => {
   dispatch(productSlice.actions.dbCalling());
   try {
     const { data } = await sellerUrl(`/get-products/${pgNo}`);
+    dispatch(productSlice.actions.getProductsSuccess(data));
+    dispatch(productSlice.actions.clearError());
+  } catch (error) {
+    dispatch(
+      productSlice.actions.getProductsFailed(
+        error?.response?.data?.message || error.message,
+      ),
+    );
+    dispatch(productSlice.actions.clearMessage());
+  }
+};
+
+export const getProductsByName = (name) => async (dispatch) => {
+  dispatch(productSlice.actions.dbCalling());
+  try {
+    const { data } = await sellerUrl.get(`/get/product-by-name/${name}`);
+    dispatch(productSlice.actions.getProductsSuccess(data));
+    dispatch(productSlice.actions.clearError());
+  } catch (error) {
+    dispatch(
+      productSlice.actions.getProductsFailed(
+        error?.response?.data?.message || error.message,
+      ),
+    );
+    dispatch(productSlice.actions.clearMessage());
+  }
+};
+
+export const getSingleProduct = (id) => async (dispatch) => {
+  dispatch(productSlice.actions.dbCalling());
+  try {
+    const { data } = await sellerUrl.get(`/get/product-by-id/${id}`);
     dispatch(productSlice.actions.getProductsSuccess(data));
     dispatch(productSlice.actions.clearError());
   } catch (error) {

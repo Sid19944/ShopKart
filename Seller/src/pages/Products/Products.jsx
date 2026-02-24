@@ -7,7 +7,11 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../../store/slice/product.slice";
+import {
+  getProducts,
+  getProductsByName,
+  getSingleProduct,
+} from "../../store/slice/product.slice";
 
 import { motion } from "motion/react";
 
@@ -23,9 +27,29 @@ function Products() {
     selectedPage >= 1 && selectedPage <= tPage && setPage(selectedPage);
   };
 
+  const [searchId, setSearchId] = useState("");
+  const handleSearchId = () => {
+    dispatch(getSingleProduct(searchId));
+  };
+
+  const [searchName, setSearchName] = useState("");
+  const [debounce, setDebounce] = useState("");
   useEffect(() => {
-    dispatch(getProducts(page));
-  }, [page]);
+    const timer = setTimeout(() => {
+      setDebounce(searchName);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchName]);
+
+  useEffect(() => {
+    debounce.trim() && dispatch(getProductsByName(debounce));
+  }, [debounce]);
+
+  useEffect(() => {
+    if (debounce.trim() == "" && searchId.trim() == "")
+      dispatch(getProducts(page));
+  }, [page, debounce, searchId]);
   return (
     <div className="border-amber-300 flex flex-col h-full overflow-auto">
       <div
@@ -54,13 +78,22 @@ function Products() {
               type="text"
               className={`border ${mode ? "bg-gray-400" : "bg-gray-500"} w-full px-1`}
               placeholder="Search Product By Name"
+              defaultValue={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
             />
             <input
               type="text"
               className={`border ${mode ? "bg-gray-400" : "bg-gray-500"} w-full px-1 hidden sm:inline-block`}
-              placeholder="Search Product By ID"
+              placeholder="Search Product By ID, Enter 24 digit ID"
+              defaultValue={searchId}
+              onChange={(e) => setSearchId(e.target.value)}
             />
-            <button className="border px-2 bg-blue-500 font-semibold rounded-lg active:bg-blue-700 cursor-pointer hidden sm:inline-block">
+            <button
+              disabled={searchId.length != 24}
+              className="border px-2 bg-blue-500 font-semibold rounded-lg active:bg-blue-700 cursor-pointer hidden sm:inline-block
+              disabled:cursor-not-allowed disabled:bg-gray-400"
+              onClick={handleSearchId}
+            >
               Search
             </button>
           </div>
@@ -76,8 +109,8 @@ function Products() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1">
-          {products.map((product, idx) => (
+        <div id="list" className="flex flex-col gap-1">
+          {products?.map((product, idx) => (
             <motion.li
               initial={{ scale: 0, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
@@ -90,7 +123,6 @@ function Products() {
                 <span className="text-gray-500 hidden sm:inline-block">
                   {idx + 1}.
                 </span>
-
                 <img
                   src={product.image[0].url}
                   alt="Product"
@@ -146,38 +178,40 @@ function Products() {
           ))}
         </div>
 
-        <div className="sticky bottom-0">
-          <div
-            className={`h-fit py-1 items-center flex justify-center ${mode ? "bg-white text-black" : "bg-black text-white"}`}
-          >
-            <div className="max-w-[70%] overflow-x-auto p-2 flex gap-1">
-              {page != 1 && (
-                <ArrowBackIosNewIcon
-                  className="cursor-pointer"
-                  onClick={() => handlePage(page - 1)}
-                />
-              )}
+        {tPage > 0 && (
+          <div className="sticky bottom-0">
+            <div
+              className={`h-fit py-1 items-center flex justify-center ${mode ? "bg-white text-black" : "bg-black text-white"}`}
+            >
+              <div className="max-w-[70%] overflow-x-auto p-2 flex gap-1">
+                {page != 1 && (
+                  <ArrowBackIosNewIcon
+                    className="cursor-pointer"
+                    onClick={() => handlePage(page - 1)}
+                  />
+                )}
 
-              {[...Array(tPage)].map((_, idx) => {
-                return (
-                  <span
-                    key={idx}
-                    className={`border px-2 cursor-pointer ${page == idx + 1 && "bg-gray-400"}`}
-                    onClick={() => handlePage(idx + 1)}
-                  >
-                    {idx + 1}
-                  </span>
-                );
-              })}
-              {page != tPage && (
-                <ArrowForwardIosIcon
-                  className="cursor-pointer"
-                  onClick={() => handlePage(page + 1)}
-                />
-              )}
+                {[...Array(tPage)].map((_, idx) => {
+                  return (
+                    <span
+                      key={idx}
+                      className={`border px-2 cursor-pointer ${page == idx + 1 && "bg-gray-400"}`}
+                      onClick={() => handlePage(idx + 1)}
+                    >
+                      {idx + 1}
+                    </span>
+                  );
+                })}
+                {page != tPage && (
+                  <ArrowForwardIosIcon
+                    className="cursor-pointer"
+                    onClick={() => handlePage(page + 1)}
+                  />
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
