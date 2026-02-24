@@ -220,9 +220,6 @@ const approveProduct = AsyncHandler(async (req, res, next) => {
 
 const allOrder_items = AsyncHandler(async (req, res, next) => {
   const order_items = await Order_Item.find().populate("buyer");
-  if (!order_items.length) {
-    return next(new ErrorHandler("No Product ourder yet"));
-  }
 
   return res.status(200).json({
     success: true,

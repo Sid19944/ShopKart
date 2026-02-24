@@ -4,9 +4,10 @@ import {
   addMoreProductImage,
   updateProduct,
   deleteProductImage,
-  getSingleProduct,
+  getSingleProductById,
   getProductsByCategory,
   deleteProduct,
+  getSingleProductByName,
 } from "../controllers/products.controller.js";
 import { verifySeller } from "../middleware/verifySeller.js";
 import { verifyJwt } from "../middleware/verifyJWT.js";
@@ -16,7 +17,7 @@ const router = Router();
 
 router.route("/want").post(verifyJwt,wantSeller)
 
-router.route("/get-all-products").get(verifyJwt, verifySeller, getSellerProduct);
+router.route("/get-products/:page_no").get(verifyJwt, verifySeller, getSellerProduct);
 router.route("/add-product").post(verifyJwt, verifySeller, addNewProduct);
 router
   .route("/update-product/:prod_id")
@@ -29,7 +30,8 @@ router
   .route("/:prodid/delete/:imgid")
   .delete(verifyJwt, verifySeller, deleteProductImage);
 
-router.route("/get/product/:prodid").get(verifyJwt,verifySeller, getSingleProduct)
+router.route("/get/product-by-id/:prodid").get(verifyJwt,verifySeller, getSingleProductById)
+router.route("/get/product-by-name/:name").get(verifyJwt, verifySeller, getSingleProductByName)
 router.route("/get/product-category/:category").get(verifyJwt, verifySeller,getProductsByCategory)
 router.route("/delete/:product_id").delete(verifyJwt,verifySeller, deleteProduct)
 

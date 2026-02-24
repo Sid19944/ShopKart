@@ -14,7 +14,7 @@ const wantSeller = AsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Provide store name and address", 400));
   }
   const seller = await Seller.create({
-    seller_Id : req.user._id,
+    seller_Id: req.user._id,
     storeName,
     storeAddress,
   });
@@ -26,13 +26,18 @@ const wantSeller = AsyncHandler(async (req, res, next) => {
 });
 
 const getSellerProduct = AsyncHandler(async (req, res, next) => {
-  const products = await Product.find({ seller: req.user._id });
+  const page_no = req.params.page_no;
+
+  const tp= await Product.find()
+  const products = await Product.find({ seller: req.seller._id })
+    .limit(10)
+    .skip((page_no - 1) * 10);
+
   return res.status(200).json({
     success: true,
     products,
+    totalProduct : tp.length
   });
 });
-
-
 
 export { getSellerProduct, wantSeller };

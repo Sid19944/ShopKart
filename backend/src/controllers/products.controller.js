@@ -32,6 +32,10 @@ const addNewProduct = AsyncHandler(async (req, res, next) => {
       ? req.files.image
       : [req.files.image];
 
+    if (req.files.image.length > 5) {
+      return next(new ErrorHandler("You can Store Max 5 Image", 400));
+    }
+
     for (const img of image) {
       const response = await cloudinary.uploader.upload(img.tempFilePath, {
         folder: "E-Commerece Products",
@@ -126,7 +130,7 @@ const addMoreProductImage = AsyncHandler(async (req, res, next) => {
     },
   );
 
-  if (!product) {
+  if (product?.image?.length > 5 || !product) {
     uploadedImage.map(async (img) => {
       await cloudinary.uploader.destroy(img.public_id);
     });
@@ -217,7 +221,7 @@ const deleteProduct = AsyncHandler(async (req, res, next) => {
     cloudinary.uploader.destroy(img.public_id);
   });
 
-  await Product.deleteOne()
+  await Product.deleteOne();
   return res.status(200).json({
     success: true,
     message: "Product Deleted",
@@ -250,7 +254,7 @@ const getAllProducts = AsyncHandler(async (req, res, next) => {
   });
 });
 
-const getSingleProduct = AsyncHandler(async (req, res, next) => {
+const getSingleProductById = AsyncHandler(async (req, res, next) => {
   const prod_id = req.params.prodid;
   const product = await Product.findById(prod_id).populate("reviews");
   if (!product) {
@@ -258,8 +262,17 @@ const getSingleProduct = AsyncHandler(async (req, res, next) => {
   }
   return res.status(200).json({
     success: true,
-    product,
+    products : [product],
   });
+});
+
+const getSingleProductByName = AsyncHandler(async (req, res, next) => {
+  const name = req.params.name;
+  let products = await Product.find();
+  products = products.filter((prod) =>
+    prod.name.toLowerCase().trim().includes(name.toLowerCase().trim()),
+  );
+  return res.status(200).json({ success: true, products });
 });
 
 const getProductsByCategory = AsyncHandler(async (req, res, next) => {
@@ -285,6 +298,7 @@ export {
   updateProduct,
   deleteProduct,
   deleteProductImage,
-  getSingleProduct,
+  getSingleProductById,
+  getSingleProductByName,
   getProductsByCategory,
 };

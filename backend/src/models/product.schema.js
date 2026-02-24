@@ -1,11 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 import { Review } from "./review.schema.js";
+import ErrorHandler from "../utils/Error.Handler.js";
 
 const productSchema = new Schema(
   {
     name: {
       type: String,
       required: true,
+      
     },
     description: {
       type: String,
@@ -52,6 +54,13 @@ const productSchema = new Schema(
   },
   { timestamps: true },
 );
+
+productSchema.pre("validate", function (next) {
+  if (this.image.length > 5) {
+    return next(new ErrorHandler("You can store Max 5 Image", 400));
+  }
+  next();
+});
 
 productSchema.post("findOneAndDelete", async (product) => {
   await Review.deleteMany({ product_id: product._id });
