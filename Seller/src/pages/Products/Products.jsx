@@ -18,6 +18,7 @@ import {
 import { motion } from "motion/react";
 import ViewProduct from "./subComponent/ViewProduct";
 import toast from "react-hot-toast";
+import AddProduct from "./subComponent/AddProduct";
 
 function Products() {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ function Products() {
   );
   const [page, setPage] = useState(1);
   const [showproduct, setShowproduct] = useState(false);
+  const [addProduct, setAddProduct] = useState(false);
 
   const tPage = Math.ceil(totalProduct / 10);
 
@@ -91,7 +93,10 @@ function Products() {
             Moniter and Manage your Products acroos the ShopCart
           </span>
         </div>
-        <button className="border bg-blue-500 active:bg-blue-700 px-3 h-fit py-1 rounded-lg absolute right-0 top-2 sm:relative sm:top-0">
+        <button
+          className="border bg-blue-500 active:bg-blue-700 px-3 h-fit py-1 rounded-lg absolute right-0 top-2 sm:relative sm:top-0 cursor-pointer"
+          onClick={() => setAddProduct(!addProduct)}
+        >
           Add New Product
         </button>
       </div>
@@ -99,6 +104,7 @@ function Products() {
       <div className="flex flex-1 flex-col sm:overflow-y-auto">
         <div className="sticky top-0">
           <div
+            id="search"
             className={`flex gap-2 w-full h-fit p-2 ${mode ? "bg-white text-black" : "bg-black text-white"}`}
           >
             <input
@@ -216,6 +222,20 @@ function Products() {
               className="z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             >
               <ViewProduct remove={() => setShowproduct(!showproduct)} />
+            </motion.div>
+          )}
+          {addProduct && (
+            <motion.div
+              drag
+              dragConstraints={constraintsRef}
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className={`z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[90vh] w-full sm:w-fit overflow-hidden`}
+            >
+              <div className="overflow-y-auto">
+                <AddProduct />
+              </div>
             </motion.div>
           )}
         </div>

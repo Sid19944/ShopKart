@@ -17,7 +17,7 @@ function ViewProduct({ remove }) {
     <motion.div className={`border p-2 rounded-lg flex flex-col gap-2 min-w-100 ${mode ? "bg-mist-300 text-black" : "bg-gray-900"} `}>
       <div className="flex flex-col text-lg tracking-[2px]">
         <div className="flex justify-between ">
-          <span className="tracking-[2px] text-blue-700">
+          <span className="tracking-[2px] text-blue-700 font-semibold">
             PRODUCT'S DETAILS
           </span>
           <CloseIcon onClick={() => remove()} className="cursor-pointer" />
