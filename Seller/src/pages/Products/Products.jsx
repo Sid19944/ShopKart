@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -15,14 +15,17 @@ function Products() {
   const dispatch = useDispatch();
   const { mode } = useSelector((state) => state.user);
   const { products, totalProduct } = useSelector((state) => state.products);
-  
+  const [page, setPage] = useState(1);
 
-  //   const tPage = Math.ceil(totalProduct / 10);
-  const tPage = 20;
+  const tPage = Math.ceil(totalProduct / 10);
+
+  const handlePage = (selectedPage) => {
+    selectedPage >= 1 && selectedPage <= tPage && setPage(selectedPage);
+  };
 
   useEffect(() => {
-    dispatch(getProducts(1));
-  }, []);
+    dispatch(getProducts(page));
+  }, [page]);
   return (
     <div className="border-amber-300 flex flex-col h-full overflow-auto">
       <div
@@ -42,7 +45,7 @@ function Products() {
         </button>
       </div>
 
-      <div className="flex flex-1 flex-col sm:overflow-y-auto border">
+      <div className="flex flex-1 flex-col sm:overflow-y-auto">
         <div className="sticky top-0">
           <div
             className={`flex gap-2 w-full h-fit p-2 ${mode ? "bg-white text-black" : "bg-black text-white"}`}
@@ -145,21 +148,34 @@ function Products() {
 
         <div className="sticky bottom-0">
           <div
-            className={`h-fit border py-1 items-center flex justify-center ${mode ? "bg-white text-black" : "bg-black text-white"}`}
+            className={`h-fit py-1 items-center flex justify-center ${mode ? "bg-white text-black" : "bg-black text-white"}`}
           >
-            <ArrowBackIosNewIcon className=""/>
-            <div className="max-w-[70%] overflow-scroll p-2 flex gap-1">
+            <div className="max-w-[70%] overflow-x-auto p-2 flex gap-1">
+              {page != 1 && (
+                <ArrowBackIosNewIcon
+                  className="cursor-pointer"
+                  onClick={() => handlePage(page - 1)}
+                />
+              )}
+
               {[...Array(tPage)].map((_, idx) => {
                 return (
-                  <span 
-                  
-                  key={idx} className="border px-2">
+                  <span
+                    key={idx}
+                    className={`border px-2 cursor-pointer ${page == idx + 1 && "bg-gray-400"}`}
+                    onClick={() => handlePage(idx + 1)}
+                  >
                     {idx + 1}
                   </span>
                 );
               })}
+              {page != tPage && (
+                <ArrowForwardIosIcon
+                  className="cursor-pointer"
+                  onClick={() => handlePage(page + 1)}
+                />
+              )}
             </div>
-            <ArrowForwardIosIcon />
           </div>
         </div>
       </div>

@@ -1,8 +1,5 @@
-import React, { useDebugValue, useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
-import LogoutIcon from "@mui/icons-material/Logout";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
@@ -11,13 +8,13 @@ import BedtimeIcon from "@mui/icons-material/Bedtime";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
 import { useDispatch, useSelector } from "react-redux";
-import Products from "../Products/Products";
+const Products = lazy(() => import("../Products/Products"));
 import { setMode } from "../../store/slice/user.slice";
 
 function Dashboard() {
   const dispatch = useDispatch();
   const { mode } = useSelector((state) => state.user);
-  const [showData, setShowData] = useState("dashboard");
+  const [showData, setShowData] = useState("products");
 
   const handleMode = () => {
     dispatch(setMode(!mode));
@@ -136,7 +133,11 @@ function Dashboard() {
             case "dashboard":
               return "Dashboard";
             case "products":
-              return <Products />;
+              return (
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Products />
+                </Suspense>
+              );
             case "orders":
               return "Orders";
             case "account":
