@@ -30,14 +30,20 @@ const productSlice = createSlice({
       state.error = action.payload;
     },
 
-    //
-    getProductSuccess(state, action) {
+    // delete Product
+    productDeleteSuccess(state, action) {
       state.loading = false;
-      state.product = action.payload.product;
+      state.message = action.payload;
     },
-    getProductFailed(state, action) {
+    productDeleteFailed(state, action) {
       state.loading = false;
       state.error = action.payload;
+    },
+
+    //
+    setSingleProduct(state, action) {
+      state.loading = false;
+      state.product = action.payload;
     },
 
     // clear err and message
@@ -104,4 +110,24 @@ export const getSingleProduct = (id) => async (dispatch) => {
   }
 };
 
+export const deleteProduct = (id) => async (dispatch) => {
+  dispatch(productSlice.actions.dbCalling());
+  try {
+    const { data } = await sellerUrl.delete(`/delete/${id}`);
+    console.log(data)
+    dispatch(productSlice.actions.productDeleteSuccess(data.message));
+    dispatch(productSlice.actions.clearError());
+  } catch (error) {
+    dispatch(
+      productSlice.actions.productDeleteFailed(
+        error?.response?.data?.message || error.message,
+      ),
+    );
+    dispatch(productSlice.actions.clearMessage());
+  }
+};
+
+export const setSingleProduct = (product) => (dispatch) => {
+  dispatch(productSlice.actions.setSingleProduct(product));
+};
 export default productSlice.reducer;

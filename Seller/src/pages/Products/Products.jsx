@@ -8,28 +8,45 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteProduct,
   getProducts,
   getProductsByName,
   getSingleProduct,
+  setSingleProduct,
 } from "../../store/slice/product.slice";
 
 import { motion } from "motion/react";
+import ViewProduct from "./subComponent/ViewProduct";
+import toast from "react-hot-toast";
 
 function Products() {
   const dispatch = useDispatch();
+  const constraintsRef = useRef(null);
   const { mode } = useSelector((state) => state.user);
-  const { products, totalProduct } = useSelector((state) => state.products);
+  const { products, totalProduct, error, message } = useSelector(
+    (state) => state.products,
+  );
   const [page, setPage] = useState(1);
+  const [showproduct, setShowproduct] = useState(false);
 
   const tPage = Math.ceil(totalProduct / 10);
+
+  const handleViewProduct = (prod_id) => {
+    setShowproduct(!showproduct);
+    const product = products.filter((prod) => prod._id == prod_id);
+    dispatch(setSingleProduct(product[0]));
+  };
 
   const handlePage = (selectedPage) => {
     selectedPage >= 1 && selectedPage <= tPage && setPage(selectedPage);
   };
-
   const [searchId, setSearchId] = useState("");
   const handleSearchId = () => {
     dispatch(getSingleProduct(searchId));
+  };
+
+  const handleProductDelete = (id) => {
+    dispatch(deleteProduct(id));
   };
 
   const [searchName, setSearchName] = useState("");
@@ -47,11 +64,21 @@ function Products() {
   }, [debounce]);
 
   useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+    if (message) {
+      toast.success(message);
+    }
     if (debounce.trim() == "" && searchId.trim() == "")
       dispatch(getProducts(page));
-  }, [page, debounce, searchId]);
+  }, [page, debounce, searchId, error, message]);
+
   return (
-    <div className="border-amber-300 flex flex-col h-full overflow-auto">
+    <div
+      className="border-amber-300 flex flex-col h-full overflow-auto "
+      ref={constraintsRef}
+    >
       <div
         id="info"
         className={`flex h-fit px-1 gap-1 pb-1 border-b border-b-gray-400 justify-between  items-center ${mode ? "bg-white text-black" : "bg-black text-white"}`}
@@ -117,7 +144,7 @@ function Products() {
               transition={{ duration: 0.8 }}
               viewport={{ once: false }}
               key={product._id}
-              className={`h-50 sm:h-16 flex flex-col sm:flex-row gap-1 p-1 w-full sm:justify-between border-b border-b-gray-500 sm:text-center ${mode ? "bg-white text-black" : "bg-black text-white"}`}
+              className={`${showproduct && "blur-[2px]"} h-50 sm:h-16 flex flex-col sm:flex-row gap-1 p-1 w-full sm:justify-between border-b border-b-gray-500 sm:text-center ${mode ? "bg-white text-black" : "bg-black text-white"}`}
             >
               <div className="flex h-3/4 sm:h-full justify-center sm:justify-start sm:items-center gap-1 sm:w-[30%] w-full">
                 <span className="text-gray-500 hidden sm:inline-block">
@@ -162,20 +189,35 @@ function Products() {
               </div>
               <div className="w-[20%] hidden sm:flex items-center justify-evenly">
                 <RemoveRedEyeIcon
-                  className="rounded-lg active:bg-blue-600"
+                  className="rounded-lg active:bg-blue-600 cursor-pointer"
                   style={{ height: "35px", width: "45px" }}
+                  onClick={() => handleViewProduct(product._id)}
                 />
                 <BorderColorIcon
-                  className="rounded-lg active:bg-green-600"
+                  className="rounded-lg active:bg-green-600 cursor-pointer"
                   style={{ height: "35px", width: "45px" }}
                 />
                 <DeleteIcon
-                  className="rounded-lg active:bg-red-600"
+                  className="rounded-lg active:bg-red-600 cursor-pointer"
                   style={{ height: "35px", width: "45px" }}
+                  onClick={() => handleProductDelete(product._id)}
                 />
               </div>
             </motion.li>
           ))}
+
+          {showproduct && (
+            <motion.div
+              drag
+              dragConstraints={constraintsRef}
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            >
+              <ViewProduct remove={() => setShowproduct(!showproduct)} />
+            </motion.div>
+          )}
         </div>
 
         {tPage > 0 && (
