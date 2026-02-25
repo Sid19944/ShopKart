@@ -10,6 +10,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import { useDispatch, useSelector } from "react-redux";
 const Products = lazy(() => import("../Products/Products"));
 import { setMode } from "../../store/slice/user.slice";
+import Orders from "../Orders/Orders";
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -139,7 +140,7 @@ function Dashboard() {
                 </Suspense>
               );
             case "orders":
-              return "Orders";
+              return <Orders/>;
             case "account":
               return "Accont";
             default:

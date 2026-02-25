@@ -50,6 +50,36 @@ const productSlice = createSlice({
       state.error = action.payload;
     },
 
+    // update product
+    updateProductSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    updateProductFailed(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // delete Image
+    deleteProductImageSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    deleteProductImageFailed(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // add more image
+    addMoreProductImageSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    addMoreProductImageFailed(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     // set SingleProduct
     setSingleProduct(state, action) {
       state.loading = false;
@@ -153,6 +183,58 @@ export const addNewProduct = (formData) => async (dispatch) => {
   } catch (error) {
     dispatch(
       productSlice.actions.addProductFailed(
+        error?.response?.data?.message || error.message,
+      ),
+    );
+    dispatch(productSlice.actions.clearMessage());
+  }
+};
+
+export const updateProduct = (prod_id, newData) => async (dispatch) => {
+  dispatch(productSlice.actions.dbCalling());
+  try {
+    const { data } = await sellerUrl.put(`/update-product/${prod_id}`, newData);
+    dispatch(productSlice.actions.updateProductSuccess(data.message));
+    dispatch(productSlice.actions.clearError());
+  } catch (error) {
+    dispatch(
+      productSlice.actions.updateProductFailed(
+        error?.response?.data?.message || error.message,
+      ),
+    );
+    dispatch(productSlice.actions.clearMessage());
+  }
+};
+
+export const deleteProductImage = (prod_id, img_id) => async (dispatch) => {
+  dispatch(productSlice.actions.dbCalling());
+  try {
+    const { data } = await sellerUrl.delete(`/${prod_id}/delete/${img_id}`);
+    dispatch(productSlice.actions.deleteProductImageSuccess(data.message));
+    dispatch(productSlice.actions.clearError());
+  } catch (error) {
+    dispatch(
+      productSlice.actions.deleteProductImageFailed(
+        error?.response?.data?.message || error.message,
+      ),
+    );
+    dispatch(productSlice.actions.clearMessage());
+  }
+};
+
+export const addMoreProductImage = (prod_id, img) => async (dispatch) => {
+  dispatch(productSlice.actions.dbCalling());
+  try {
+    const { data } = await sellerUrl.put(`/add/product-image/${prod_id}`, img, {
+      headers: {
+        "Content-Type": "multipary/form-data",
+      },
+    });
+    dispatch(productSlice.actions.addMoreProductImageSuccess(data.message));
+    dispatch(productSlice.actions.clearError());
+  } catch (error) {
+    dispatch(
+      productSlice.actions.addMoreProductImageFailed(
         error?.response?.data?.message || error.message,
       ),
     );

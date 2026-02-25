@@ -25,7 +25,9 @@ function AddProduct({ remove }) {
   });
 
   if (message == "New Product added") {
-    remove();
+    setTimeout(() => {
+      remove();
+    }, 300);
   }
 
   const handleData = (e) => {
@@ -64,11 +66,11 @@ function AddProduct({ remove }) {
       >
         Add New Product
       </span>
-        <CloseIcon
-          className={`absolute right-2 top-2 cursor-pointer active:text-blue-600 `}
-          onClick={() => remove()}
-        />
-      <div className=" h-fit flex flex-col gap-1 p-2 items-center justify-center rounded-xl">
+      <CloseIcon
+        className={`absolute right-2 top-2 cursor-pointer active:text-blue-600 `}
+        onClick={() => remove()}
+      />
+      <div className="h-fit flex flex-col gap-1 p-2 items-center justify-center rounded-xl">
         <label
           htmlFor="file-upload"
           className="flex flex-col items-center border w-full rounded-xl cursor-pointer active:bg-blue-700"

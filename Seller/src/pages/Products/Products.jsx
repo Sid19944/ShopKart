@@ -19,6 +19,7 @@ import { motion } from "motion/react";
 import ViewProduct from "./subComponent/ViewProduct";
 import toast from "react-hot-toast";
 import AddProduct from "./subComponent/AddProduct";
+import EditPruduct from "./subComponent/EditPruduct";
 
 function Products() {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function Products() {
   const [page, setPage] = useState(1);
   const [showproduct, setShowproduct] = useState(false);
   const [addProduct, setAddProduct] = useState(false);
+  const [editProduct, setEditProduct] = useState(false);
 
   const tPage = Math.ceil(totalProduct / 10);
 
@@ -39,17 +41,22 @@ function Products() {
     dispatch(setSingleProduct(product[0]));
   };
 
+  const handleEditProduct = (prod_id) => {
+    setEditProduct(!editProduct);
+    const product = products.filter((prod) => prod._id == prod_id);
+    dispatch(setSingleProduct(product[0]));
+  };
+
+  const handleProductDelete = (id) => {
+    dispatch(deleteProduct(id));
+  };
+
   const handlePage = (selectedPage) => {
     selectedPage >= 1 && selectedPage <= tPage && setPage(selectedPage);
   };
   const [searchId, setSearchId] = useState("");
   const handleSearchId = () => {
     dispatch(getSingleProduct(searchId));
-  };
-
-  const handleProductDelete = (id) => {
-    console.log(id)
-    dispatch(deleteProduct(id));
   };
 
   const [searchName, setSearchName] = useState("");
@@ -160,7 +167,8 @@ function Products() {
                 <img
                   src={product.image[0].url}
                   alt="Product"
-                  className="h-full"
+                  className="h-full cursor-pointer"
+                  onClick={() => handleViewProduct(product._id)}
                 />
                 <span className="hidden sm:inline-block">{product.name}</span>
               </div>
@@ -203,6 +211,7 @@ function Products() {
                 <BorderColorIcon
                   className="rounded-lg active:bg-green-600 cursor-pointer"
                   style={{ height: "35px", width: "45px" }}
+                  onClick={() => handleEditProduct(product._id)}
                 />
                 <DeleteIcon
                   className="rounded-lg active:bg-red-600 cursor-pointer"
@@ -220,7 +229,7 @@ function Products() {
               initial={{ scale: 0, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[90vh] w-full sm:w-fit overflow-hidden"
+              className="z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[90vh] w-full sm:w-fit "
             >
               <div className="overflow-y-auto">
                 <ViewProduct remove={() => setShowproduct(!showproduct)} />
@@ -234,10 +243,25 @@ function Products() {
               initial={{ scale: 0, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className={`z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[90vh] w-full sm:w-fit overflow-hidden`}
+              className={`z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[90vh] w-full sm:w-fit `}
             >
               <div className="overflow-y-auto">
-                <AddProduct remove={()=>setAddProduct(!addProduct)}/>
+                <AddProduct remove={() => setAddProduct(!addProduct)} />
+              </div>
+            </motion.div>
+          )}
+
+          {editProduct && (
+            <motion.div
+              drag
+              dragConstraints={constraintsRef}
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className={`z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[90vh] w-full sm:w-fit `}
+            >
+              <div className="overflow-auto">
+                <EditPruduct remove={() => setEditProduct(!editProduct)} />
               </div>
             </motion.div>
           )}
@@ -251,7 +275,8 @@ function Products() {
               <div className="max-w-[70%] overflow-x-auto p-2 flex gap-1">
                 {page != 1 && (
                   <ArrowBackIosNewIcon
-                    className="cursor-pointer"
+                    className="cursor-pointer border rounded-lg p-1 active:bg-blue-600 bg-blue-400"
+                    style={{ height: "30px", width: "40px" }}
                     onClick={() => handlePage(page - 1)}
                   />
                 )}
@@ -260,7 +285,7 @@ function Products() {
                   return (
                     <span
                       key={idx}
-                      className={`border px-2 cursor-pointer ${page == idx + 1 && "bg-gray-400"}`}
+                      className={`border px-2 cursor-pointer ${page == idx + 1 && "bg-blue-600"} flex items-center`}
                       onClick={() => handlePage(idx + 1)}
                     >
                       {idx + 1}
@@ -269,7 +294,8 @@ function Products() {
                 })}
                 {page != tPage && (
                   <ArrowForwardIosIcon
-                    className="cursor-pointer"
+                    className="cursor-pointer border rounded-lg p-1 active:bg-blue-600 bg-blue-400"
+                    style={{ height: "30px", width: "40px" }}
                     onClick={() => handlePage(page + 1)}
                   />
                 )}

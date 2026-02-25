@@ -15,14 +15,17 @@ function ViewProduct({ remove }) {
 
   return (
     <motion.div
-      className={`border p-2 rounded-lg flex flex-col gap-2 ${mode ? "bg-mist-300 text-black" : "bg-gray-900"} `}
+      className={`border p-2 rounded-lg max-h-[90vh] overflow-y-auto flex flex-col gap-2 ${mode ? "bg-mist-300 text-black" : "bg-gray-900"} `}
     >
       <div className="flex flex-col text-lg tracking-[2px]">
         <div className="flex justify-between ">
           <span className="tracking-[2px] text-blue-700 font-semibold">
             PRODUCT'S DETAILS
           </span>
-          <CloseIcon onClick={() => remove()} className="cursor-pointer active:text-blue-600" />
+          <CloseIcon
+            onClick={() => remove()}
+            className="cursor-pointer active:text-blue-600"
+          />
         </div>
 
         <span className="text-xs text-gray-500">ID : {product._id}</span>
@@ -37,13 +40,13 @@ function ViewProduct({ remove }) {
               className="h-25 rounded-lg "
             />
           </div>
-          <div className="flex gap-2 px-3">
+          <div className="flex gap-3 px-5 overflow-x-auto">
             {product.image.map((img, idx) => (
               <img
                 src={img.url}
                 key={idx}
                 alt="image"
-                className={`h-12 opacity-80 border ${selectedImage != img.url && "blur-[0.5px]"} cursor-pointer`}
+                className={`h-14 opacity-80 border ${selectedImage != img.url && "blur-[0.5px]"} cursor-pointer`}
                 onClick={() => setSelectedImage(img.url)}
               />
             ))}
