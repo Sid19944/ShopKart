@@ -59,7 +59,6 @@ productSchema.pre("validate", function (next) {
   if (this.image.length > 5) {
     return next(new ErrorHandler("You can store Max 5 Image", 400));
   }
-  next();
 });
 
 productSchema.post("findOneAndDelete", async (product) => {

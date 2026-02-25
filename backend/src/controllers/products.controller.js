@@ -6,7 +6,7 @@ import { v2 as cloudinary } from "cloudinary";
 import httpStatus from "http-status-codes";
 
 const addNewProduct = AsyncHandler(async (req, res, next) => {
-  const { name, description, price, stock, category } = req.body;
+  const { name, description, price, stock, category, discount } = req.body;
   const user_id = req.user._id;
 
   const seller = await Seller.findOne({ seller_id: user_id });
@@ -54,6 +54,7 @@ const addNewProduct = AsyncHandler(async (req, res, next) => {
     image: uploadedImage,
     price,
     stock,
+    discount,
     category,
     seller: seller._id,
   });
@@ -112,7 +113,10 @@ const addMoreProductImage = AsyncHandler(async (req, res, next) => {
 
   // check the current user is the seller of the product
   const checkSeller = await Product.findById(prod_id);
-  if (checkSeller.seller != req.user._id && req.user.role != "admin") {
+  if (
+    checkSeller.seller.toString() != req.seller._id.toString() &&
+    req.user.role != "admin"
+  ) {
     return next(new ErrorHandler("Unauthorized Access", 400));
   }
 
@@ -135,7 +139,18 @@ const addMoreProductImage = AsyncHandler(async (req, res, next) => {
       await cloudinary.uploader.destroy(img.public_id);
     });
 
-    return next(new ErrorHandler("product not found", 400));
+    let ids = uploadedImage.map((img) => img.public_id);
+    console.log(ids);
+
+    await Product.findByIdAndUpdate(prod_id, {
+      $pull: {
+        image: {
+          public_id: { $in: ids },
+        },
+      },
+    });
+
+    return next(new ErrorHandler("Max Image Limit Reached", 400));
   }
 
   return res.status(httpStatus.CREATED).json({
@@ -159,7 +174,11 @@ const updateProduct = AsyncHandler(async (req, res, next) => {
 
   // check the current user is the seller of the product
   const checkSeller = await Product.findById(prod_id);
-  if (checkSeller.seller != req.user._id && req.user.role != "admin") {
+  console.log(checkSeller.seller, req.seller._id);
+  if (
+    checkSeller.seller.toString() != req.seller._id.toString() &&
+    req.user.role != "admin"
+  ) {
     return next(new ErrorHandler("This is not your Product", 400));
   }
 
@@ -186,8 +205,11 @@ const deleteProductImage = AsyncHandler(async (req, res, next) => {
   const image = findProduct.image.filter((img) => img._id == img_id);
 
   // check the current user is the seller of the product
-  const checkSeller = await Product.findById(prod_id);
-  if (checkSeller.seller != req.user._id && req.user.role != "admin") {
+
+  if (
+    findProduct.seller.toString() != req.seller._id.toString() &&
+    req.user.role != "admin"
+  ) {
     return next(new ErrorHandler("Unauthorized Access", 400));
   }
 
@@ -207,7 +229,7 @@ const deleteProductImage = AsyncHandler(async (req, res, next) => {
 
   return res
     .status(200)
-    .json({ success: true, message: "image deleted", product });
+    .json({ success: true, message: "Image deleted", product });
 });
 
 const deleteProduct = AsyncHandler(async (req, res, next) => {
@@ -221,7 +243,7 @@ const deleteProduct = AsyncHandler(async (req, res, next) => {
     cloudinary.uploader.destroy(img.public_id);
   });
 
-  await Product.deleteOne();
+  await Product.findByIdAndDelete(product._id);
   return res.status(200).json({
     success: true,
     message: "Product Deleted",
@@ -234,12 +256,17 @@ const getAllProducts = AsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Provide valid page no.", 400));
   }
   let products = await Product.find()
-    .populate({
-      path: "reviews",
-      populate: {
-        path: "user_id",
+    .populate([
+      {
+        path: "seller",
       },
-    })
+      {
+        path: "reviews",
+        populate: {
+          path: "user_id",
+        },
+      },
+    ])
     .limit(10)
     .skip((page - 1) * 10);
 
@@ -262,7 +289,7 @@ const getSingleProductById = AsyncHandler(async (req, res, next) => {
   }
   return res.status(200).json({
     success: true,
-    products : [product],
+    products: [product],
   });
 });
 

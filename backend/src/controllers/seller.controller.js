@@ -28,15 +28,26 @@ const wantSeller = AsyncHandler(async (req, res, next) => {
 const getSellerProduct = AsyncHandler(async (req, res, next) => {
   const page_no = req.params.page_no;
 
-  const tp= await Product.find()
+  const tp = await Product.find();
   const products = await Product.find({ seller: req.seller._id })
+    .populate([
+      {
+        path: "seller",
+      },
+      {
+        path: "reviews",
+        populate: {
+          path: "user_id",
+        },
+      },
+    ])
     .limit(10)
     .skip((page_no - 1) * 10);
 
   return res.status(200).json({
     success: true,
     products,
-    totalProduct : tp.length
+    totalProduct: tp.length,
   });
 });
 
