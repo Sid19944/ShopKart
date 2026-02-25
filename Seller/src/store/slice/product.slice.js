@@ -40,7 +40,17 @@ const productSlice = createSlice({
       state.error = action.payload;
     },
 
-    //
+    // add new product
+    addProductSuccess(state, action) {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    addProductFailed(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // set SingleProduct
     setSingleProduct(state, action) {
       state.loading = false;
       state.product = action.payload;
@@ -114,7 +124,6 @@ export const deleteProduct = (id) => async (dispatch) => {
   dispatch(productSlice.actions.dbCalling());
   try {
     const { data } = await sellerUrl.delete(`/delete/${id}`);
-    console.log(data)
     dispatch(productSlice.actions.productDeleteSuccess(data.message));
     dispatch(productSlice.actions.clearError());
   } catch (error) {
@@ -129,5 +138,25 @@ export const deleteProduct = (id) => async (dispatch) => {
 
 export const setSingleProduct = (product) => (dispatch) => {
   dispatch(productSlice.actions.setSingleProduct(product));
+};
+
+export const addNewProduct = (formData) => async (dispatch) => {
+  dispatch(productSlice.actions.dbCalling());
+  try {
+    const { data } = await sellerUrl.post(`/add-product`, formData, {
+      headers: {
+        "Content-Type": "multipary/form-data",
+      },
+    });
+    dispatch(productSlice.actions.addProductSuccess(data.message));
+    dispatch(productSlice.actions.clearError());
+  } catch (error) {
+    dispatch(
+      productSlice.actions.addProductFailed(
+        error?.response?.data?.message || error.message,
+      ),
+    );
+    dispatch(productSlice.actions.clearMessage());
+  }
 };
 export default productSlice.reducer;

@@ -48,6 +48,7 @@ function Products() {
   };
 
   const handleProductDelete = (id) => {
+    console.log(id)
     dispatch(deleteProduct(id));
   };
 
@@ -78,7 +79,7 @@ function Products() {
 
   return (
     <div
-      className="border-amber-300 flex flex-col h-full overflow-auto "
+      className={`border-amber-300 flex flex-col h-full overflow-auto `}
       ref={constraintsRef}
     >
       <div
@@ -150,7 +151,7 @@ function Products() {
               transition={{ duration: 0.8 }}
               viewport={{ once: false }}
               key={product._id}
-              className={`${showproduct && "blur-[2px]"} h-50 sm:h-16 flex flex-col sm:flex-row gap-1 p-1 w-full sm:justify-between border-b border-b-gray-500 sm:text-center ${mode ? "bg-white text-black" : "bg-black text-white"}`}
+              className={`${(showproduct || addProduct) && "blur-[2px]"} h-50 sm:h-16 flex flex-col sm:flex-row gap-1 p-1 w-full sm:justify-between border-b border-b-gray-500 sm:text-center ${mode ? "bg-white text-black" : "bg-black text-white"}`}
             >
               <div className="flex h-3/4 sm:h-full justify-center sm:justify-start sm:items-center gap-1 sm:w-[30%] w-full">
                 <span className="text-gray-500 hidden sm:inline-block">
@@ -219,9 +220,11 @@ function Products() {
               initial={{ scale: 0, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              className="z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[90vh] w-full sm:w-fit overflow-hidden"
             >
-              <ViewProduct remove={() => setShowproduct(!showproduct)} />
+              <div className="overflow-y-auto">
+                <ViewProduct remove={() => setShowproduct(!showproduct)} />
+              </div>
             </motion.div>
           )}
           {addProduct && (
@@ -234,7 +237,7 @@ function Products() {
               className={`z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[90vh] w-full sm:w-fit overflow-hidden`}
             >
               <div className="overflow-y-auto">
-                <AddProduct />
+                <AddProduct remove={()=>setAddProduct(!addProduct)}/>
               </div>
             </motion.div>
           )}

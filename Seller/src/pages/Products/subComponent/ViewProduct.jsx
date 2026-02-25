@@ -7,20 +7,22 @@ import { motion } from "motion/react";
 
 function ViewProduct({ remove }) {
   const { product } = useSelector((state) => state.products);
-  const {mode }= useSelector(state=>state.user)
+  const { mode } = useSelector((state) => state.user);
   let totalRating = 0;
   product?.reviews?.map((rev) => (totalRating += rev.rating));
 
   const [selectedImage, setSelectedImage] = useState(product.image[0].url);
 
   return (
-    <motion.div className={`border p-2 rounded-lg flex flex-col gap-2 min-w-100 ${mode ? "bg-mist-300 text-black" : "bg-gray-900"} `}>
+    <motion.div
+      className={`border p-2 rounded-lg flex flex-col gap-2 ${mode ? "bg-mist-300 text-black" : "bg-gray-900"} `}
+    >
       <div className="flex flex-col text-lg tracking-[2px]">
         <div className="flex justify-between ">
           <span className="tracking-[2px] text-blue-700 font-semibold">
             PRODUCT'S DETAILS
           </span>
-          <CloseIcon onClick={() => remove()} className="cursor-pointer" />
+          <CloseIcon onClick={() => remove()} className="cursor-pointer active:text-blue-600" />
         </div>
 
         <span className="text-xs text-gray-500">ID : {product._id}</span>
@@ -36,12 +38,13 @@ function ViewProduct({ remove }) {
             />
           </div>
           <div className="flex gap-2 px-3">
-            {product.image.map((img) => (
+            {product.image.map((img, idx) => (
               <img
                 src={img.url}
+                key={idx}
                 alt="image"
                 className={`h-12 opacity-80 border ${selectedImage != img.url && "blur-[0.5px]"} cursor-pointer`}
-                onClick={()=>setSelectedImage(img.url)}
+                onClick={() => setSelectedImage(img.url)}
               />
             ))}
           </div>

@@ -56,7 +56,7 @@ function Dashboard() {
           className={`${showData == "account" && "font-bold blur-none"} cursor-pointer flex items-center gap-1`}
         >
           <button
-            className={`w-14 h-7 rounded-full flex items-center ${mode ? "bg-gray-500" : "bg-blue-500"} `}
+            className={`w-14 h-7 rounded-full flex items-center ${mode ? "bg-gray-500" : "bg-blue-500"} cursor-pointer`}
             onClick={handleMode}
           >
             <span
