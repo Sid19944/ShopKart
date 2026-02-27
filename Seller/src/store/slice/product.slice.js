@@ -109,12 +109,13 @@ export const getProducts = (pgNo) => async (dispatch) => {
     dispatch(productSlice.actions.getProductsSuccess(data));
     dispatch(productSlice.actions.clearError());
   } catch (error) {
-    dispatch(
-      productSlice.actions.getProductsFailed(
-        error?.response?.data?.message || error.message,
-      ),
-    );
-    dispatch(productSlice.actions.clearMessage());
+    console.log(error.response.data)
+    // dispatch(
+    //   productSlice.actions.getProductsFailed(
+    //     error?.response?.data?.message || error.message,
+    //   ),
+    // );
+    // dispatch(productSlice.actions.clearMessage());
   }
 };
 

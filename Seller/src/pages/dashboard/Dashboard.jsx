@@ -15,7 +15,7 @@ import Orders from "../Orders/Orders";
 function Dashboard() {
   const dispatch = useDispatch();
   const { mode } = useSelector((state) => state.user);
-  const [showData, setShowData] = useState("products");
+  const [showData, setShowData] = useState("orders");
 
   const handleMode = () => {
     dispatch(setMode(!mode));

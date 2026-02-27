@@ -5,6 +5,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -115,20 +116,36 @@ function Products() {
             id="search"
             className={`flex gap-2 w-full h-fit p-2 ${mode ? "bg-white text-black" : "bg-black text-white"}`}
           >
-            <input
-              type="text"
-              className={`border ${mode ? "bg-gray-400" : "bg-gray-500"} w-full px-1`}
-              placeholder="Search Product By Name"
-              defaultValue={searchName}
-              onChange={(e) => setSearchName(e.target.value)}
-            />
-            <input
-              type="text"
-              className={`border ${mode ? "bg-gray-400" : "bg-gray-500"} w-full px-1 hidden sm:inline-block`}
-              placeholder="Search Product By ID, Enter 24 digit ID"
-              defaultValue={searchId}
-              onChange={(e) => setSearchId(e.target.value)}
-            />
+            <div className="w-full relative">
+              <input
+                type="text"
+                className={`border ${mode ? "bg-gray-400" : "bg-gray-500"} w-full px-1`}
+                placeholder="Search Product By Name"
+                value={searchName || ""}
+                onChange={(e) => setSearchName(e.target.value)}
+              />
+              <span
+                className="absolute right-0 bg-gray-400"
+                onClick={() => setSearchName("")}
+              >
+                <CloseIcon />
+              </span>
+            </div>
+            <div className="w-full relative">
+              <input
+                type="text"
+                className={`border ${mode ? "bg-gray-400" : "bg-gray-500"} w-full px-1 hidden sm:inline-block`}
+                placeholder="Search Product By ID, Enter 24 digit ID"
+                value={searchId || ""}
+                onChange={(e) => setSearchId(e.target.value)}
+              />
+              <span
+                className="absolute right-0 bg-gray-400"
+                onClick={() => setSearchId("")}
+              >
+                <CloseIcon />
+              </span>
+            </div>
             <button
               disabled={searchId.length != 24}
               className="border px-2 bg-blue-500 font-semibold rounded-lg active:bg-blue-700 cursor-pointer hidden sm:inline-block
@@ -232,7 +249,11 @@ function Products() {
               className="z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-[90vh] w-full sm:w-fit "
             >
               <div className="overflow-y-auto">
-                <ViewProduct remove={() => setShowproduct(!showproduct)} />
+                <ViewProduct
+                  remove={() => setShowproduct(!showproduct)}
+                  editProd={(prod_id) => handleEditProduct(prod_id)}
+                  deleteProd={(prod_id) => handleProductDelete(prod_id)}
+                />
               </div>
             </motion.div>
           )}

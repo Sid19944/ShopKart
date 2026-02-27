@@ -13,7 +13,7 @@ createRoot(document.getElementById("root")).render(
         position="bottom-left"
         reverseOrder={false}
         toastOptions={{
-          duration: 3000,
+          duration: 5000,
         }}
       />
       <BrowserRouter>

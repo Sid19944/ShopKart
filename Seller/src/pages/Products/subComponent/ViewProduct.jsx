@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import Rating from "@mui/material/Rating";
 import { motion } from "motion/react";
 
-function ViewProduct({ remove }) {
+function ViewProduct({ remove, editProd, deleteProd }) {
   const { product } = useSelector((state) => state.products);
   const { mode } = useSelector((state) => state.user);
   let totalRating = 0;
@@ -83,6 +83,23 @@ function ViewProduct({ remove }) {
           <label>DESCRIPTION :</label>
           <h1>{product.description}</h1>
         </div>
+      </div>
+      <div className="flex justify-around py-2">
+        <button
+          className="border px-3 rounded-lg bg-orange-400 active:bg-orange-600 cursor-pointer"
+          onClick={() => editProd(product._id)}
+        >
+          Edit
+        </button>
+        <button
+          className="border px-3 rounded-lg bg-red-500 active:bg-red-700 cursor-pointer"
+          onClick={() => {
+            deleteProd(product._id);
+            remove();
+          }}
+        >
+          Delete
+        </button>
       </div>
     </motion.div>
   );
