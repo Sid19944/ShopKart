@@ -59,6 +59,10 @@ function ViewOrder({ remove ,updateStatus }) {
               <label>ORDER QTY :</label>
               <h1 className="font-semibold">{order.quentity}</h1>
             </div>
+            <div className="flex flex-wrap w-full gap-2 border-b border-gray-500">
+              <label>BUYER :</label>
+              <h1 className="font-semibold">{order.buyer.name}</h1>
+            </div>
           </div>
         </div>
       </div>

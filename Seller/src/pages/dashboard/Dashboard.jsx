@@ -10,7 +10,8 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import { useDispatch, useSelector } from "react-redux";
 const Products = lazy(() => import("../Products/Products"));
 import { setMode } from "../../store/slice/user.slice";
-import Orders from "../Orders/Orders";
+import Overview from "../overview/Overview";
+const Orders = lazy(() => import("../Orders/Orders"));
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -35,10 +36,10 @@ function Dashboard() {
         </div>
         <div className="flex gap-2">
           <div
-            className={`${showData == "dashboard" && "border-b-blue-600 font-bold border-b-3 blur-none"} hover:text-yellow-500 cursor-pointer blur-[0.6px] px-3 flex items-center`}
-            onClick={() => setShowData("dashboard")}
+            className={`${showData == "overview" && "border-b-blue-600 font-bold border-b-3 blur-none"} hover:text-yellow-500 cursor-pointer blur-[0.6px] px-3 flex items-center`}
+            onClick={() => setShowData("overview")}
           >
-            Dashboard
+            Overview
           </div>
           <div
             className={`${showData == "products" && "border-b-blue-600 font-bold border-b-3 blur-none"} hover:text-yellow-500 cursor-pointer blur-[0.6px] px-3 flex items-center`}
@@ -101,7 +102,7 @@ function Dashboard() {
           </span>
           <span className="font-bold">Seller Hub</span>
         </div>
-        {showData == "dashboard" && (
+        {showData == "overview" && (
           <div>
             <button
               className={`w-14 h-7 rounded-full flex items-center ${mode ? "bg-blue-500" : "bg-gray-500"} `}
@@ -131,8 +132,8 @@ function Dashboard() {
       <div className="h-[86%] sm:h-[93%]">
         {(() => {
           switch (showData) {
-            case "dashboard":
-              return "Dashboard";
+            case "overview":
+              return <Overview/>;
             case "products":
               return (
                 <Suspense fallback={<div>Loading...</div>}>
@@ -140,7 +141,11 @@ function Dashboard() {
                 </Suspense>
               );
             case "orders":
-              return <Orders/>;
+              return (
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Orders />
+                </Suspense>
+              );
             case "account":
               return "Accont";
             default:
@@ -152,11 +157,11 @@ function Dashboard() {
       {/* mobile nav */}
       <nav className="border-t border-gray-400 h-[7%] min-h-11 flex justify-between sm:hidden">
         <div
-          className={`flex flex-col items-center justify-center p-1 blur-[0.5px] ${showData == "dashboard" && "border-b-3 border-b-blue-500 blur-none"}`}
-          onClick={() => setShowData("dashboard")}
+          className={`flex flex-col items-center justify-center p-1 blur-[0.5px] ${showData == "overview" && "border-b-3 border-b-blue-500 blur-none"}`}
+          onClick={() => setShowData("overview")}
         >
-          <DashboardIcon />
-          <span className="text-xs text-gray-400">Dashboard</span>
+          <overviewIcon />
+          <span className="text-xs text-gray-400">overview</span>
         </div>
 
         <div

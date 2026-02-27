@@ -28,7 +28,8 @@ function ViewProduct({ remove, editProd, deleteProd }) {
           />
         </div>
 
-        <span className="text-xs text-gray-500">ID : {product._id}</span>
+
+        <span className="text-xs text-gray-500 min-w-75">ID : <input type="text" className="min-w-70" defaultValue={product._id} /></span>
       </div>
 
       <div id="product" className="border rounded-lg flex">
