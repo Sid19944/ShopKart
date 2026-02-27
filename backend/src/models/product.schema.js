@@ -1,13 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 import { Review } from "./review.schema.js";
 import ErrorHandler from "../utils/Error.Handler.js";
+import { Seller } from "./seller.schema.js";
 
 const productSchema = new Schema(
   {
     name: {
       type: String,
       required: true,
-      
     },
     description: {
       type: String,
@@ -64,6 +64,21 @@ productSchema.pre("validate", function (next) {
 productSchema.post("findOneAndDelete", async (product) => {
   await Review.deleteMany({ product_id: product._id });
   console.log("all review deleted for thsis product");
+});
+
+productSchema.post("findOneAndDelete", async (product) => {
+  console.log(product);
+  const a = await Seller.findByIdAndUpdate(
+    product.seller,
+    {
+      $pull: {
+        products: product._id,
+      },
+    },
+    { new: true },
+  );
+
+  console.log(a);
 });
 
 export const Product = mongoose.model("Product", productSchema);

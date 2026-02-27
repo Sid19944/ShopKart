@@ -100,26 +100,62 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
 
 // seller
 const getAllOrderedProducts = AsyncHandler(async (req, res, next) => {
-  const products = [];
-  const allProduct = await Product.find({ seller: req.user._id });
-  for (const product of allProduct) {
-    products.push(product._id);
-  }
-
+  const page_no = req.params.page_no;
+  const tOrder = await Order_Item.find();
   const orders = await Order_Item.find({
-    product_id: { $in: products },
-  });
+    product_id: { $in: req.seller.products },
+  })
+    .populate("buyer")
+    .limit(10)
+    .skip((page_no - 1) * 10);
 
   return res.status(200).json({
     success: true,
     orders,
+    totalOrder: tOrder.length,
   });
 });
 
 const updateOrderStatus = AsyncHandler(async (req, res, next) => {
   const order_id = req.params.order_id;
-  const order = await Order_Item.findById(order_id);
-  console.log(order);
+  const { orderStatus } = req.body;
+  const order = await Order_Item.findByIdAndUpdate(
+    order_id,
+    {
+      $set: {
+        order_status: orderStatus,
+      },
+    },
+    { new: true },
+  );
+  if (!order) {
+    return next(new ErrorHandler("Invalid Order ID", 400));
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: `Order status updated to ${order.order_status}`,
+  });
 });
 
-export { item_ordered, getAllOrderedProducts, updateOrderStatus };
+const getOrderById = AsyncHandler(async (req, res, next) => {
+  const order_id = req.params.order_id;
+  const fOrder = await Order_Item.findById(order_id);
+
+  if (!fOrder) return next(new ErrorHandler("Invalid Order ID", 400));
+
+  const order = req.seller?.products?.filter(
+    (prod) => prod.toString() === fOrder?.product_id.toString(),
+  );
+
+  if (!order.length) {
+    return next(new ErrorHandler("This is not your order", 400));
+  }
+
+  return res.status(200).json({
+    success: true,
+    orders: [fOrder],
+  });
+});
+
+export { item_ordered, getAllOrderedProducts, updateOrderStatus, getOrderById };

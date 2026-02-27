@@ -11,13 +11,22 @@ import {
 } from "../controllers/products.controller.js";
 import { verifySeller } from "../middleware/verifySeller.js";
 import { verifyJwt } from "../middleware/verifyJWT.js";
-import { getSellerProduct, wantSeller } from "../controllers/seller.controller.js";
-import { getAllOrderedProducts, updateOrderStatus } from "../controllers/order_item.controller.js";
+import {
+  getSellerProduct,
+  wantSeller,
+} from "../controllers/seller.controller.js";
+import {
+  getAllOrderedProducts,
+  getOrderById,
+  updateOrderStatus,
+} from "../controllers/order_item.controller.js";
 const router = Router();
 
-router.route("/want").post(verifyJwt,wantSeller)
+router.route("/want").post(verifyJwt, wantSeller);
 
-router.route("/get-products/:page_no").get(verifyJwt, verifySeller, getSellerProduct);
+router
+  .route("/get-products/:page_no")
+  .get(verifyJwt, verifySeller, getSellerProduct);
 router.route("/add-product").post(verifyJwt, verifySeller, addNewProduct);
 router
   .route("/update-product/:prod_id")
@@ -30,13 +39,25 @@ router
   .route("/:prodid/delete/:imgid")
   .delete(verifyJwt, verifySeller, deleteProductImage);
 
-router.route("/get/product-by-id/:prodid").get(verifyJwt,verifySeller, getSingleProductById)
-router.route("/get/product-by-name/:name").get(verifyJwt, verifySeller, getSingleProductByName)
-router.route("/get/product-category/:category").get(verifyJwt, verifySeller,getProductsByCategory)
-router.route("/delete/:product_id").delete(verifyJwt,verifySeller, deleteProduct)
-
+router
+  .route("/get/product-by-id/:prodid")
+  .get(verifyJwt, verifySeller, getSingleProductById);
+router
+  .route("/get/product-by-name/:name")
+  .get(verifyJwt, verifySeller, getSingleProductByName);
+router
+  .route("/get/product-category/:category")
+  .get(verifyJwt, verifySeller, getProductsByCategory);
+router
+  .route("/delete/:product_id")
+  .delete(verifyJwt, verifySeller, deleteProduct);
 
 // order
-router.route("/get-ordered-products").get(verifyJwt,verifySeller, getAllOrderedProducts)
-router.route("/update/order-status/:order_id").put(verifyJwt,verifySeller,updateOrderStatus)
+router
+  .route("/get-ordered-products/:page_no")
+  .get(verifyJwt, verifySeller, getAllOrderedProducts);
+router
+  .route("/update/order-status/:order_id")
+  .put(verifyJwt, verifySeller, updateOrderStatus);
+router.route("/get/order-by-id/:order_id").get(verifyJwt,verifySeller,getOrderById)
 export default router;

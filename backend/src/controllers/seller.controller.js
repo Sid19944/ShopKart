@@ -14,7 +14,7 @@ const wantSeller = AsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Provide store name and address", 400));
   }
   const seller = await Seller.create({
-    seller_Id: req.user._id,
+    seller_id: req.user._id,
     storeName,
     storeAddress,
   });

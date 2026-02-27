@@ -5,8 +5,10 @@ import ErrorHandler from "../utils/Error.Handler.js";
 export const verifySeller = AsyncHandler(async (req, res, next) => {
   if (req.user.role == "seller" || req.user.role == "admin") {
     const seller = await Seller.findOne({ seller_id: req.user._id });
+    if (!seller) {
+      return next(new ErrorHandler("You Are Not a Seller", 400));
+    }
     req.seller = seller;
-
     next();
   } else {
     return next(
