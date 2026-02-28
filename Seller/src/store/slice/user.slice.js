@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { authUrl, sellerUrl } from "../../Api";
 
 const userSlice = createSlice({
   name: "user",
@@ -7,6 +8,7 @@ const userSlice = createSlice({
     isAuthenticated: false,
     user: {},
     seller: {},
+    address: [],
     error: null,
     message: null,
     mode: false,
@@ -28,9 +30,13 @@ const userSlice = createSlice({
     },
 
     // get seller
+    getSellerRequest(state, action) {
+      state.loading = true;
+    },
     getSellerSuccess(state, action) {
       state.loading = false;
-      state.seller = action.payload;
+      state.seller = action.payload.seller;
+      state.address = action.payload.address;
     },
     getSellerFailed(state, action) {
       state.loading = false;
@@ -76,7 +82,23 @@ export const getUser = () => async (dispatch) => {
   } catch (error) {
     dispatch(
       userSlice.actions.getUserFailed(
-        error.response.data.message || error.message,
+        error?.response?.data?.message || error.message,
+      ),
+    );
+    dispatch(userSlice.actions.clearMessag());
+  }
+};
+
+export const getSeller = () => async (dispatch) => {
+  dispatch(userSlice.actions.getSellerRequest());
+  try {
+    const { data } = await sellerUrl.get("/get-curr-seller");
+    dispatch(userSlice.actions.getSellerSuccess(data));
+    dispatch(userSlice.actions.clearAll());
+  } catch (error) {
+    dispatch(
+      userSlice.actions.getSellerFailed(
+        error?.response?.data?.message || error.message,
       ),
     );
     dispatch(userSlice.actions.clearMessag());

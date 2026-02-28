@@ -10,13 +10,14 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import { useDispatch, useSelector } from "react-redux";
 const Products = lazy(() => import("../Products/Products"));
 import { setMode } from "../../store/slice/user.slice";
-import Overview from "../overview/Overview";
+const Overview = lazy(() => import("../overview/Overview"));
 const Orders = lazy(() => import("../Orders/Orders"));
+const Account = lazy(() => import("../account/Account"));
 
 function Dashboard() {
   const dispatch = useDispatch();
-  const { mode } = useSelector((state) => state.user);
-  const [showData, setShowData] = useState("orders");
+  const { mode, user } = useSelector((state) => state.user);
+  const [showData, setShowData] = useState("account");
 
   const handleMode = () => {
     dispatch(setMode(!mode));
@@ -84,7 +85,7 @@ function Dashboard() {
           >
             <span>Siddharth</span>
             <img
-              src="logo.png"
+              src={user.avatar}
               alt="avatar"
               className="h-full rounded-full border"
             />
@@ -105,7 +106,7 @@ function Dashboard() {
         {showData == "overview" && (
           <div>
             <button
-              className={`w-14 h-7 rounded-full flex items-center ${mode ? "bg-blue-500" : "bg-gray-500"} `}
+              className={`w-14 h-7 rounded-full flex items-center ${mode ? "bg-gray-500" : "bg-blue-500"} `}
               onClick={handleMode}
             >
               <span
@@ -133,7 +134,11 @@ function Dashboard() {
         {(() => {
           switch (showData) {
             case "overview":
-              return <Overview/>;
+              return (
+                <Suspense fallback={<div>Loading....</div>}>
+                  <Overview />
+                </Suspense>
+              );
             case "products":
               return (
                 <Suspense fallback={<div>Loading...</div>}>
@@ -147,7 +152,11 @@ function Dashboard() {
                 </Suspense>
               );
             case "account":
-              return "Accont";
+              return (
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Account />
+                </Suspense>
+              );
             default:
               return "Invalid Selection";
           }
@@ -160,7 +169,7 @@ function Dashboard() {
           className={`flex flex-col items-center justify-center p-1 blur-[0.5px] ${showData == "overview" && "border-b-3 border-b-blue-500 blur-none"}`}
           onClick={() => setShowData("overview")}
         >
-          <overviewIcon />
+          <DashboardIcon />
           <span className="text-xs text-gray-400">overview</span>
         </div>
 
