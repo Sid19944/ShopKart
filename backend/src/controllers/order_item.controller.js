@@ -50,6 +50,7 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
 
       const order = await Order_Item.create({
         buyer: req.user._id,
+        seller_id: product.seller,
         product_id: product._id,
         name: product.name,
         img: {
@@ -101,7 +102,9 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
 // seller
 const getAllOrderedProducts = AsyncHandler(async (req, res, next) => {
   const page_no = req.params.page_no;
-  const tOrder = await Order_Item.find();
+  const tOrder = await Order_Item.find({
+    product_id: { $in: req.seller.products },
+  });
   const orders = await Order_Item.find({
     product_id: { $in: req.seller.products },
   })
