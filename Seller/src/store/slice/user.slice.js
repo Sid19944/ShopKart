@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authUrl, sellerUrl } from "../../Api";
+import { addressUrl, authUrl, sellerUrl } from "../../Api";
 
 const userSlice = createSlice({
   name: "user",
@@ -8,7 +8,6 @@ const userSlice = createSlice({
     isAuthenticated: false,
     user: {},
     seller: {},
-    address: [],
     error: null,
     message: null,
     mode: false,
@@ -36,12 +35,13 @@ const userSlice = createSlice({
     getSellerSuccess(state, action) {
       state.loading = false;
       state.seller = action.payload.seller;
-      state.address = action.payload.address;
     },
     getSellerFailed(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
+
+
 
     // logout user
     logoutRequest(state, action) {
@@ -104,6 +104,7 @@ export const getSeller = () => async (dispatch) => {
     dispatch(userSlice.actions.clearMessag());
   }
 };
+
 
 export const logout = () => async (dispatch) => {
   dispatch(userSlice.actions.logoutRequest());

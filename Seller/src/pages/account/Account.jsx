@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSeller } from "../../store/slice/user.slice";
+import {  getSeller } from "../../store/slice/user.slice";
 
 import LogoutIcon from "@mui/icons-material/Logout";
 import toast from "react-hot-toast";
 
 function Account() {
   const dispatch = useDispatch();
-  const { user, seller, address, mode } = useSelector((state) => state.user);
+  const { user, seller, mode } = useSelector((state) => state.user);
+  const { address } = useSelector((state) => state.address);
 
   const addres = address.filter((add) => add._id == seller.storeAddress);
 
@@ -17,6 +18,7 @@ function Account() {
         position: "top-center",
       });
   };
+  useEffect(() => {}, []);
 
   return (
     <div
@@ -71,11 +73,14 @@ function Account() {
       >
         <div className="flex justify-between items-center">
           <h1 className="font-semibold">All Address</h1>
-          <button className="border p-2 px-3 rounded-lg bg-blue-400 active:bg-blue-600 cursor-pointer">Add New Address</button>
+          <button className="border p-2 px-3 rounded-lg bg-blue-400 active:bg-blue-600 cursor-pointer">
+            Add New Address
+          </button>
         </div>
         <div className="gap-3 mt-2 flex flex-wrap">
-          {address?.map((addres) => (
+          {address?.map((addres, idx) => (
             <div
+              key={idx}
               className={`flex flex-col border w-fit p-2 rounded-lg ${mode ? "bg-white" : "bg-gray-900"}`}
             >
               <span>{addres?.addressLine},</span>
