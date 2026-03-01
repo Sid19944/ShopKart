@@ -2,6 +2,7 @@ import React from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { authUrl, url } from "../../Api";
+import { Link } from "react-router-dom";
 
 function Auth() {
   const handleGoogleLogin = async (e) => {
@@ -16,6 +17,11 @@ function Auth() {
     await authUrl.get("/github");
   };
 
+  const wantToSeller = (e) => {
+    e.preventDefault();
+    console.log("Want seller");
+  };
+
   return (
     <div className="h-screen flex font-serif">
       <form className="flex gap-4 flex-col items-center justify-center p-6">
@@ -27,7 +33,7 @@ function Auth() {
           />
           <h1>ShopCart</h1>
         </div>
-        <h1 className="w-full text-2xl">Welcome Back Admin</h1>
+        <h1 className="w-full text-2xl">Welcome Back Seller</h1>
         <h1 className="text-2xl">Login/ Register into your Account</h1>
         <button
           className="hover:shadow-[0px_0px_3px_3px] active:shadow-[0px_0px_3px_3px] shadow-white w-full p-2 rounded-full flex items-center justify-center gap-2 font-bold bg-gradient-to-r from-white via-red-400 to-blue-700 text-black cursor-pointer"
@@ -41,6 +47,12 @@ function Auth() {
         >
           <GitHubIcon /> GitHub
         </button>
+        <Link
+          className="underline cursor-pointer active:text-blue-600 w-full text-end px-2"
+          to={"/want-seller"}
+        >
+          Want to be seller
+        </Link>
       </form>
       <div className="">
         {/* <img src="logo.png" alt="demo" className="w-full h-full object-cover"/> */}

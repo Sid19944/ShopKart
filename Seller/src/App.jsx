@@ -3,9 +3,9 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import Auth from "./pages/auth/Auth";
 import Dashboard from "./pages/dashboard/Dashboard";
 import { useDispatch, useSelector } from "react-redux";
-import { getSeller, getUser, logout } from "./store/slice/user.slice";
+import {  getUser, logout } from "./store/slice/user.slice";
 import toast from "react-hot-toast";
-import { getAllAddress } from "./store/slice/address.slice";
+import WantSeller from "./pages/wantSeller/WantSeller";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -19,22 +19,17 @@ function App() {
       navigate("/login");
 
       dispatch(logout());
+      return;
     }
+    isAuthenticated && navigate("/");
   }, [isAuthenticated]);
-
-  const { error, message } = useSelector((state) => state.address);
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(getSeller());
-      dispatch(getAllAddress());
-    }
-  }, [error, message]);
 
   return (
     <>
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Auth />} />
+        <Route path="/want-seller" element={<WantSeller />} />
       </Routes>
     </>
   );

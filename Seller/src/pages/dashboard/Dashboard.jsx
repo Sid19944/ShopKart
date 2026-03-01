@@ -9,12 +9,15 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 
 import { useDispatch, useSelector } from "react-redux";
 const Products = lazy(() => import("../Products/Products"));
-import { setMode } from "../../store/slice/user.slice";
+import { getSeller, setMode } from "../../store/slice/user.slice";
+import { useNavigate } from "react-router-dom";
+import { getAllAddress } from "../../store/slice/address.slice";
 const Overview = lazy(() => import("../overview/Overview"));
 const Orders = lazy(() => import("../Orders/Orders"));
 const Account = lazy(() => import("../account/Account"));
 
 function Dashboard() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mode, user, isAuthenticated } = useSelector((state) => state.user);
   const [showData, setShowData] = useState("overview");
@@ -22,6 +25,14 @@ function Dashboard() {
   const handleMode = () => {
     dispatch(setMode(!mode));
   };
+
+  const { error, message } = useSelector((state) => state.address);
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(getSeller());
+      dispatch(getAllAddress());
+    }
+  }, [isAuthenticated, error, message]);
 
   return (
     <div
