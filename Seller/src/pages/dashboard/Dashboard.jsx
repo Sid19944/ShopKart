@@ -16,7 +16,7 @@ const Account = lazy(() => import("../account/Account"));
 
 function Dashboard() {
   const dispatch = useDispatch();
-  const { mode, user } = useSelector((state) => state.user);
+  const { mode, user, isAuthenticated } = useSelector((state) => state.user);
   const [showData, setShowData] = useState("overview");
 
   const handleMode = () => {

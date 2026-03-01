@@ -41,8 +41,6 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
 
-
-
     // logout user
     logoutRequest(state, action) {
       state.loading = true;
@@ -104,7 +102,6 @@ export const getSeller = () => async (dispatch) => {
     dispatch(userSlice.actions.clearMessag());
   }
 };
-
 
 export const logout = () => async (dispatch) => {
   dispatch(userSlice.actions.logoutRequest());

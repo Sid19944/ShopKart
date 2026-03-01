@@ -35,13 +35,12 @@ function LineChart({saleReport}) {
     labels.push(getMonthName(item._id));
   });
 
-
   const data = {
     labels,
     datasets: [
       {
         label: "Sales",
-        data: saleReport?.map(item=>item.totalQtySale),
+        data: saleReport?.map(item=>item.totalSales),
         borderColor: "rgb(0, 130, 54)",
         backgroundColor: "rgba(0, 130, 54,0.5)",
       },

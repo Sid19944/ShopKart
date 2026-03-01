@@ -3,11 +3,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import Auth from "./pages/auth/Auth";
 import Dashboard from "./pages/dashboard/Dashboard";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getSeller,
-  getUser,
-  logout,
-} from "./store/slice/user.slice";
+import { getSeller, getUser, logout } from "./store/slice/user.slice";
 import toast from "react-hot-toast";
 import { getAllAddress } from "./store/slice/address.slice";
 
@@ -28,8 +24,10 @@ function App() {
 
   const { error, message } = useSelector((state) => state.address);
   useEffect(() => {
-    dispatch(getSeller());
-    dispatch(getAllAddress());
+    if (isAuthenticated) {
+      dispatch(getSeller());
+      dispatch(getAllAddress());
+    }
   }, [error, message]);
 
   return (

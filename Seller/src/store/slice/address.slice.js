@@ -58,6 +58,11 @@ const addressSlice = createSlice({
       state.error = action.payload;
     },
 
+    // set single address
+    setSingleAddress(state,action){
+      state.addres = action.payload
+    },
+
     // clear Error And Message
     clearAll(state, action) {
       state.error = null;
@@ -84,10 +89,10 @@ export const getAllAddress = () => async (dispatch) => {
   }
 };
 
-export const addNewAddress = (data) => async (dispatch) => {
+export const addNewAddress = (address) => async (dispatch) => {
   dispatch(addressSlice.actions.dbCalling());
   try {
-    const { data } = await addressUrl.post(`/add`, data);
+    const { data } = await addressUrl.post(`/add`, address);
     dispatch(addressSlice.actions.clearAll());
     dispatch(addressSlice.actions.addNewAddressSuccess(data.message));
   } catch (error) {
@@ -131,5 +136,9 @@ export const deleteAddress = (address_id) => async (dispatch) => {
     dispatch(addressSlice.actions.clearMessag());
   }
 };
+
+export const setSingleAddress = (addres) => async(dispatch)=>{
+  dispatch(addressSlice.actions.setSingleAddress(addres))
+}
 
 export default addressSlice.reducer;

@@ -55,7 +55,7 @@ function Orders() {
   }, [page, searchId, error, message]);
   return (
     <div
-      className={`border-amber-300 flex flex-col h-full overflow-auto `}
+      className={`border-amber-300 flex flex-col h-full overflow-auto relative`}
       ref={constraintsRef}
     >
       <div

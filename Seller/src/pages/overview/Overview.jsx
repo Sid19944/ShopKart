@@ -19,7 +19,7 @@ import { useSelector } from "react-redux";
 function Overview() {
   const [data, setData] = useState("");
   const [monthlyReport, setMothlyReport] = useState("");
-  const {mode} = useSelector(state=>state.user)
+  const { mode } = useSelector((state) => state.user);
   useEffect(() => {
     (async () => {
       await sellerUrl
@@ -43,13 +43,15 @@ function Overview() {
   }, []);
 
   return (
-    <div className={`flex flex-col h-full ${mode && "bg-gray-400" }`}>
+    <div className={`flex flex-col h-full ${mode && "bg-gray-400"}`}>
       <div className="overflow-auto flex flex-col gap-1">
         <div
           id="top"
           className="flex flex-wrap w-full justify-around p-2 gap-1"
         >
-          <div className={`border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px] min-w-40 sm:w-[31%] w-[95%] ${mode ? "bg-white" : "bg-gray-900"}`}>
+          <div
+            className={`border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px] min-w-40 sm:w-[31%] w-[95%] ${mode ? "bg-white" : "bg-gray-900"}`}
+          >
             <div className="flex justify-between ">
               <span className="text-blue-600 bg-blue-300 border px-2 rounded-lg">
                 <AccountBalanceWalletIcon />
@@ -78,7 +80,9 @@ function Overview() {
             </span>
           </div>
 
-          <div className={`border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px] min-w-40 sm:w-[31%] w-[95%] ${mode ? "bg-white" : "bg-gray-900"}`}>
+          <div
+            className={`border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px] min-w-40 sm:w-[31%] w-[95%] ${mode ? "bg-white" : "bg-gray-900"}`}
+          >
             <div className="flex justify-between">
               <span className="border px-2 rounded-lg bg-green-300 text-green-700">
                 <LocalShippingIcon />
@@ -105,7 +109,9 @@ function Overview() {
               </span>
             </span>
           </div>
-          <div className={`border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px] min-w-40 sm:w-[31%] w-[95%] ${mode ? "bg-white" : "bg-gray-900"}`}>
+          <div
+            className={`border p-3 rounded-lg overflow-hidden hover:shadow-[0px_0px_3px_3px] min-w-40 sm:w-[31%] w-[95%] ${mode ? "bg-white" : "bg-gray-900"}`}
+          >
             <div className="flex justify-between">
               <span className="text-purple-600 bg-purple-300 border px-2 rounded-lg">
                 <InventoryIcon />
@@ -135,35 +141,18 @@ function Overview() {
           </div>
         </div>
 
-        <div className="w-full flex gap-1 flex-wrap justify-around ">
-          <div className={`border border-dashed sm:w-[70%] w-full p-1 ${mode ? "bg-white" : "bg-gray-900"} rounded-lg`}>
-            <ProductChart productReport={monthlyReport.productReport} />
-          </div>
-          <div className={`border border-dashed sm:w-[28%] w-full p-1 gap-3 flex flex-col rounded-lg ${mode ? "bg-white" : "bg-gray-900"}`}>
-            <div className="flex flex-wrap gap-2 items-center">
-              <h1>Total Product :</h1>
-              <CountUp
-                end={data.totalProduct}
-                duration={2}
-                className="text-2xl"
-              />
-            </div>
-            <div className="flex flex-wrap gap-2 items-center">
-              <h1>Product Added Last 30 days :</h1>
-              <CountUp
-                end={data.lastThirtyDayProducts}
-                duration={2}
-                className="text-2xl"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="w-full flex gap-1 flex-wrap justify-around">
-          <div className={`border border-dashed sm:w-[70%] w-full p-1 rounded-lg ${mode ? "bg-white" : "bg-gray-900"}`}>
+        <div
+          id="revenueChart"
+          className="w-full flex gap-1 flex-wrap justify-around"
+        >
+          <div
+            className={`border border-dashed sm:w-[70%] w-full p-1 rounded-lg ${mode ? "bg-white" : "bg-gray-900"}`}
+          >
             <RevenueChart revenueReport={monthlyReport.revenueReport} />
           </div>
-          <div className={`border border-dashed sm:w-[28%] w-full p-1 gap-3 flex flex-col rounded-lg ${mode ? "bg-white" : "bg-gray-900"}`}>
+          <div
+            className={`border border-dashed sm:w-[28%] w-full p-1 gap-3 flex flex-col rounded-lg ${mode ? "bg-white" : "bg-gray-900"}`}
+          >
             <div className="flex flex-wrap gap-2 items-center">
               <h1>Total Revenue :</h1>
               <CountUp
@@ -183,11 +172,49 @@ function Overview() {
           </div>
         </div>
 
-        <div className="w-full flex gap-1 flex-wrap justify-around">
-          <div className={`border border-dashed sm:w-[70%] w-full p-1 rounded-lg ${mode ? "bg-white" : "bg-gray-900"}`}>
+        <div
+          id="productChart"
+          className="w-full flex gap-1 flex-wrap justify-around "
+        >
+          <div
+            className={`border border-dashed sm:w-[70%] w-full p-1 ${mode ? "bg-white" : "bg-gray-900"} rounded-lg`}
+          >
+            <ProductChart productReport={monthlyReport.productReport} />
+          </div>
+          <div
+            className={`border border-dashed sm:w-[28%] w-full p-1 gap-3 flex flex-col rounded-lg ${mode ? "bg-white" : "bg-gray-900"}`}
+          >
+            <div className="flex flex-wrap gap-2 items-center">
+              <h1>Total Product :</h1>
+              <CountUp
+                end={data.totalProduct}
+                duration={2}
+                className="text-2xl"
+              />
+            </div>
+            <div className="flex flex-wrap gap-2 items-center">
+              <h1>Product Added Last 30 days :</h1>
+              <CountUp
+                end={data.lastThirtyDayProducts}
+                duration={2}
+                className="text-2xl"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="saleChart"
+          className="w-full flex gap-1 flex-wrap justify-around"
+        >
+          <div
+            className={`border border-dashed sm:w-[70%] w-full p-1 rounded-lg ${mode ? "bg-white" : "bg-gray-900"}`}
+          >
             <SalesChart saleReport={monthlyReport.saleReport} />
           </div>
-          <div className={`border border-dashed sm:w-[28%] w-full p-1 gap-3 flex flex-col rounded-lg ${mode ? "bg-white" : "bg-gray-900"}`}>
+          <div
+            className={`border border-dashed sm:w-[28%] w-full p-1 gap-3 flex flex-col rounded-lg ${mode ? "bg-white" : "bg-gray-900"}`}
+          >
             <div className="flex flex-wrap gap-2 items-center">
               <h1>Total Sales :</h1>
               <CountUp
