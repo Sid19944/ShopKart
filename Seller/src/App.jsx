@@ -8,21 +8,21 @@ import toast from "react-hot-toast";
 import WantSeller from "./pages/wantSeller/WantSeller";
 
 function App() {
-  const { isAuthenticated, user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const { isAuthenticated, user } = useSelector((state) => state.user);
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(getUser());
-    if (Object.keys(user).length && user.role != "seller") {
-      toast.error("You are not verified Seller", { position: "top-center" });
-      navigate("/login");
+  // useEffect(() => {
+  //   dispatch(getUser());
+  //   if (Object.keys(user).length && user.role != "seller") {
+  //     toast.error("You are not verified Seller", { position: "top-center" });
+  //     navigate("/login");
 
-      dispatch(logout());
-      return;
-    }
-    isAuthenticated && navigate("/");
-  }, [isAuthenticated]);
+  //     dispatch(logout());
+  //     return;
+  //   }
+  //   isAuthenticated && navigate("/");
+  // }, [isAuthenticated]);
 
   return (
     <>

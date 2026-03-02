@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { authUrl, url } from "../../Api";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getUser } from "../../store/slice/user.slice";
 
 function Auth() {
   const handleGoogleLogin = async (e) => {
@@ -21,6 +24,19 @@ function Auth() {
     e.preventDefault();
     console.log("Want seller");
   };
+
+  const dispatch = useDispatch();
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(getUser());
+      if (isAuthenticated) {
+        navigate("/");
+      }
+    }, 500);
+  }, [isAuthenticated]);
 
   return (
     <div className="h-screen flex font-serif">

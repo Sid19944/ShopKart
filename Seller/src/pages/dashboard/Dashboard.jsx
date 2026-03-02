@@ -9,9 +9,15 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 
 import { useDispatch, useSelector } from "react-redux";
 const Products = lazy(() => import("../Products/Products"));
-import { getSeller, setMode } from "../../store/slice/user.slice";
+import {
+  getSeller,
+  getUser,
+  logout,
+  setMode,
+} from "../../store/slice/user.slice";
 import { useNavigate } from "react-router-dom";
 import { getAllAddress } from "../../store/slice/address.slice";
+import toast from "react-hot-toast";
 const Overview = lazy(() => import("../overview/Overview"));
 const Orders = lazy(() => import("../Orders/Orders"));
 const Account = lazy(() => import("../account/Account"));
@@ -33,6 +39,19 @@ function Dashboard() {
       dispatch(getAllAddress());
     }
   }, [isAuthenticated, error, message]);
+
+  useEffect(() => {
+    dispatch(getUser());
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+    if (Object.keys(user).length && user.role != "seller") {
+      toast.error("You are not verified Seller", { position: "top-center" });
+      setTimeout(() => {
+        dispatch(logout());
+      }, 500);
+    }
+  }, [isAuthenticated]);
 
   return (
     <div

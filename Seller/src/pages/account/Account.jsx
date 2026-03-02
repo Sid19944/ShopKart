@@ -19,7 +19,7 @@ function Account() {
   const navigate = useNavigate();
   const dragConstraints = useRef(null);
   const dispatch = useDispatch();
-  const { user, seller, mode } = useSelector((state) => state.user);
+  const { user, seller, mode ,isAuthenticated} = useSelector((state) => state.user);
   const { address, addres, error, message } = useSelector(
     (state) => state.address,
   );
@@ -30,8 +30,8 @@ function Account() {
     (add) => add._id == seller.storeAddress,
   );
 
-  const hanldeLogout = () => {
-    dispatch(logout());
+  const hanldeLogout = async () => {
+    await dispatch(logout());
     navigate("/login");
   };
 
