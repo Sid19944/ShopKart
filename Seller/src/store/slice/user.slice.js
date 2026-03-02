@@ -108,7 +108,7 @@ export const logout = () => async (dispatch) => {
   try {
     const { data } = await authUrl.post("/logout");
     dispatch(userSlice.actions.logoutSuccess(data.message));
-    dispatch(userSlice.clearAll);
+    dispatch(userSlice.actions.clearAll());
   } catch (error) {
     dispatch(
       userSlice.actions.logoutFailed(

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../../store/slice/user.slice";
+import toast from "react-hot-toast";
 
 function Auth() {
   const handleGoogleLogin = async (e) => {
@@ -26,8 +27,14 @@ function Auth() {
   };
 
   const dispatch = useDispatch();
-  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const { user, error, message, isAuthenticated } = useSelector(
+    (state) => state.user,
+  );
   const navigate = useNavigate();
+
+  useEffect(() => {
+    message && toast.success(message);
+  }, [error, message]);
 
   useEffect(() => {
     setTimeout(() => {
