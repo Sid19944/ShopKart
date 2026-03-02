@@ -18,20 +18,45 @@ import { getAllUser } from "../../store/slice/users.slice.js";
 import { getSellers } from "../../store/slice/seller.sclic.js";
 import { getAllOrderItems } from "../../store/slice/ordersItems.slice.js";
 import { getAllProducts } from "../../store/slice/products.slice.js";
-import { logout } from "../../store/slice/user.slice.js";
+import { getUser, logout } from "../../store/slice/user.slice.js";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 function Dashboard() {
-  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const { user, loading, isAuthenticated, error, message } = useSelector(
+    (state) => state.user,
+  );
   const [showPage, setShowPage] = useState("overview");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await dispatch(logout());
     navigate("/login");
-    dispatch(logout());
   };
+
+  console.time("GETUSER");
+  useEffect(() => {
+    dispatch(getUser());
+
+    error && toast.error(error);
+    message && toast.success(message);
+  }, [error, message]);
+  console.timeEnd("GETUSER");
+
+  console.log(user);
+  useEffect(() => {
+    if (loading) return;
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+    if (Object.keys(user).length && user.role != "admin") {
+      toast.error("You are not admin", { position: "top-center" });
+      navigate("/login");
+
+      dispatch(logout());
+    }
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {

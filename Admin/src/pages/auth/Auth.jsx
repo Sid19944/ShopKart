@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { authUrl, url } from "../../Api";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../../store/slice/user.slice";
+import { useNavigate } from "react-router-dom";
 
 function Auth() {
   const handleGoogleLogin = async (e) => {
@@ -15,6 +18,17 @@ function Auth() {
     window.location.href = `${url}/auth/github`;
     await authUrl.get("/github");
   };
+
+  const dispatch = useDispatch();
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getUser());
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="h-screen flex font-serif">

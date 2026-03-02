@@ -11,19 +11,14 @@ import { getAllOrderItems } from "./store/slice/ordersItems.slice.js";
 import { getAllProducts } from "./store/slice/products.slice.js";
 
 function App() {
-  const dispatch = useDispatch();
-  const { user, isAuthenticated, message } = useSelector((state) => state.user);
-  const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // const { user, isAuthenticated, message } = useSelector((state) => state.user);
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(getUser());
-    if (Object.keys(user).length && user.role != "admin") {
-      toast.error("You are not admin", { position: "top-center" });
-      navigate("/login");
-
-      dispatch(logout());
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   dispatch(getUser());
+    
+  // }, [isAuthenticated]);
 
   return (
     <>
