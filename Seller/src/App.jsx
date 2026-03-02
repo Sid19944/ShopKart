@@ -5,7 +5,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import { useDispatch, useSelector } from "react-redux";
 import {  getUser, logout } from "./store/slice/user.slice";
 import toast from "react-hot-toast";
-import WantSeller from "./pages/wantSeller/WantSeller";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
   // const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -29,7 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Auth />} />
-        <Route path="/want-seller" element={<WantSeller />} />
+        <Route path="*" element={<PageNotFound/>} />
       </Routes>
     </>
   );

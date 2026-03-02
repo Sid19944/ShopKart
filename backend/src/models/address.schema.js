@@ -19,6 +19,10 @@ const addressSchema = new Schema(
       type: Number,
       required: true,
     },
+    region: {
+      type: String,
+      required: true,
+    },
     country: {
       type: String,
       required: true,
@@ -28,10 +32,6 @@ const addressSchema = new Schema(
       required: true,
     },
     district: {
-      type: String,
-      required: true,
-    },
-    postOffice: {
       type: String,
       required: true,
     },

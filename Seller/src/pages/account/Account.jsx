@@ -75,14 +75,14 @@ function Account() {
   return (
     <div
       ref={dragConstraints}
-      className={`flex h-full p-1 gap-2 ${mode ? "bg-gray-400" : "bg-gray-900"} relative `}
+      className={`flex h-full p-1 gap-2 ${mode ? "bg-gray-400" : "bg-gray-900"} relative flex-wrap overflow-auto`}
     >
       <div
         id="sellerInfo"
-        className={`flex flex-col border rounded-lg p-3 gap-1 ${mode ? "bg-gray-300" : "bg-gray-900"} max-w-75`}
+        className={`flex flex-col border rounded-lg p-3 gap-1 ${mode ? "bg-gray-300" : "bg-gray-900"} min-w-75 w-full sm:w-[20%]`}
       >
         <div
-          className="border p-2 rounded-lg cursor-pointer mb-3"
+          className="border p-2 rounded-lg cursor-pointer mb-3 bg-blue-400 active:bg-blue-600"
           onClick={hanldeLogout}
         >
           <LogoutIcon />

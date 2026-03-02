@@ -5,15 +5,8 @@ import { Address } from "../models/address.schema.js";
 const addAddress = AsyncHandler(async (req, res, next) => {
   const user_id = req.user._id;
 
-  const {
-    fullname,
-    addressLine,
-    pincode,
-    country,
-    state,
-    district,
-    postOffice,
-  } = req.body;
+  const { fullname, addressLine, pincode, country, state, district, region } =
+    req.body;
   if (
     !fullname ||
     !addressLine ||
@@ -21,13 +14,13 @@ const addAddress = AsyncHandler(async (req, res, next) => {
     !country ||
     !state ||
     !district ||
-    !postOffice
+    !region
   ) {
     return next(new ErrorHandler("Please enter full address", 400));
   }
 
   if (
-    [fullname, addressLine, country, state, district, postOffice].some(
+    [fullname, addressLine, country, state, district, region].some(
       (item) => item.trim() == "",
     )
   ) {
@@ -42,7 +35,7 @@ const addAddress = AsyncHandler(async (req, res, next) => {
     country: country.trim(),
     state: state.trim(),
     district: district.trim(),
-    postOffice: postOffice.trim(),
+    region: region.trim(),
   });
 
   if (!address) {
@@ -57,8 +50,9 @@ const addAddress = AsyncHandler(async (req, res, next) => {
 });
 
 const updateAddress = AsyncHandler(async (req, res, next) => {
+  console.log(req.params.addid, req.body);
+  
   const addId = req.params.addid;
-
   const newData = {
     fullname: req?.body?.fullname?.trim(),
     addressLine: req?.body?.addressLine?.trim(),
@@ -66,7 +60,7 @@ const updateAddress = AsyncHandler(async (req, res, next) => {
     country: req?.body?.country?.trim(),
     state: req?.body?.state?.trim(),
     district: req?.body?.district?.trim(),
-    postOffice: req?.body?.postOffice?.trim(),
+    region: req?.body?.region?.trim(),
   };
 
   const address = await Address.findByIdAndUpdate(addId, newData, {
@@ -87,7 +81,10 @@ const deleteAddress = AsyncHandler(async (req, res, next) => {
   const add_id = req.params.addid;
   const address = await Address.findByIdAndDelete(add_id);
 
-  console.log(address);
+  return res.status(200).json({
+    success: true,
+    message: "Address Deleted Successfully",
+  });
 });
 
 const getSingleAddress = AsyncHandler(async (req, res, next) => {

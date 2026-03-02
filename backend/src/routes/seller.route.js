@@ -16,6 +16,7 @@ import {
   getMonthlyReport,
   getOverviewInfo,
   getSellerProduct,
+  updateSeller,
   wantSeller,
 } from "../controllers/seller.controller.js";
 import {
@@ -25,9 +26,11 @@ import {
 } from "../controllers/order_item.controller.js";
 const router = Router();
 
+// update seller
+router.route("/update-seller/:seller_id").put(verifyJwt, verifySeller, updateSeller)
+
 // want seller
 router.route("/want").post(verifyJwt, wantSeller);
-
 router.route("/get-curr-seller").get(verifyJwt, verifySeller, getCurrSeller);
 
 // product
@@ -73,7 +76,6 @@ router
 router
   .route("/get-overview-info")
   .get(verifyJwt, verifySeller, getOverviewInfo);
-
 router
   .route("/get-monthly-report")
   .get(verifyJwt, verifySeller, getMonthlyReport);

@@ -70,12 +70,6 @@ function Auth() {
         >
           <GitHubIcon /> GitHub
         </button>
-        <Link
-          className="underline cursor-pointer active:text-blue-600 w-full text-end px-2"
-          to={"/want-seller"}
-        >
-          Want to be seller
-        </Link>
       </form>
       <div className="">
         {/* <img src="logo.png" alt="demo" className="w-full h-full object-cover"/> */}

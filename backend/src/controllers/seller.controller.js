@@ -29,6 +29,27 @@ const wantSeller = AsyncHandler(async (req, res, next) => {
   });
 });
 
+const updateSeller = AsyncHandler(async (req, res, next) => {
+  const seller_id = req.params.seller_id;
+
+  const newData = {
+    storeName: req.body?.storeName,
+    storeAddress: req.body?.storeAddress,
+  };
+
+  const seller = await Seller.findByIdAndUpdate(seller_id, newData, {
+    new: true,
+  });
+
+  if (!seller) {
+    return next(new ErrorHandler("Invalid Data", 400));
+  }
+  return res.status(200).json({
+    success: true,
+    message: newData.storeName ? "Store Name Updated" : "Store Address Updated",
+  });
+});
+
 const getSellerProduct = AsyncHandler(async (req, res, next) => {
   const page_no = req.params.page_no;
 
@@ -196,8 +217,7 @@ const getMonthlyReport = AsyncHandler(async (req, res, next) => {
 });
 
 const getCurrSeller = AsyncHandler(async (req, res, next) => {
-  const address = await Address.find({ user_id: req.user._id });
-  return res.status(200).json({ success: true, seller: req.seller, address });
+  return res.status(200).json({ success: true, seller: req.seller });
 });
 
 export {
@@ -206,4 +226,5 @@ export {
   getOverviewInfo,
   getMonthlyReport,
   getCurrSeller,
+  updateSeller
 };

@@ -3,6 +3,22 @@ import { AsyncHandler } from "../utils/Async.Handler.js";
 import ErrorHandler from "../utils/Error.Handler.js";
 import { genAccAndRefToken } from "../middleware/genAccAndRefToken.js";
 
+const accessCookieOption = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 15 * 60 * 1000,
+  path: "/",
+};
+
+const refreshCookieOption = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  path: "/",
+};
+
 const googleAuthLogin = AsyncHandler(async (req, res, next) => {
   const userExist = await User.findOne({ auth_id: req.user._json.sub });
 
@@ -30,17 +46,8 @@ const googleAuthLogin = AsyncHandler(async (req, res, next) => {
     }
 
     return res
-      .cookie("accessToken", accessToken, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 15 * 60 * 1000,
-        sameSite: "none",
-      })
-      .cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      })
+      .cookie("accessToken", accessToken, accessCookieOption)
+      .cookie("refreshToken", refreshToken, refreshCookieOption)
       .redirect(process.env.FRONTEND_URL);
   }
 
@@ -50,17 +57,8 @@ const googleAuthLogin = AsyncHandler(async (req, res, next) => {
   }
 
   return res
-    .cookie("accessToken", accessToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 15 * 60 * 1000,
-      sameSite: "none",
-    })
-    .cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    })
+    .cookie("accessToken", accessToken, accessCookieOption)
+    .cookie("refreshToken", refreshToken, refreshCookieOption)
     .redirect(process.env.FRONTEND_URL);
 });
 
@@ -88,17 +86,8 @@ const githubLogin = AsyncHandler(async (req, res, next) => {
     }
 
     return res
-      .cookie("accessToken", accessToken, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 15 * 60 * 1000,
-        sameSite: "none",
-      })
-      .cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      })
+      .cookie("accessToken", accessToken, accessCookieOption)
+      .cookie("refreshToken", refreshToken, refreshCookieOption)
       .redirect(process.env.FRONTEND_URL);
   }
 
@@ -108,17 +97,8 @@ const githubLogin = AsyncHandler(async (req, res, next) => {
   }
 
   return res
-    .cookie("accessToken", accessToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 15 * 60 * 1000,
-      sameSite: "none",
-    })
-    .cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    })
+    .cookie("accessToken", accessToken, accessCookieOption)
+    .cookie("refreshToken", refreshToken, refreshCookieOption)
     .redirect(process.env.FRONTEND_URL);
 });
 
@@ -139,16 +119,8 @@ const logout = AsyncHandler(async (req, res, next) => {
   });
 
   return res
-    .clearCookie("accessToken", {
-      httpOnly: true,
-      sameSite: "none",
-      secure: true,
-    })
-    .clearCookie("refreshToken", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    })
+    .clearCookie("accessToken", accessCookieOption)
+    .clearCookie("refreshToken", refreshCookieOption)
     .json({
       success: true,
       message: "User Logged Out.",

@@ -3,8 +3,9 @@ import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { authUrl, url } from "../../Api";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../../store/slice/user.slice";
+import { getUser, logout } from "../../store/slice/user.slice";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Auth() {
   const handleGoogleLogin = async (e) => {
@@ -24,10 +25,14 @@ function Auth() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getUser());
-    if (isAuthenticated) {
-      navigate("/");
-    }
+    (async () => {
+      setTimeout(() => {
+        dispatch(getUser());
+        if (isAuthenticated) {
+          navigate("/");
+        }
+      }, 500);
+    })();
   }, [isAuthenticated]);
 
   return (

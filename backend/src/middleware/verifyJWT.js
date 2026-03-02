@@ -10,7 +10,7 @@ export const verifyJwt = AsyncHandler(async (req, res, next) => {
       req?.cookies || req.header("Authorization")?.replace("Bearer", "");
 
     if (!cookie || (!cookie.accessToken && !cookie.refreshToken)) {
-      return next(new ErrorHandler("Unauthorize Access Access TOKEN", 400));
+      return next(new ErrorHandler("Unauthorize Access TOKEN", 400));
     }
 
     const decodedToken = await jwt.verify(

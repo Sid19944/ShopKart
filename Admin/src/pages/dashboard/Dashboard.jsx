@@ -35,26 +35,21 @@ function Dashboard() {
     navigate("/login");
   };
 
-  console.time("GETUSER");
   useEffect(() => {
     dispatch(getUser());
-
-    error && toast.error(error);
+    // error && toast.error(error);
     message && toast.success(message);
   }, [error, message]);
-  console.timeEnd("GETUSER");
 
-  console.log(user);
   useEffect(() => {
-    if (loading) return;
     if (!isAuthenticated) {
       navigate("/login");
     }
     if (Object.keys(user).length && user.role != "admin") {
       toast.error("You are not admin", { position: "top-center" });
-      navigate("/login");
-
-      dispatch(logout());
+      setTimeout(() => {
+        handleLogout();
+      }, 500);
     }
   }, []);
 
