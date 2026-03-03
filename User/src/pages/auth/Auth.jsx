@@ -56,7 +56,7 @@ function Auth() {
           />
           <h1>ShopCart</h1>
         </div>
-        <h1 className="w-full text-2xl">Welcome Back Seller</h1>
+        <h1 className="w-full text-2xl">Welcome to ShopCart</h1>
         <h1 className="text-2xl">Login/ Register into your Account</h1>
         <button
           className="hover:shadow-[0px_0px_3px_3px] active:shadow-[0px_0px_3px_3px] shadow-white w-full p-2 rounded-full flex items-center justify-center gap-2 font-bold bg-gradient-to-r from-white via-red-400 to-blue-700 text-black cursor-pointer"

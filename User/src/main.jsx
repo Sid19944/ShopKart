@@ -9,7 +9,7 @@ import store from "./store/store.js";
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <div
-      className={`bg-black min-h-screen min-w-screen text-white overflow-hidden`}
+      className={`min-h-screen min-w-screen overflow-hidden`}
     >
       <Toaster
         position="bottom-left"
