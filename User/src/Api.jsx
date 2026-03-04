@@ -10,4 +10,38 @@ const addressUrl = axios.create({
   withCredentials: true,
 });
 
-export { url, authUrl, addressUrl };
+const productUrl = axios.create({
+  baseURL: `${url}/products`,
+  withCredentials: true,
+});
+
+const orderUrl = axios.create({
+  baseURL: `${url}/orders`,
+  withCredentials: true,
+});
+
+const cartUrl = axios.create({
+  baseURL: `${url}/cart`,
+  withCredentials: true,
+});
+
+const overItemUrl = axios.create({
+  baseURL: `${url}/order-item`,
+  withCredentials: true,
+});
+
+const reviewUrl = axios.create({
+  baseURL: `${url}/review`,
+  withCredentials: true,
+});
+
+export {
+  url,
+  authUrl,
+  addressUrl,
+  productUrl,
+  orderUrl,
+  cartUrl,
+  overItemUrl,
+  reviewUrl,
+};

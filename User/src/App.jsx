@@ -4,6 +4,8 @@ import PageNotFound from "./pages/PageNotFound";
 import Auth from "./pages/auth/Auth";
 import Home from "./pages/Home";
 import Account from "./pages/account/Account";
+import ViewProduct from "./pages/products/ViewProduct";
+import Cart from "./pages/cart/Cart";
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Auth />} />
       <Route path="/account" element={<Account />} />
+      <Route path="/view/:prod_id" element={<ViewProduct />} />
+      <Route path="/cart" element={<Cart/>}/>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

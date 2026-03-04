@@ -15,7 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { Link, useNavigate } from "react-router-dom";
 import AccountInfo from "./SubComponent/AccountInfo";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 
 function Account() {
   const navigate = useNavigate();
@@ -40,7 +40,10 @@ function Account() {
       className={`h-screen flex flex-col font-mono ${mode ? "bg-white text-black" : "bg-gray-900 text-white"} overflow-auto`}
     >
       <div className="flex border px-2 py-1 items-center gap-2 bg-blue-600 justify-between ">
-        <div className="flex gap-2 items-center">
+        <div
+          className="flex gap-2 items-center cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <img src="logo.png" alt="logo" className="h-8 rounded-full" />
           <span className="text-white font-semibold tracking-[1px]">
             ShopCart
@@ -128,24 +131,26 @@ function Account() {
           <AccountInfo user={user} />
         </div>
 
-        {showAccountInfo && (
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[90%] border rounded-lg"
-          >
-            <h1
-              className="text-end p-2"
-              onClick={() => setShowAccountInfo(!showAccountInfo)}
+        <AnimatePresence>
+          {showAccountInfo && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${mode ? "bg-white text-black" : "bg-gray-900 text-white"} w-[90%] border rounded-lg`}
             >
-              <CloseIcon />
-            </h1>
-            <AccountInfo user={user} />
-          </motion.div>
-        )}
+              <h1
+                className="text-end p-2"
+                onClick={() => setShowAccountInfo(!showAccountInfo)}
+              >
+                <CloseIcon />
+              </h1>
+              <AccountInfo user={user} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-
       <Footer />
     </div>
   );

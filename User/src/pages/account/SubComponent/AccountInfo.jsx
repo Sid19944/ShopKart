@@ -1,8 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 function AccountInfo({user}) {
+  const {mode} = useSelector(state=>state.user)
   return (
-    <div className="w-full border rounded-lg p-1 flex flex-col gap-5 text-xl overflow-auto">
+    <div className={`w-full border rounded-lg p-1 flex flex-col gap-5 text-xl ${mode ? "bg-white text-black" : "bg-gray-900 text-white"} overflow-auto`}>
       <h1 className="text-blue-500 flex gap-2 items-center justify-between flex-wrap">
         Personal Information <span className="text-sm">User ID : {user?._id}</span>
       </h1>
