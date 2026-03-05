@@ -114,11 +114,11 @@ function Cart() {
                   <span>MRP</span> <span>₹{cart.total_price}</span>
                 </div>
                 <div className="border-b flex justify-between border-dashed">
-                  <span>Placeform Fee</span> <span>₹40</span>
+                  <span>Placeform Fee</span> <span>FREE</span>
                 </div>
                 <div className="text-xl font-semibold flex justify-between">
                   <span>Total Amount</span>{" "}
-                  <span>₹{cart.total_price + 40}</span>
+                  <span>₹{cart.total_price}</span>
                 </div>
               </div>
               <div className="border font-semibold flex justify-center bg-orange-400 active:bg-yellow-300 rounded-lg p-2 cursor-pointer"
