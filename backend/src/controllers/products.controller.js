@@ -267,8 +267,8 @@ const getAllProducts = AsyncHandler(async (req, res, next) => {
         },
       },
     ])
-    .limit(10)
-    .skip((page - 1) * 10);
+    .limit(20)
+    .skip((page - 1) * 20);
 
   if (!products.length) {
     return next(new ErrorHandler("Provide valid page no.", 400));
@@ -283,7 +283,15 @@ const getAllProducts = AsyncHandler(async (req, res, next) => {
 
 const getSingleProductById = AsyncHandler(async (req, res, next) => {
   const prod_id = req.params.prodid;
-  const product = await Product.findById(prod_id).populate("reviews");
+  const product = await Product.findById(prod_id)
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "user_id",
+        select : "name"
+      },
+    })
+    .populate("seller");
   if (!product) {
     return next(new ErrorHandler("Product is not available", 400));
   }

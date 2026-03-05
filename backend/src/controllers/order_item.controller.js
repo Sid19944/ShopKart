@@ -67,7 +67,7 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
           country: shippedAddress.country,
           state: shippedAddress.state,
           district: shippedAddress.district,
-          postOffice: shippedAddress.postOffice,
+          region: shippedAddress.region,
         },
       });
 

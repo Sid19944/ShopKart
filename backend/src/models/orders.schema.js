@@ -8,7 +8,7 @@ const shippingAddressSchema = new Schema(
     country: { type: String, required: true },
     state: { type: String, required: true },
     district: { type: String, required: true },
-    postOffice: { type: String, required: true },
+    region: { type: String, required: true },
   },
   { _id: false },
 );

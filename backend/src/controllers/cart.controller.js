@@ -37,7 +37,7 @@ const addToCart = AsyncHandler(async (req, res, next) => {
     }
     return res.status(httpCode.CREATED).json({
       success: true,
-      message: "Product Added To Cart",
+      message: "Added To Cart",
       cart,
     });
   }
@@ -56,7 +56,7 @@ const addToCart = AsyncHandler(async (req, res, next) => {
     haveCart.save();
     return res.status(200).json({
       success: true,
-      message: "New Product Added In Cart",
+      message: "Added to Cart",
     });
   }
 
@@ -91,8 +91,13 @@ const allCart = AsyncHandler(async (req, res, next) => {
 });
 
 const getCartForUser = AsyncHandler(async (req, res, next) => {
-    console.log(req.user)
-  const cart = await Cart.findOne({ user_id: req.user._id });
+  const cart = await Cart.findOne({ user_id: req.user._id }).populate({
+    path: "items.product_id",
+    populate: {
+      path: "seller",
+      select: "storeName",
+    },
+  });
   if (!cart) {
     return next(new ErrorHandler("Cart's is created yet", 400));
   }
@@ -106,24 +111,32 @@ const getCartForUser = AsyncHandler(async (req, res, next) => {
 const updateCart = AsyncHandler(async (req, res, next) => {
   const cart_id = req.params.cart_id;
   const { product_id, quentity } = req.body;
-  const cart = await Cart.findById(cart_id);
-  const findProduct = await Product.findById(product_id);
-  if (!findProduct) {
-    return next(new ErrorHandler("Invalid product", 400));
-  }
+  const cart = await Cart.findById(cart_id).populate({
+    path: "items.product_id",
+  });
 
-  let product = cart.items.filter((item) => item.product_id == product_id);
+  const product = cart.items?.filter(
+    (item) => item.product_id._id == product_id,
+  );
   product[0].quentity = quentity;
 
   if (product[0].quentity == 0) {
-    cart.items = cart.items.filter((item) => item.product_id != product_id);
+    cart.items = cart.items.filter((item) => item.product_id._id != product_id);
   }
 
-  if (findProduct.stock < product[0].quentity) {
+  if (product[0].product_id.stock < product.quentity) {
     return next(
       new ErrorHandler(`You can order max quentity ${findProduct.stock}`),
     );
   }
+
+  let total_price = 0;
+
+  cart.items.map((item) => {
+    total_price += item.product_id.price * item.quentity;
+  });
+
+  cart.total_price = total_price;
   cart.save();
 
   return res.status(200).json({
