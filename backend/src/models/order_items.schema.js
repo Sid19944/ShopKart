@@ -5,6 +5,7 @@ const shippingAddressSchema = new Schema(
     fullName: { type: String, required: true },
     addressLine: { type: String, required: true },
     pincode: { type: Number, required: true },
+    number : {type : Number, required : true, minLength : 10},
     country: { type: String, required: true },
     state: { type: String, required: true },
     district: { type: String, required: true },

@@ -11,6 +11,11 @@ const addressSchema = new Schema(
       type: String,
       required: true,
     },
+    number: {
+      type: Number,
+      minlength : 10,
+      required: true,
+    },
     addressLine: {
       type: String,
       required: true,

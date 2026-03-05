@@ -5,18 +5,32 @@ import { Address } from "../models/address.schema.js";
 const addAddress = AsyncHandler(async (req, res, next) => {
   const user_id = req.user._id;
 
-  const { fullname, addressLine, pincode, country, state, district, region } =
-    req.body;
+  const {
+    fullname,
+    addressLine,
+    number,
+    pincode,
+    country,
+    state,
+    district,
+    region,
+  } = req.body;
   if (
     !fullname ||
     !addressLine ||
     !pincode ||
     !country ||
+    !number ||
     !state ||
     !district ||
     !region
   ) {
     return next(new ErrorHandler("Please enter full address", 400));
+  }
+
+  console.log(number, number.toString().length)
+  if (number.toString().length < 10 || number.toString().length > 10) {
+    return next(new ErrorHandler("Enter 10 digit Number", 400));
   }
 
   if (
@@ -32,6 +46,7 @@ const addAddress = AsyncHandler(async (req, res, next) => {
     fullname: fullname.trim(),
     addressLine: addressLine.trim(),
     pincode: pincode,
+    number,
     country: country.trim(),
     state: state.trim(),
     district: district.trim(),
@@ -50,13 +65,12 @@ const addAddress = AsyncHandler(async (req, res, next) => {
 });
 
 const updateAddress = AsyncHandler(async (req, res, next) => {
-  console.log(req.params.addid, req.body);
-  
   const addId = req.params.addid;
   const newData = {
     fullname: req?.body?.fullname?.trim(),
     addressLine: req?.body?.addressLine?.trim(),
     pincode: req?.body?.pincode,
+    number: req?.body?.number,
     country: req?.body?.country?.trim(),
     state: req?.body?.state?.trim(),
     district: req?.body?.district?.trim(),

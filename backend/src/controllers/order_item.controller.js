@@ -63,6 +63,7 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
         shippingAddress: {
           fullName: shippedAddress.fullname,
           addressLine: shippedAddress.addressLine,
+          number : shippedAddress.number,
           pincode: shippedAddress.pincode,
           country: shippedAddress.country,
           state: shippedAddress.state,
