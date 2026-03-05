@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Account from "./pages/account/Account";
 import ViewProduct from "./pages/products/ViewProduct";
 import Cart from "./pages/cart/Cart";
+import PlaceOrder from "./pages/order/PlaceOrder";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/account" element={<Account />} />
       <Route path="/view/:prod_id" element={<ViewProduct />} />
       <Route path="/cart" element={<Cart/>}/>
+      <Route path="/place-order" element={<PlaceOrder/>}/>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

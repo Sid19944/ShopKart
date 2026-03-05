@@ -7,12 +7,26 @@ import toast from "react-hot-toast";
 import Rating from "@mui/material/Rating";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { addToCart, getCart } from "../../store/slice/cart.slice";
 
 function ViewProduct() {
   const { prod_id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { product, error, message } = useSelector((state) => state.products);
+
+  const { cart, cartErr, cartMsg } = useSelector((state) => state.cart);
+  const checkInCart = cart?.items?.filter(
+    (item) => item.product_id._id == prod_id,
+  )[0];
+
+  const hanldeAddToCart = (prod_id, qty) => {
+    dispatch(addToCart({ product_id: prod_id, quentity: qty }));
+  };
+
+  useEffect(() => {
+    dispatch(getCart());
+  }, [cartErr, cartMsg]);
 
   const totalRating = product?.reviews?.reduce((acc, curr) => {
     return acc + curr.rating;
@@ -22,8 +36,10 @@ function ViewProduct() {
     dispatch(getSingleProductById(prod_id));
   }, []);
   useEffect(() => {
+    cartErr && toast.error(cartErr);
+    cartMsg && toast.success(cartMsg);
     error && toast.error("Someting went wrong", { position: "top-center" });
-  }, [error, message]);
+  }, [error, message, cartErr, cartMsg]);
   return (
     <div className="flex justify-center">
       <div className="flex flex-col gap-1 w-full justify-center items-center">
@@ -35,7 +51,11 @@ function ViewProduct() {
             >
               ShopCart
             </span>
-            <Link id="cart" className="flex px-3 py-1 group cursor-pointer">
+            <Link
+              id="cart"
+              to={"/cart"}
+              className="flex px-3 py-1 group cursor-pointer"
+            >
               <ShoppingCartIcon />
               <h1>Cart</h1>
             </Link>
@@ -44,7 +64,7 @@ function ViewProduct() {
 
         <div className="w-full sm:w-[80%] p-1">
           <div className=" flex overflow-x-auto gap-3 p-2">
-            {product?.image?.map((img) => (
+            {product?.image?.map((img, idx) => (
               <img
                 src={img.url}
                 key={img.public_id}
@@ -90,13 +110,18 @@ function ViewProduct() {
           <div className="mt-2 flex justify-around gap-2 font-semibold ">
             <button
               disabled={product.stock == 0}
-              className="border w-1/2 p-2 rounded-lg active:bg-yellow-600 disabled:bg-gray-300 cursor-pointer"
+              className="border flex justify-center gap-3 w-1/2 p-2 rounded-lg active:bg-yellow-600 disabled:bg-gray-300 cursor-pointer"
+              onClick={() => hanldeAddToCart(product._id, 1)}
             >
-              Add to Cart
+              <span>Add to Cart</span>
+              {checkInCart && (
+                <span>QTY : {checkInCart?.quentity}</span>
+              )}
             </button>
             <button
               disabled={product.stock == 0}
               className="border w-1/2 p-2 rounded-lg bg-yellow-400 disabled:bg-gray-300 active:bg-yellow-600 cursor-pointer"
+              onClick={() => navigate("/cart")}
             >
               But at <span className="tracking-[1px]">₹{product.price}</span>
             </button>
@@ -114,8 +139,11 @@ function ViewProduct() {
           <div className="px-2 rounded-lg font-semibold flex flex-col overflow-x-auto">
             <h1>All Reviews</h1>
             <div className="p-1 rounded-lg font-semibold flex gap-3 overflow-x-auto">
-              {product?.reviews?.map((rev) => (
-                <div className="border p-2 flex flex-col rounded-lg min-w-70 min-h-30 bg-gray-200 w-fit shadow-[0px_0px_2px_2px] shadow-blue-400">
+              {product?.reviews?.map((rev, idx) => (
+                <div
+                  key={idx}
+                  className="border p-2 flex flex-col rounded-lg min-w-70 min-h-30 bg-gray-200 w-fit shadow-[0px_0px_2px_2px] shadow-blue-400"
+                >
                   <div className="flex items-center gap-3">
                     <Rating readOnly value={rev.rating} />( {rev.rating} )
                   </div>
