@@ -9,6 +9,21 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart, updateQuentity } from "../../store/slice/cart.slice";
 
+import { motion } from "motion/react";
+
+const button = {
+  padding: "10px 20px",
+  fontSize: "16px",
+  border: "none",
+  borderRadius: "8px",
+  cursor: "pointer",
+  backgroundColor: "#ff4",
+  color: "#764ba2",
+  fontWeight: "bold",
+  border : "1px solid",
+
+};
+
 function Cart() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,11 +51,16 @@ function Cart() {
       </div>
       {Object.keys(cart).length == 0 ||
       (Object.keys(cart).length != 0 && cart.items.length == 0) ? (
-        <div className="text-3xl font-bold tracking-[1px] font-serif flex flex-col items-center">
+        <div className="text-3xl h-100 justify-center gap-10 font-bold tracking-[1px] font-serif flex flex-col items-center">
           <h1> Cart is Empty</h1>
-          <Link to={"/"} className="border p-1 bg-blue-300 rounded-lg">
-            Home
-          </Link>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/")}
+            style={button}
+          >
+            Go Home
+          </motion.button>
         </div>
       ) : (
         <div className="w-[90%] flex gap-2 relative flex-col sm:flex-row">
@@ -117,12 +137,13 @@ function Cart() {
                   <span>Placeform Fee</span> <span>FREE</span>
                 </div>
                 <div className="text-xl font-semibold flex justify-between">
-                  <span>Total Amount</span>{" "}
-                  <span>₹{cart.total_price}</span>
+                  <span>Total Amount</span> <span>₹{cart.total_price}</span>
                 </div>
               </div>
-              <div className="border font-semibold flex justify-center bg-orange-400 active:bg-yellow-300 rounded-lg p-2 cursor-pointer"
-              onClick={()=>navigate("/place-order")}>
+              <div
+                className="border font-semibold flex justify-center bg-orange-400 active:bg-yellow-300 rounded-lg p-2 cursor-pointer"
+                onClick={() => navigate("/place-order")}
+              >
                 Place Order
               </div>
             </div>

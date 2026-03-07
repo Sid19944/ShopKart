@@ -7,6 +7,9 @@ import Account from "./pages/account/Account";
 import ViewProduct from "./pages/products/ViewProduct";
 import Cart from "./pages/cart/Cart";
 import PlaceOrder from "./pages/order/PlaceOrder";
+import OrderProcessing from "./pages/order/OrderProcessing";
+import OrderSuccess from "./pages/order/OrderSuccess";
+import Orders from "./pages/order/Orders";
 
 function App() {
   return (
@@ -15,8 +18,11 @@ function App() {
       <Route path="/login" element={<Auth />} />
       <Route path="/account" element={<Account />} />
       <Route path="/view/:prod_id" element={<ViewProduct />} />
-      <Route path="/cart" element={<Cart/>}/>
-      <Route path="/place-order" element={<PlaceOrder/>}/>
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/place-order" element={<PlaceOrder />} />
+      <Route path="/order-processing" element={<OrderProcessing />} />
+      <Route path="/order-success" element={<OrderSuccess />} />
+      <Route path="/orders" element={<Orders/>}/>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

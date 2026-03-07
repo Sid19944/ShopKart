@@ -100,7 +100,7 @@ export const updateQuentity = (cart_id, ndata) => async (dispatch) => {
   } catch (cartErr) {
     dispatch(
       cartSlice.actions.updateQuentityFailed(
-        cartErr?.response?.data?.cartMsg || cartErr.cartMsg,
+        cartErr?.response?.data?.message || cartErr.message,
       ),
     );
     dispatch(cartSlice.actions.clearcartMsg());

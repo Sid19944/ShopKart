@@ -25,7 +25,7 @@ const cartUrl = axios.create({
   withCredentials: true,
 });
 
-const overItemUrl = axios.create({
+const orderItemUrl = axios.create({
   baseURL: `${url}/order-item`,
   withCredentials: true,
 });
@@ -42,6 +42,6 @@ export {
   productUrl,
   orderUrl,
   cartUrl,
-  overItemUrl,
+  orderItemUrl,
   reviewUrl,
 };

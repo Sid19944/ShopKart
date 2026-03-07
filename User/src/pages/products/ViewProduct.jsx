@@ -24,6 +24,13 @@ function ViewProduct() {
     dispatch(addToCart({ product_id: prod_id, quentity: qty }));
   };
 
+  const handleBuyProduct = (prod_id, qty) => {
+    dispatch(addToCart({ product_id: prod_id, quentity: qty }));
+    setTimeout(() => {
+      navigate("/cart");
+    }, 2000);
+  };
+
   useEffect(() => {
     dispatch(getCart());
   }, [cartErr, cartMsg]);
@@ -114,14 +121,12 @@ function ViewProduct() {
               onClick={() => hanldeAddToCart(product._id, 1)}
             >
               <span>Add to Cart</span>
-              {checkInCart && (
-                <span>QTY : {checkInCart?.quentity}</span>
-              )}
+              {checkInCart && <span>QTY : {checkInCart?.quentity}</span>}
             </button>
             <button
               disabled={product.stock == 0}
               className="border w-1/2 p-2 rounded-lg bg-yellow-400 disabled:bg-gray-300 active:bg-yellow-600 cursor-pointer"
-              onClick={() => navigate("/cart")}
+              onClick={() => handleBuyProduct(product._id, 1)}
             >
               But at <span className="tracking-[1px]">₹{product.price}</span>
             </button>
