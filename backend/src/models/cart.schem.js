@@ -19,6 +19,7 @@ const cartSchema = new Schema({
         requierd: true,
         min: 1,
       },
+      _id : false
     },
   ],
   total_price: {

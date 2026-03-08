@@ -140,7 +140,6 @@ const addMoreProductImage = AsyncHandler(async (req, res, next) => {
     });
 
     let ids = uploadedImage.map((img) => img.public_id);
-    console.log(ids);
 
     await Product.findByIdAndUpdate(prod_id, {
       $pull: {
@@ -174,7 +173,6 @@ const updateProduct = AsyncHandler(async (req, res, next) => {
 
   // check the current user is the seller of the product
   const checkSeller = await Product.findById(prod_id);
-  console.log(checkSeller.seller, req.seller._id);
   if (
     checkSeller.seller.toString() != req.seller._id.toString() &&
     req.user.role != "admin"

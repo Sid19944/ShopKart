@@ -175,8 +175,6 @@ const blockSeller = AsyncHandler(async (req, res, next) => {
 
 const blockProduct = AsyncHandler(async (req, res, next) => {
   const product_id = req.params.product_id;
-  console.log(product_id);
-  console.time("S");
   const product = await Product.findByIdAndUpdate(
     product_id,
     {
@@ -186,7 +184,6 @@ const blockProduct = AsyncHandler(async (req, res, next) => {
     },
     { new: true },
   );
-  console.timeEnd("S");
   if (!product) {
     return next(new ErrorHandler("Invalid Product ID", 400));
   }

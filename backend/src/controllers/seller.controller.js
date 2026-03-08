@@ -17,6 +17,20 @@ const wantSeller = AsyncHandler(async (req, res, next) => {
   if ([storeName, storeAddress].some((item) => item.trim() == "")) {
     return next(new ErrorHandler("Provide store name and address", 400));
   }
+
+  const alreadyRequestOrSeller = await Seller.findOne({
+    seller_id: req.user._id,
+  });
+  if (alreadyRequestOrSeller) {
+    return next(
+      new ErrorHandler(
+        alreadyRequestOrSeller.isApproved
+          ? "You are already a seller"
+          : "You already request for seller",
+      ),
+    );
+  }
+
   const seller = await Seller.create({
     seller_id: req.user._id,
     storeName,
@@ -226,5 +240,5 @@ export {
   getOverviewInfo,
   getMonthlyReport,
   getCurrSeller,
-  updateSeller
+  updateSeller,
 };

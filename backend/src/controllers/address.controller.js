@@ -5,6 +5,8 @@ import { Address } from "../models/address.schema.js";
 const addAddress = AsyncHandler(async (req, res, next) => {
   const user_id = req.user._id;
 
+  console.log(req.body)
+
   const {
     fullname,
     addressLine,
@@ -28,7 +30,6 @@ const addAddress = AsyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Please enter full address", 400));
   }
 
-  console.log(number, number.toString().length)
   if (number.toString().length < 10 || number.toString().length > 10) {
     return next(new ErrorHandler("Enter 10 digit Number", 400));
   }

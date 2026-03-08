@@ -38,8 +38,6 @@ const orderPlace = AsyncHandler(async (req, res, next) => {
     shippingAddress = order.shippingAddress;
   }
 
-  console.log(order_items)
-
   for (const product of order_items) {
     totalPrice += product.totalPrice;
   }

@@ -3,6 +3,7 @@ import ErrorHandler from "../utils/Error.Handler.js";
 import { Address } from "../models/address.schema.js";
 import { Order_Item } from "../models/order_items.schema.js";
 import { Product } from "../models/product.schema.js";
+import { Cart } from "../models/cart.schem.js";
 
 const item_ordered = AsyncHandler(async (req, res, next) => {
   const { products, shippingAddress_id } = req.body;
@@ -63,7 +64,7 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
         shippingAddress: {
           fullName: shippedAddress.fullname,
           addressLine: shippedAddress.addressLine,
-          number : shippedAddress.number,
+          number: shippedAddress.number,
           pincode: shippedAddress.pincode,
           country: shippedAddress.country,
           state: shippedAddress.state,
@@ -92,6 +93,16 @@ const item_ordered = AsyncHandler(async (req, res, next) => {
       });
     }
   }
+
+  await Cart.findOneAndUpdate(
+    { user_id: req.user._id },
+    {
+      $set: {
+        items: [],
+        total_price: 0,
+      },
+    },
+  );
 
   return res.status(200).json({
     success: true,
@@ -142,10 +153,10 @@ const updateOrderStatus = AsyncHandler(async (req, res, next) => {
   });
 });
 
+// for seller
 const getOrderById = AsyncHandler(async (req, res, next) => {
   const order_id = req.params.order_id;
   const fOrder = await Order_Item.findById(order_id);
-
   if (!fOrder) return next(new ErrorHandler("Invalid Order ID", 400));
 
   const order = req.seller?.products?.filter(
@@ -162,4 +173,46 @@ const getOrderById = AsyncHandler(async (req, res, next) => {
   });
 });
 
-export { item_ordered, getAllOrderedProducts, updateOrderStatus, getOrderById };
+// for user
+const getOrderByIdUser = AsyncHandler(async (req, res, next) => {
+  const order_id = req.params.order_id;
+  const order = await Order_Item.findById(order_id);
+  if (!order) return next(new ErrorHandler("Invalid Order ID", 400));
+
+  return res.status(200).json({
+    success: true,
+    order,
+  });
+});
+
+const getOrdersForCussUser = AsyncHandler(async (req, res, next) => {
+  console.log("ABC");
+  const orders = await Order_Item.find({ buyer: req.user._id });
+
+  console.log(orders);
+  return res.status(200).json({
+    success: true,
+    orders,
+  });
+});
+
+const cancelOrder = AsyncHandler(async (req, res, next) => {
+  const order_id = req.params.order_id;
+  const order = await Order_Item.findByIdAndUpdate(order_id, {
+    $set: { order_status: "cancelled" },
+  });
+  return res.status(200).json({
+    success: true,
+    message: "Order Canceled",
+  });
+});
+
+export {
+  item_ordered,
+  getAllOrderedProducts,
+  updateOrderStatus,
+  getOrderById,
+  getOrdersForCussUser,
+  getOrderByIdUser,
+  cancelOrder,
+};
