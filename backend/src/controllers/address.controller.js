@@ -4,9 +4,6 @@ import { Address } from "../models/address.schema.js";
 
 const addAddress = AsyncHandler(async (req, res, next) => {
   const user_id = req.user._id;
-
-  console.log(req.body)
-
   const {
     fullname,
     addressLine,

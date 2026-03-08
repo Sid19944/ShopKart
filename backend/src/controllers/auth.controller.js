@@ -20,6 +20,7 @@ const refreshCookieOption = {
 };
 
 const googleAuthLogin = AsyncHandler(async (req, res, next) => {
+  console.log(req.headers.origin)
   const userExist = await User.findOne({ auth_id: req.user._json.sub });
 
   if (!userExist) {
