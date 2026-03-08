@@ -1,16 +1,25 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import CountUp from "react-countup";
 
 function OrderSuccess() {
   const navigate = useNavigate();
+  setTimeout(() => {
+    navigate("/");
+  }, 9000);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-5">
+    <div className="flex flex-col items-center justify-center h-screen gap-3">
       <div className="text-green-500 text-5xl">✔</div>
 
-      <h1 className="text-3xl font-semibold">Order Placed Successfully</h1>
+      <h1 className="text-xl sm:text-3xl justify-center font-semibold flex w-full">
+        Order Placed Successfully
+      </h1>
 
       <p className="text-gray-500">Your order has been confirmed.</p>
+      <p className="text-gray-500">
+        redirect in : <CountUp end={0} start={10} duration={15} />s
+      </p>
 
       <button
         onClick={() => navigate("/")}

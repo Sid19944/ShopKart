@@ -114,7 +114,7 @@ function ViewProduct() {
             ₹{product?.price}
           </h1>
 
-          <div className="mt-2 flex justify-around gap-2 font-semibold ">
+          <div className="mt-2 flex justify-around gap-2 font-semibold text-sm sm:texl-md">
             <button
               disabled={product.stock == 0}
               className="border flex justify-center gap-3 w-1/2 p-2 rounded-lg active:bg-yellow-600 disabled:bg-gray-300 cursor-pointer"

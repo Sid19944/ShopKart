@@ -12,6 +12,7 @@ import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
 import CloseIcon from "@mui/icons-material/Close";
+import StorefrontIcon from "@mui/icons-material/Storefront";
 
 import { Link, useNavigate } from "react-router-dom";
 import AccountInfo from "./SubComponent/AccountInfo";
@@ -83,13 +84,20 @@ function Account() {
                 <ArrowForwardIcon />
               </span>
             </Link>
-            <div className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer">
+            <Link to={"/address"} className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer">
               <LocationPinIcon style={{ height: "30px", width: "30px" }} />
               <span className="w-full flex justify-between">
                 ADDRESS
                 <ArrowForwardIcon />
               </span>
-            </div>
+            </Link>
+            <Link to={"/become-seller"} className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer">
+              <StorefrontIcon style={{ height: "30px", width: "30px" }} />
+              <span className="w-full flex justify-between">
+                Become Seller
+                <ArrowForwardIcon />
+              </span>
+            </Link>
             <div className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer">
               <button
                 className={`w-14 h-7 rounded-full cursor-pointer flex items-center ${mode ? "bg-gray-500" : "bg-blue-500"} `}

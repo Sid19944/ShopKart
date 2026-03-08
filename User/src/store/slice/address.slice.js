@@ -29,13 +29,48 @@ const addressSlice = createSlice({
       state.addErr = action.payload;
     },
 
+    // add New Address
+    addNewAddressSuccess(state, action) {
+      state.loading = false;
+      state.addMsg = action.payload;
+    },
+    addNewAddressFailed(state, action) {
+      state.loading = false;
+      state.addErr = action.payload;
+    },
+
+    // delete address
+    deleteAddressSuccess(state, action) {
+      state.loading = false;
+      state.addMsg = action.payload;
+    },
+    deleteAddressFailed(state, action) {
+      state.loading = false;
+      state.addErr = action.payload;
+    },
+
+    // update address
+    updateAddressSuccess(state, action) {
+      state.loading = false;
+      state.addMsg = action.payload;
+    },
+    updateAddressFailed(state, action) {
+      state.loading = false;
+      state.addErr = action.payload;
+    },
+
     // clear cartErr
     clearErr(state, action) {
       state.addErr = null;
     },
-    clearcartMsg(state, action) {
+    cleatMsg(state, action) {
       state.addMsg = null;
     },
+
+    // set
+    setSingleAddress(state,action){
+      state.addres = action.payload
+    }
   },
 });
 
@@ -51,8 +86,60 @@ export const getAddress = () => async (dispatch) => {
         cartErr?.response?.data?.cartMsg || cartErr.cartMsg,
       ),
     );
-    dispatch(addressSlice.actions.clearcartMsg());
+    dispatch(addressSlice.actions.cleatMsg());
   }
+};
+
+export const addNewAddress = (addData) => async (dispatch) => {
+  dispatch(addressSlice.actions.dbCalling());
+  try {
+    const { data } = await addressUrl.post("/add", addData);
+    dispatch(addressSlice.actions.addNewAddressSuccess(data.message));
+    dispatch(addressSlice.actions.clearErr());
+  } catch (error) {
+    dispatch(
+      addressSlice.actions.addNewAddressFailed(
+        cartErr?.response?.data?.message || cartErr.message,
+      ),
+    );
+    dispatch(addressSlice.actions.cleatMsg());
+  }
+};
+
+export const deleteAddress = (address_id) => async (dispatch) => {
+  dispatch(addressSlice.actions.dbCalling());
+  try {
+    const { data } = await addressUrl.delete(`/delete/${address_id}`);
+    dispatch(addressSlice.actions.deleteAddressSuccess(data.message));
+    dispatch(addressSlice.actions.clearErr());
+  } catch (error) {
+    dispatch(
+      addressSlice.actions.deleteAddressFailed(
+        error?.response?.data?.message || error.message,
+      ),
+    );
+    dispatch(addressSlice.actions.cleatMsg());
+  }
+};
+
+export const updateAddress = (address_id, newAddress) => async (dispatch) => {
+  dispatch(addressSlice.actions.dbCalling());
+  try {
+    const { data } = await addressUrl.put(`/update/${address_id}`, newAddress);
+    dispatch(addressSlice.actions.updateAddressSuccess(data.message));
+    dispatch(addressSlice.actions.clearErr());
+  } catch (error) {
+    dispatch(
+      addressSlice.actions.updateAddressFailed(
+        error?.response?.data?.message || error.message,
+      ),
+    );
+    dispatch(addressSlice.actions.cleatMsg());
+  }
+};
+
+export const setSingleAddress = (addres) => async (dispatch) => {
+  dispatch(addressSlice.actions.setSingleAddress(addres));
 };
 
 export default addressSlice.reducer;

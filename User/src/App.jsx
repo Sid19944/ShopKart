@@ -10,6 +10,9 @@ import PlaceOrder from "./pages/order/PlaceOrder";
 import OrderProcessing from "./pages/order/OrderProcessing";
 import OrderSuccess from "./pages/order/OrderSuccess";
 import Orders from "./pages/order/Orders";
+import ViewOrder from "./pages/order/ViewOrder";
+import AllAddress from "./pages/address/AllAddress";
+import BecomeSeller from "./pages/BecomeSeller";
 
 function App() {
   return (
@@ -22,7 +25,10 @@ function App() {
       <Route path="/place-order" element={<PlaceOrder />} />
       <Route path="/order-processing" element={<OrderProcessing />} />
       <Route path="/order-success" element={<OrderSuccess />} />
-      <Route path="/orders" element={<Orders/>}/>
+      <Route path="/orders" element={<Orders />} />
+      <Route path="/orders/:order_id" element={<ViewOrder />} />
+      <Route path="/address" element={<AllAddress />} />
+      <Route path="/become-seller" element={<BecomeSeller />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

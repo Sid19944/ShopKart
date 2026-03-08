@@ -35,6 +35,11 @@ const reviewUrl = axios.create({
   withCredentials: true,
 });
 
+const sellerUrl = axios.create({
+  baseURL: `${url}/seller`,
+  withCredentials: true,
+});
+
 export {
   url,
   authUrl,
@@ -44,4 +49,5 @@ export {
   cartUrl,
   orderItemUrl,
   reviewUrl,
+  sellerUrl
 };

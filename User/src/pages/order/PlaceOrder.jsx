@@ -31,7 +31,7 @@ function PlaceOrder() {
       <nav className="font-semibold w-full bg-blue-500 p-2 text-white sticky top-0">
         ShopCart
       </nav>
-      <div className="w-[90%] flex flex-wrap gap-2 overflow-auto">
+      <div className="w-[90%] flex-1 flex flex-wrap gap-2 overflow-auto">
         <div className="w-full sm:w-[68%] flex flex-col gap-2 ">
           <div id="user" className="border flex-col border-gray-400 flex p-2">
             <div
@@ -188,10 +188,10 @@ function PlaceOrder() {
         </div>
 
         {step == 3 && (
-          <div className="flex justify-between border-t items-center p-2 w-full sticky bottom-0 bg-white">
+          <div className="flex w-full sm:w-[70%] mt-auto justify-between items-center p-2 sticky bottom-0 bg-white">
             <span className="font-semibold text-2xl">₹{cart.total_price}</span>
             <button
-              className="border w-40 py-2 bg-yellow-400 font-semibold active:bg-yellow-600"
+              className="border cursor-pointer w-40 sm:w-70 py-2 bg-yellow-400 font-semibold active:bg-yellow-600"
               onClick={() =>
                 navigate("/order-processing", {
                   state: { shippingAddress_id: deliveryAddress },

@@ -66,7 +66,7 @@ function Orders() {
       <div className="flex flex-col items-center justify-between w-full sticky top-0 ">
         <div className="flex text-white w-full justify-between items-center px-2 py-3 bg-blue-600 ">
           <span
-            className="font-semibold tracking-[1px] px-2 cursor-pointer"
+            className="font-semibold tracking-[1px] px-2 text-2xl cursor-pointer"
             onClick={() => navigate("/")}
           >
             ShopCart
@@ -77,6 +77,7 @@ function Orders() {
           <ArrowBackIcon
             onClick={() => navigate("/")}
             style={{ width: "40px" }}
+            className="cursor-pointer"
           />
           <h1>My Orders</h1>
         </div>
@@ -117,21 +118,21 @@ function Orders() {
       </div>
 
       <div id="orders" className="flex flex-1 flex-col p-2 overflow-auto">
-        {orders?.map((order, idx) => (
+        {orders?.slice().reverse().map((order, idx) => (
           <div
             key={idx}
             className="border-b border-gray-400 flex p-2 gap-3 cursor-pointer"
-            onClick={() => console.log(order._id)}
+            onClick={() => navigate(`/orders/${order._id}`)}
           >
             <img
               src={order.img.url}
               alt="product
             "
-              className="w-15"
+              className="h-20 w-20 sm:w-fit"
             />
             <div className="flex w-full items-center justify-between">
               <div className="flex flex-col justify-center">
-                <h1 className="text-sm text-gray-400">
+                <h1 className="text-sm text-gray-400" style={{fontSize : "10px"}}>
                   Order ID : {order._id}
                 </h1>
                 <h1
@@ -198,9 +199,9 @@ function Orders() {
             </div>
             <div className="flex flex-col gap-1">
               <span>Order Date</span>
-              <div className="flex gap-4">
+              <div className="flex gap-4 flex-col sm:flex-row">
                 <span
-                  className={`cursor-pointer outline px-2 rounded-lg ${
+                  className={`cursor-pointer outline px-2 rounded-lg w-fit ${
                     orderDate == currDate - 30 * 24 * 60 * 60 * 1000 &&
                     "text-blue-600 outline-2"
                   }`}
@@ -211,7 +212,7 @@ function Orders() {
                   Last 30 Days
                 </span>
                 <span
-                  className={`cursor-pointer outline px-2 rounded-lg ${orderDate == new Date(`${new Date().getFullYear() - 1}-01-01T00:00:00.000Z`).setHours(0, 0, 0, 0) && "text-blue-600 outline-2"}`}
+                  className={`cursor-pointer outline px-2 rounded-lg w-fit ${orderDate == new Date(`${new Date().getFullYear() - 1}-01-01T00:00:00.000Z`).setHours(0, 0, 0, 0) && "text-blue-600 outline-2"}`}
                   onClick={() =>
                     setOrderDate(
                       new Date(
@@ -243,7 +244,7 @@ function Orders() {
                   setFilter(true);
                 }}
               >
-                Apply
+                {filter ? "Applyed" : "Apply"}
               </button>
             </div>
           </motion.div>

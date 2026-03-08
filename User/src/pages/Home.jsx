@@ -26,7 +26,6 @@ import toast from "react-hot-toast";
 const ViewData = lazy(() => import("./products/ViewData"));
 
 function Home() {
-  const [showData, setShowData] = useState("home");
   const [loginHover, setLoginHover] = useState(false);
   const dispatch = useDispatch();
   const { mode, user, isAuthenticated, error, message } = useSelector(
@@ -66,17 +65,6 @@ function Home() {
           <span className="text-white font-semibold tracking-[1px]">
             ShopCart
           </span>
-        </div>
-        <div className="px-2 p-1 rounded-full flex items-center">
-          <LocationPinIcon style={{ height: "18px", width: "18px" }} />
-
-          <Link className="text-blue-600 underline text-sm">
-            Select Delivery Location
-            <ArrowForwardIosIcon
-              style={{ height: "15px", width: "15px" }}
-              className="font-semibold"
-            />
-          </Link>
         </div>
       </div>
 
@@ -144,13 +132,25 @@ function Home() {
                   <LocationPinIcon />
                   All Address
                 </Link>
-                <Link
-                  to={isAuthenticated ? "/become-seller" : "/login"}
+
+                {user?.role == "seller" ? (
+                  <Link
+                  to={isAuthenticated ? "/seller-panel" : "/login"}
                   className="flex gap-2 hover:bg-gradient-to-r from-blue-300 to-white p-1 rounded-lg"
                 >
                   <StorefrontIcon />
-                  Become a Seller
+                  Seller Hub
                 </Link>
+                ) : (
+                  <Link
+                    to={isAuthenticated ? "/become-seller" : "/login"}
+                    className="flex gap-2 hover:bg-gradient-to-r from-blue-300 to-white p-1 rounded-lg"
+                  >
+                    <StorefrontIcon />
+                    Become a Seller
+                  </Link>
+                )}
+
                 <div className="flex gap-2">
                   <button
                     className={`w-14 h-7 rounded-full cursor-pointer flex items-center ${mode ? "bg-gray-500" : "bg-blue-500"} `}
