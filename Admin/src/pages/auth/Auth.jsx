@@ -9,14 +9,14 @@ import toast from "react-hot-toast";
 
 function Auth() {
   const handleGoogleLogin = async (e) => {
-    window.location.href = `${url}/auth/google`;
+    window.location.href = `${url}/auth/google?panel=admin`;
     e.preventDefault();
     await authUrl.get("/google");
   };
 
   const handleGithubLogin = async (e) => {
     e.preventDefault();
-    window.location.href = `${url}/auth/github`;
+    window.location.href = `${url}/auth/github?panel=admin`;
     await authUrl.get("/github");
   };
 
