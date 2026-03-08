@@ -20,7 +20,16 @@ const refreshCookieOption = {
 };
 
 const googleAuthLogin = AsyncHandler(async (req, res, next) => {
-  console.log(req.headers.origin)
+  const panel = req.query.state;
+  let redirectUrl = "";
+  if (panel == "admin") {
+    redirectUrl = process.env.ADMIN_PANEL;
+  } else if (panel == "seller") {
+    redirectUrl = process.env.SELLER_PANEL;
+  } else {
+    redirectUrl = process.env.USER_PANEL;
+  }
+
   const userExist = await User.findOne({ auth_id: req.user._json.sub });
 
   if (!userExist) {
@@ -49,7 +58,7 @@ const googleAuthLogin = AsyncHandler(async (req, res, next) => {
     return res
       .cookie("accessToken", accessToken, accessCookieOption)
       .cookie("refreshToken", refreshToken, refreshCookieOption)
-      .redirect(process.env.FRONTEND_URL);
+      .redirect(redirectUrl);
   }
 
   const { accessToken, refreshToken } = await genAccAndRefToken(userExist);
@@ -60,10 +69,19 @@ const googleAuthLogin = AsyncHandler(async (req, res, next) => {
   return res
     .cookie("accessToken", accessToken, accessCookieOption)
     .cookie("refreshToken", refreshToken, refreshCookieOption)
-    .redirect(process.env.FRONTEND_URL);
+    .redirect(redirectUrl);
 });
 
 const githubLogin = AsyncHandler(async (req, res, next) => {
+  const panel = req.query.state;
+  let redirectUrl = "";
+  if (panel == "admin") {
+    redirectUrl = process.env.ADMIN_PANEL;
+  } else if (panel == "seller") {
+    redirectUrl = process.env.SELLER_PANEL;
+  } else {
+    redirectUrl = process.env.USER_PANEL;
+  }
   const userExist = await User.findOne({ auth_id: req.user.id });
 
   if (!userExist) {
@@ -89,7 +107,7 @@ const githubLogin = AsyncHandler(async (req, res, next) => {
     return res
       .cookie("accessToken", accessToken, accessCookieOption)
       .cookie("refreshToken", refreshToken, refreshCookieOption)
-      .redirect(process.env.FRONTEND_URL);
+      .redirect(redirectUrl);
   }
 
   const { accessToken, refreshToken } = await genAccAndRefToken(userExist);
@@ -100,7 +118,7 @@ const githubLogin = AsyncHandler(async (req, res, next) => {
   return res
     .cookie("accessToken", accessToken, accessCookieOption)
     .cookie("refreshToken", refreshToken, refreshCookieOption)
-    .redirect(process.env.FRONTEND_URL);
+    .redirect(redirectUrl);
 });
 
 const getCurrUser = AsyncHandler(async (req, res, next) => {
