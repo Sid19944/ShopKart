@@ -104,6 +104,7 @@ const githubLogin = AsyncHandler(async (req, res, next) => {
       );
     }
 
+    console.log(redirectUrl)
     return res
       .cookie("accessToken", accessToken, accessCookieOption)
       .cookie("refreshToken", refreshToken, refreshCookieOption)
