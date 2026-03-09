@@ -39,8 +39,6 @@ function Cart() {
     dispatch(updateQuentity(cart._id, { product_id: prod_id, quentity: qty }));
   };
 
-  console.log("a",cart)
-
   return (
     <div className="border flex flex-col items-center gap-5 h-screen overflow-auto">
       <div className="flex border px-2 py-1 items-center bg-blue-600 justify-between w-full sticky top-0 z-20">
