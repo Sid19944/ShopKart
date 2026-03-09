@@ -4,9 +4,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import LocationPinIcon from "@mui/icons-material/LocationPin";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import LogoutIcon from "@mui/icons-material/Logout";
 import StorefrontIcon from "@mui/icons-material/Storefront";
@@ -129,7 +128,7 @@ function Home() {
 
                 {user?.role == "seller" ? (
                   <Link
-                    to={isAuthenticated ? "/seller-panel" : "/login"}
+                    to={"https://shop-kart-seller.vercel.app"}
                     className="flex gap-2 hover:bg-gradient-to-r from-blue-300 to-white p-1 rounded-lg"
                   >
                     <StorefrontIcon />
@@ -142,6 +141,16 @@ function Home() {
                   >
                     <StorefrontIcon />
                     Become a Seller
+                  </Link>
+                )}
+
+                {user?.role == "admin" && (
+                  <Link
+                    to={"https://shop-kart-admin.vercel.app"}
+                    className="flex gap-2 hover:bg-gradient-to-r from-blue-300 to-white p-1 rounded-lg"
+                  >
+                    <AdminPanelSettingsOutlinedIcon />
+                    Admin Panel
                   </Link>
                 )}
 

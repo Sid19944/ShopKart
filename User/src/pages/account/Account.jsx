@@ -13,6 +13,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
 import CloseIcon from "@mui/icons-material/Close";
 import StorefrontIcon from "@mui/icons-material/Storefront";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 
 import { Link, useNavigate } from "react-router-dom";
 import AccountInfo from "./SubComponent/AccountInfo";
@@ -96,7 +97,7 @@ function Account() {
             </Link>
             {user?.role == "seller" ? (
               <Link
-                to={isAuthenticated ? "/seller-panel" : "/login"}
+                to={"https://shop-kart-seller.vercel.app"}
                 className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer"
               >
                 <StorefrontIcon />
@@ -109,6 +110,15 @@ function Account() {
               >
                 <StorefrontIcon />
                 Become a Seller
+              </Link>
+            )}
+            {user?.role == "admin" && (
+              <Link
+                to={"https://shop-kart-admin.vercel.app"}
+                className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer"
+              >
+                <AdminPanelSettingsOutlinedIcon />
+                Admin Panel
               </Link>
             )}
             <div className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer">
