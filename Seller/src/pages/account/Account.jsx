@@ -145,6 +145,7 @@ function Account() {
             >
               <div className="flex flex-col">
                 <span>{addres?.fullname},</span>
+                <span>{addres?.number},</span>
                 <span>{addres?.addressLine},</span>
                 <span>{addres?.region},</span>
                 <span>{addres?.pincode},</span>
