@@ -47,8 +47,6 @@ function AddProduct({ remove }) {
     dispatch(addNewProduct(formData));
   };
 
-  console.log(loading, error, message);
-
   const addImage = (e) => {
     if (file.length == 5)
       return toast.error("Max 5 Image Allow", { position: "top-center" });
