@@ -22,6 +22,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+console.log(
+  process.env.ADMIN_PANEL,
+  process.env.USER_PANEL,
+  process.env.SELLER_PANEL,
+);
+
 app.use(
   fileUpload({
     tempFileDir: "/temp/",
