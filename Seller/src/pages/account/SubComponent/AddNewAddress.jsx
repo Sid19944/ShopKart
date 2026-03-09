@@ -78,7 +78,20 @@ function AddNewAddress({ remove }) {
             name="fullname"
             className={`border w-full rounded-lg p-1 `}
             type="text"
-            defaultValue={addressData.fullname}
+            value={addressData.fullname || ""}
+            onChange={handleData}
+          />
+        </div>
+        <div className={`p-1 gap-1 w-full`}>
+          <label className={`text-md`} htmlFor="district">
+            Number
+          </label>
+          <input
+            id="number"
+            name="number"
+            className={`border w-full rounded-lg p-1`}
+            type="number"
+            value={addressData.number || ""}
             onChange={handleData}
           />
         </div>
@@ -91,7 +104,7 @@ function AddNewAddress({ remove }) {
             name="addressLine"
             className={`border w-full rounded-lg p-1 `}
             type="text"
-            defaultValue={addressData.addressLine}
+            value={addressData.addressLine || ""}
             onChange={handleData}
           />
         </div>
@@ -106,7 +119,7 @@ function AddNewAddress({ remove }) {
                 name="pincode"
                 className={`border w-full rounded-lg p-1 `}
                 type="number"
-                defaultValue={addressData.pincode}
+                value={addressData.pincode || ""}
                 onChange={handleData}
               />
             </div>
@@ -119,7 +132,7 @@ function AddNewAddress({ remove }) {
                 name="region"
                 className={`border w-full rounded-lg p-1`}
                 type="text"
-                defaultValue={addressData.region}
+                value={addressData.region || ""}
                 onChange={handleData}
               />
             </div>
@@ -135,7 +148,7 @@ function AddNewAddress({ remove }) {
                 name="country"
                 className={`border w-full rounded-lg p-1 disabled:cursor-not-allowed`}
                 type="text"
-                defaultValue={addressData.country}
+                value={addressData.country || ""}
               />
             </div>
             <div className={`p-1 gap-1 w-full`}>
@@ -148,7 +161,7 @@ function AddNewAddress({ remove }) {
                 name="state"
                 className={`border w-full rounded-lg p-1 disabled:cursor-not-allowed`}
                 type="text"
-                defaultValue={addressData.state}
+                value={addressData.state || ""}
                 onChange={handleData}
               />
             </div>
@@ -165,7 +178,7 @@ function AddNewAddress({ remove }) {
             name="district"
             className={`border w-full rounded-lg p-1 disabled:cursor-not-allowed`}
             type="text"
-            defaultValue={addressData.district}
+            value={addressData.district || ""}
             onChange={handleData}
           />
         </div>

@@ -26,9 +26,9 @@ function Account() {
   const [showAddAddress, setShowAddAddress] = useState(false);
   const [showUpdateAddress, setShowUpdateAddress] = useState(false);
 
-  const selectedAddress = address.filter(
+  const selectedAddress = address?.filter(
     (add) => add._id == seller.storeAddress,
-  );
+  )[0];
 
   const hanldeLogout = async () => {
     await dispatch(logout());
@@ -111,13 +111,13 @@ function Account() {
             Current Store Address :
           </label>
           <div className="flex flex-col border w-fit p-2 rounded-lg">
-            <span>{selectedAddress[0]?.fullname},</span>
-            <span>{selectedAddress[0]?.addressLine},</span>
-            <span>{selectedAddress[0]?.region},</span>
-            <span>{selectedAddress[0]?.pincode},</span>
-            <span>{selectedAddress[0]?.district},</span>
-            <span>{selectedAddress[0]?.state},</span>
-            <span>{selectedAddress[0]?.country}</span>
+            <span>{selectedAddress?.fullname},</span>
+            <span>{selectedAddress?.addressLine},</span>
+            <span>{selectedAddress?.region},</span>
+            <span>{selectedAddress?.pincode},</span>
+            <span>{selectedAddress?.district},</span>
+            <span>{selectedAddress?.state},</span>
+            <span>{selectedAddress?.country}</span>
           </div>
         </div>
       </div>

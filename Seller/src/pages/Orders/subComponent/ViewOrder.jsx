@@ -73,7 +73,7 @@ function ViewOrder({ remove ,updateStatus }) {
         <span defaultValue={order.shippingAddress.fullName + ","}></span>
         <span defaultValue={order.shippingAddress.addressLine + ","}></span>
         <span className="">{order.shippingAddress.pincode + ","}</span>
-        <span className="">{order.shippingAddress.postOffice + ","}</span>
+        <span className="">{order.shippingAddress.region + ","}</span>
         <span className="">{order.shippingAddress.state + ","}</span>
 
         <span>{order.shippingAddress.district}</span>

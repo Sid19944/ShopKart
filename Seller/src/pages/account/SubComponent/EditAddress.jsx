@@ -13,6 +13,7 @@ function EditAddress({ remove }) {
   const [addressData, setAddressData] = useState({
     fullname: addres.fullname,
     addressLine: addres.addressLine,
+    number: addres.number,
     pincode: addres.pincode,
     region: addres.region,
     country: addres.country,
@@ -78,6 +79,19 @@ function EditAddress({ remove }) {
             className={`border w-full rounded-lg p-1 `}
             type="text"
             value={addressData.fullname}
+            onChange={handleData}
+          />
+        </div>
+        <div className={`p-1 gap-1 w-full`}>
+          <label className={`text-md`} htmlFor="district">
+            Number
+          </label>
+          <input
+            id="number"
+            name="number"
+            className={`border w-full rounded-lg p-1`}
+            type="number"
+            value={addressData.number || ""}
             onChange={handleData}
           />
         </div>
