@@ -6,6 +6,7 @@ import fileUpload from "express-fileupload";
 import os from "os";
 
 const app = express();
+app.set("trust proxy", 1);
 config({ path: "./.env" });
 app.use(
   cors({
