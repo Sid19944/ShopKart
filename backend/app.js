@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import fileUpload from "express-fileupload";
+import os from "os";
 
 const app = express();
 config({ path: "./.env" });
@@ -30,8 +31,8 @@ console.log(
 
 app.use(
   fileUpload({
-    tempFileDir: "/temp/",
     useTempFiles: true,
+    tempFileDir: os.tmpdir(),
   }),
 );
 
