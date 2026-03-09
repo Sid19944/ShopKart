@@ -31,6 +31,8 @@ function Cart() {
 
   useEffect(() => {
     dispatch(getCart());
+    cartErr && toast.error(cartErr)
+    cartMsg && toast.success(cartMsg)
   }, [cartErr, cartMsg]);
 
   const handleQuentity = async (prod_id, qty) => {

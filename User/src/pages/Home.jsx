@@ -180,7 +180,11 @@ function Home() {
                 )}
               </div>
             </div>
-            <Link to={"/cart"} id="cart" className="flex px-3 py-1 group">
+            <Link
+              to={isAuthenticated ? "/cart" : "/login"}
+              id="cart"
+              className="flex px-3 py-1 group"
+            >
               <ShoppingCartIcon />
               <h1>Cart</h1>
             </Link>

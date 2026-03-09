@@ -67,7 +67,7 @@ export const getCart = () => async (dispatch) => {
   } catch (cartErr) {
     dispatch(
       cartSlice.actions.getCartFailed(
-        cartErr?.response?.data?.cartMsg || cartErr.cartMsg,
+        cartErr?.response?.data?.message || cartErr.message,
       ),
     );
     dispatch(cartSlice.actions.clearcartMsg());
