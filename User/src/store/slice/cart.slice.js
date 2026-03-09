@@ -62,7 +62,7 @@ export const getCart = () => async (dispatch) => {
   dispatch(cartSlice.actions.dbCalling());
   try {
     const { data } = await cartUrl("/single");
-    dispatch(cartSlice.actions.getCartSuccess(data.cart));
+    dispatch(cartSlice.actions.getCartSuccess(data.cart || {}));
     dispatch(cartSlice.actions.clearErr());
   } catch (cartErr) {
     dispatch(

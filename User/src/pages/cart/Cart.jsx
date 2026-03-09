@@ -27,7 +27,7 @@ const button = {
 function Cart() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { cart, cartErr, cartMsg } = useSelector((state) => state.cart);
+  const { cart = {}, cartErr, cartMsg } = useSelector((state) => state.cart);
 
   useEffect(() => {
     dispatch(getCart());
@@ -38,6 +38,8 @@ function Cart() {
   const handleQuentity = async (prod_id, qty) => {
     dispatch(updateQuentity(cart._id, { product_id: prod_id, quentity: qty }));
   };
+
+  console.log("a",cart)
 
   return (
     <div className="border flex flex-col items-center gap-5 h-screen overflow-auto">
@@ -51,8 +53,8 @@ function Cart() {
           </span>
         </div>
       </div>
-      {Object.keys(cart).length == 0 ||
-      (Object.keys(cart).length != 0 && cart.items.length == 0) ? (
+      {Object.keys(cart)?.length == 0 ||
+      (Object.keys(cart)?.length != 0 && cart.items.length == 0) ? (
         <div className="text-3xl h-100 justify-center gap-10 font-bold tracking-[1px] font-serif flex flex-col items-center">
           <h1> Cart is Empty</h1>
           <motion.button
