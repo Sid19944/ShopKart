@@ -6,17 +6,21 @@ import fileUpload from "express-fileupload";
 
 const app = express();
 config({ path: "./.env" });
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(
   cors({
-    origin: true,
+    origin: [
+      "http://localhost:5173",
+      process.env.ADMIN_PANEL,
+      process.env.USER_PANEL,
+      process.env.SELLER_PANEL,
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
 );
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use(
   fileUpload({
