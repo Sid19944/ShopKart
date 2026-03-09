@@ -69,7 +69,7 @@ function Orders() {
             className="font-semibold tracking-[1px] px-2 text-2xl cursor-pointer"
             onClick={() => navigate("/")}
           >
-            ShopCart
+            ShopKart
           </span>
         </div>
 

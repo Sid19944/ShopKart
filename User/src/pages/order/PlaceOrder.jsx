@@ -29,7 +29,7 @@ function PlaceOrder() {
   return (
     <div className="flex flex-col items-center gap-2 h-screen">
       <nav className="font-semibold w-full bg-blue-500 p-2 text-white sticky top-0">
-        ShopCart
+        ShopKart
       </nav>
       <div className="w-[90%] flex-1 flex flex-wrap gap-2 overflow-auto">
         <div className="w-full sm:w-[68%] flex flex-col gap-2 ">

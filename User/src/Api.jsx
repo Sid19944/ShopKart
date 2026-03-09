@@ -1,5 +1,6 @@
 import axios from "axios";
-const url = "http://localhost:3000";
+// const url = "http://localhost:3000";
+const url = "https://shopkart-backend-mcrs.onrender.com"
 
 const authUrl = axios.create({
   baseURL: `${url}/auth`,

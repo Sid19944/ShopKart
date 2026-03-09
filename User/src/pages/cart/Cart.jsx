@@ -45,7 +45,7 @@ function Cart() {
             className="font-semibold tracking-[1px] cursor-pointer"
             onClick={() => navigate("/")}
           >
-            ShopCart
+            ShopKart
           </span>
         </div>
       </div>

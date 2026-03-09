@@ -10,14 +10,14 @@ import toast from "react-hot-toast";
 
 function Auth() {
   const handleGoogleLogin = async (e) => {
-    window.location.href = `${url}/auth/google`;
+    window.location.href = `${url}/auth/google?panel=user`;
     e.preventDefault();
     await authUrl.get("/google");
   };
 
   const handleGithubLogin = async (e) => {
     e.preventDefault();
-    window.location.href = `${url}/auth/github`;
+    window.location.href = `${url}/auth/github?panel=user`;
     await authUrl.get("/github");
   };
 
@@ -54,7 +54,7 @@ function Auth() {
             alt="logo"
             className="h-10 shadow-[0px_0px_2px_2px]"
           />
-          <h1>ShopCart</h1>
+          <h1>ShopKart</h1>
         </div>
         <h1 className="w-full text-2xl">Welcome to ShopCart</h1>
         <h1 className="text-2xl">Login/ Register into your Account</h1>

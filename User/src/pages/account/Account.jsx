@@ -47,7 +47,7 @@ function Account() {
         >
           <img src="logo.png" alt="logo" className="h-8 rounded-full" />
           <span className="text-white font-semibold tracking-[1px]">
-            ShopCart
+            ShopKart
           </span>
         </div>
         <span className="text-white border rounded-lg px-1">{user.name}</span>
@@ -84,20 +84,33 @@ function Account() {
                 <ArrowForwardIcon />
               </span>
             </Link>
-            <Link to={"/address"} className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer">
+            <Link
+              to={"/address"}
+              className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer"
+            >
               <LocationPinIcon style={{ height: "30px", width: "30px" }} />
               <span className="w-full flex justify-between">
                 ADDRESS
                 <ArrowForwardIcon />
               </span>
             </Link>
-            <Link to={"/become-seller"} className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer">
-              <StorefrontIcon style={{ height: "30px", width: "30px" }} />
-              <span className="w-full flex justify-between">
-                Become Seller
-                <ArrowForwardIcon />
-              </span>
-            </Link>
+            {user?.role == "seller" ? (
+              <Link
+                to={isAuthenticated ? "/seller-panel" : "/login"}
+                className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer"
+              >
+                <StorefrontIcon />
+                Seller Hub
+              </Link>
+            ) : (
+              <Link
+                to={isAuthenticated ? "/become-seller" : "/login"}
+                className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer"
+              >
+                <StorefrontIcon />
+                Become a Seller
+              </Link>
+            )}
             <div className="border w-full flex gap-2 p-2 items-center font-semibold tracking-[1px] rounded-lg hover:bg-gradient-to-r from-blue-400 to-white cursor-pointer">
               <button
                 className={`w-14 h-7 rounded-full cursor-pointer flex items-center ${mode ? "bg-gray-500" : "bg-blue-500"} `}

@@ -56,7 +56,7 @@ function ViewProduct() {
               className="font-semibold tracking-[1px] px-5 cursor-pointer"
               onClick={() => navigate("/")}
             >
-              ShopCart
+              ShopKart
             </span>
             <Link
               id="cart"

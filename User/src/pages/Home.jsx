@@ -19,7 +19,6 @@ import { getUser, logout, setMode } from "../store/slice/user.slice";
 
 import { Suspense } from "react";
 import { Link } from "react-router-dom";
-import Account from "./account/Account";
 import Footer from "./util/Footer";
 import { getProducts } from "../store/slice/product.slice";
 import toast from "react-hot-toast";
@@ -31,11 +30,6 @@ function Home() {
   const { mode, user, isAuthenticated, error, message } = useSelector(
     (state) => state.user,
   );
-  const { products } = useSelector((state) => state.products);
-
-  const fashon = products.filter((prod) => prod.category == "fashon");
-  const electronics = products.filter((prod) => prod.category == "electronics");
-  const mobile = products.filter((prod) => prod.category == "mobile");
   const [category, setCategory] = useState("");
 
   useEffect(() => {
@@ -135,12 +129,12 @@ function Home() {
 
                 {user?.role == "seller" ? (
                   <Link
-                  to={isAuthenticated ? "/seller-panel" : "/login"}
-                  className="flex gap-2 hover:bg-gradient-to-r from-blue-300 to-white p-1 rounded-lg"
-                >
-                  <StorefrontIcon />
-                  Seller Hub
-                </Link>
+                    to={isAuthenticated ? "/seller-panel" : "/login"}
+                    className="flex gap-2 hover:bg-gradient-to-r from-blue-300 to-white p-1 rounded-lg"
+                  >
+                    <StorefrontIcon />
+                    Seller Hub
+                  </Link>
                 ) : (
                   <Link
                     to={isAuthenticated ? "/become-seller" : "/login"}
