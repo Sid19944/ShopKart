@@ -131,10 +131,10 @@ function Products() {
                 <CloseIcon />
               </span>
             </div>
-            <div className="w-full relative">
+            <div className="w-full relative  hidden sm:inline-block">
               <input
                 type="text"
-                className={`border ${mode ? "bg-gray-400" : "bg-gray-500"} w-full px-1 hidden sm:inline-block`}
+                className={`border ${mode ? "bg-gray-400" : "bg-gray-500"} w-full px-1`}
                 placeholder="Search Product By ID, Enter 24 digit ID"
                 value={searchId || ""}
                 onChange={(e) => setSearchId(e.target.value)}
