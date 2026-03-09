@@ -13,6 +13,7 @@ function ViewProduct() {
   const { prod_id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.user);
   const { product, error, message } = useSelector((state) => state.products);
 
   const { cart, cartErr, cartMsg } = useSelector((state) => state.cart);
@@ -21,10 +22,16 @@ function ViewProduct() {
   )[0];
 
   const hanldeAddToCart = (prod_id, qty) => {
+    if (!isAuthenticated) {
+      return toast.error("Please Login");
+    }
     dispatch(addToCart({ product_id: prod_id, quentity: qty }));
   };
 
   const handleBuyProduct = (prod_id, qty) => {
+    if (!isAuthenticated) {
+      return toast.error("Please Login");
+    }
     dispatch(addToCart({ product_id: prod_id, quentity: qty }));
     setTimeout(() => {
       navigate("/cart");
@@ -32,7 +39,7 @@ function ViewProduct() {
   };
 
   useEffect(() => {
-    dispatch(getCart());
+    isAuthenticated && dispatch(getCart());
   }, [cartErr, cartMsg]);
 
   const totalRating = product?.reviews?.reduce((acc, curr) => {
