@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSeller, logout } from "../../store/slice/user.slice";
+import { getSeller, getUser, logout } from "../../store/slice/user.slice";
 import { useNavigate } from "react-router-dom";
 
 import LogoutIcon from "@mui/icons-material/Logout";
 import toast from "react-hot-toast";
 import {
   deleteAddress,
+  getAllAddress,
   setSingleAddress,
   updateAddress,
 } from "../../store/slice/address.slice";
@@ -19,7 +20,9 @@ function Account() {
   const navigate = useNavigate();
   const dragConstraints = useRef(null);
   const dispatch = useDispatch();
-  const { user, seller, mode ,isAuthenticated} = useSelector((state) => state.user);
+  const { user, seller, mode, isAuthenticated } = useSelector(
+    (state) => state.user,
+  );
   const { address, addres, error, message } = useSelector(
     (state) => state.address,
   );
@@ -57,12 +60,10 @@ function Account() {
     await sellerUrl
       .put(`/update-seller/${seller._id}`, { storeAddress: address_id })
       .then((res) => {
-        toast.success(res.data.message + " " + "Going to refresh page", {
+        toast.success(res.data.message, {
           position: "top-center",
         });
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000);
+        dispatch(getSeller());
       })
       .catch((err) => toast.error(err?.response?.data?.message || err.message));
   };
@@ -70,7 +71,7 @@ function Account() {
   useEffect(() => {
     error && toast.error(error);
     message && toast.success(message);
-  }, [error, message]);
+  }, [dispatch, error, message]);
 
   return (
     <div
@@ -112,6 +113,7 @@ function Account() {
           </label>
           <div className="flex flex-col border w-fit p-2 rounded-lg">
             <span>{selectedAddress?.fullname},</span>
+            <span>{selectedAddress?.number},</span>
             <span>{selectedAddress?.addressLine},</span>
             <span>{selectedAddress?.region},</span>
             <span>{selectedAddress?.pincode},</span>
