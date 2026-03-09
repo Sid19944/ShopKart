@@ -12,7 +12,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:5173",process.env.ADMIN_PANEL, process.env.USER_PANEL, process.env.SELLER_PANEL],
+    origin: [
+      "http://localhost:5173",
+      process.env.ADMIN_PANEL,
+      process.env.USER_PANEL,
+      process.env.SELLER_PANEL,
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
@@ -80,8 +85,8 @@ app.use("/order-item", orderItemRouter);
 import ordersRouter from "./src/routes/orders.route.js";
 app.use("/orders", ordersRouter);
 
-import reviewRouter from "./src/routes/review.route.js"
-app.use("/review", reviewRouter)
+import reviewRouter from "./src/routes/review.route.js";
+app.use("/review", reviewRouter);
 
 // middleware for error
 import { errorMiddleware } from "./src/utils/Error.Handler.js";

@@ -20,6 +20,7 @@ const refreshCookieOption = {
 };
 
 const googleAuthLogin = AsyncHandler(async (req, res, next) => {
+  console.log(process.env.ADMIN_PANEL);
   const panel = req.query.state;
   let redirectUrl = "";
   if (panel == "admin") {
@@ -29,7 +30,7 @@ const googleAuthLogin = AsyncHandler(async (req, res, next) => {
   } else {
     redirectUrl = process.env.USER_PANEL;
   }
-
+  console.log(redirectUrl);
   const userExist = await User.findOne({ auth_id: req.user._json.sub });
 
   if (!userExist) {
@@ -104,7 +105,7 @@ const githubLogin = AsyncHandler(async (req, res, next) => {
       );
     }
 
-    console.log(redirectUrl)
+    console.log(redirectUrl);
     return res
       .cookie("accessToken", accessToken, accessCookieOption)
       .cookie("refreshToken", refreshToken, refreshCookieOption)

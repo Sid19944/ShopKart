@@ -78,12 +78,6 @@ const addToCart = AsyncHandler(async (req, res, next) => {
 
 const allCart = AsyncHandler(async (req, res, next) => {
   const carts = await Cart.find();
-  if (!carts) {
-    return res.status(200).json({
-      success: true,
-      message: "No cart created yet.",
-    });
-  }
   return res.status(200).json({
     success: true,
     carts,
@@ -98,9 +92,6 @@ const getCartForUser = AsyncHandler(async (req, res, next) => {
       select: "storeName",
     },
   });
-  if (!cart) {
-    return next(new ErrorHandler("Cart's is created yet", 400));
-  }
 
   return res.status(200).json({
     success: true,
